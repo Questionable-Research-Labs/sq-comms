@@ -15,6 +15,8 @@ void sendRawMessage(char* outgoing) {
 void sendMessage(char* topic, char* payload) {
     char outgoing[JSON_SERIALISATION_LIMIT];
     sprintf(outgoing, "%s:%s", topic, payload);
+    Serial.println("Sending message: " );
+    Serial.println(outgoing);
     sendRawMessage(outgoing);
 }
 
@@ -49,19 +51,17 @@ void onReceive(int packetSize) {
     Serial.println("Topic split: " + String(messageSplitIndex));
     
     // Get the topic and data out of the incoming packet
-    char topic[messageSplitIndex + 2] = "";
+    char topic[messageSplitIndex + 1] = "";
     memcpy(topic, &incoming[0], messageSplitIndex);
-    topic[messageSplitIndex + 1] = '\0';
+    topic[messageSplitIndex] = '\0';
     Serial.println(topic);
 
     // Rest of the message is incoming
-    char data[1024] = "";
-    memcpy(data, &incoming[messageSplitIndex + 1], strlen(loraMessage) - messageSplitIndex);
+    int loraMessageLength = strlen(loraMessage) - messageSplitIndex;
+    char data[loraMessageLength+1] = "";
+    memcpy(data, &incoming[messageSplitIndex + 1], loraMessageLength);
+    data[loraMessageLength] = '\0';
     Serial.println(data);
-
-    for (int i = 0; i<20; i++) {
-        Serial.print(incoming[i], HEX);
-    }
 
     #if defined(HAB_SYSTEM)
         forwardPacket(topic, data);
