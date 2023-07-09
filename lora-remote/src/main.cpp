@@ -28,6 +28,10 @@ void setup() {
 	#if defined(SENSOR_SYSTEM)
 		sensorSetup();
 	#endif
+
+	#if defined(ALERT_SYSTEM)
+		alertSetup();
+	#endif
 }
 
 
