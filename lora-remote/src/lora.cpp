@@ -12,7 +12,7 @@ void sendRawMessage(char* outgoing) {
     LoRa.endPacket();	   // finish packet and send it
 }
 
-void sendMessage(const char* topic, const char* payload) {
+void sendMessage(char* topic, char* payload) {
     char outgoing[JSON_SERIALISATION_LIMIT];
     sprintf(outgoing, "%s:%s", topic, payload);
     sendRawMessage(outgoing);

@@ -26,6 +26,8 @@ void sendAlert() {
         serializeJson(doc, serialisedJSON, 1024);
         sendMessage("ALERT", serialisedJSON);
 
+        Serial.println(serialisedJSON);
+
         prevState = state;
         Serial.println("Switch toggled to " + String(state));
     }    
