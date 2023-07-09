@@ -46,11 +46,11 @@ long lastSendTime = 0;	// time of last packet send
 
 void loop() {
 	#if !defined(HAB_SYSTEM)
+	sendAlert();
 
     if (millis() - lastSendTime > interval) {
-		sendAlert();
+		sendPing();
 		lastSendTime = millis();  //void loopHab() timestamp the message
-		interval = 1000;	  // 1 second
 		msgCount++;
     }
 	#endif

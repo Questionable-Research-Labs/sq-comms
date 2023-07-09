@@ -67,3 +67,15 @@ void onReceive(int packetSize) {
         forwardPacket(topic, data);
     #endif
 }
+
+void sendPing() {
+    DynamicJsonDocument doc(1024);
+    doc["from"] = chipID;
+    doc["uptime"] = millis();
+
+    char serialisedJSON[1024];
+    serializeJson(doc, serialisedJSON, 1024);
+    Serial.println("Sending Ping");
+    Serial.println(serialisedJSON);
+    sendMessage("PING", serialisedJSON);
+}
