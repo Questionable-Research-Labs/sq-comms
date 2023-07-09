@@ -8,5 +8,6 @@
 
 void setupHab();
 void mqttCallback(char* topic, byte* payload, unsigned int length);
+void loopHab();
 
 #endif

@@ -4,10 +4,16 @@ void setupLora() {
     LoRa.setSyncWord(0xe4);  // ranges from 0-0xFF, default 0x34, see API docs
 }
 
-void sendMessage(String outgoing) {
+void sendRawMessage(char* outgoing) {
     LoRa.beginPacket();	   // start packet
     LoRa.print(outgoing);  // add payload
     LoRa.endPacket();	   // finish packet and send it
+}
+
+void sendMessage(char* topic, char* payload) {
+    char outgoing[JSON_SERIALISATION_LIMIT];
+    sprintf(outgoing, "%s:%s", topic, payload);
+    sendRawMessage(outgoing);
 }
 
 void onReceive(int packetSize) {

@@ -2,15 +2,11 @@
 #include "config.h"
 #include "lora.h"
 #include "display.h"
+#include "alert.h"
 
 #if defined(HAB_SYSTEM)
 #include "hab.h"
 #endif
-
-byte msgCount = 0;	// count of outgoing messages
-int interval = 2000;	// interval between sends
-long lastSendTime = 0;	// time of last packet send
-
 
 void setup() {
     // WIFI Kit series V1 not support Vext control
@@ -29,17 +25,28 @@ void setup() {
 	#endif
 }
 
+
+byte msgCount= 0;	// count of outgoing messages
+int interval = 2000;	// interval between sends
+long lastSendTime = 0;	// time of last packet send
+
 void loop() {
+	#if !defined(HAB_SYSTEM)
+
     if (millis() - lastSendTime > interval) {
-		String message = "Alert #";  // send a message
-		message += msgCount;
-		sendMessage(message);
-		Serial.println("Sending " + message);
-		lastSendTime = millis();  // timestamp the message
+		sendAlert()
+		lastSendTime = millis();  //void loopHab() timestamp the message
 		interval = 1000;	  // 1 second
 		msgCount++;
     }
+	#endif
 
     // parse for a packet, and call onReceive with the result:
     onReceive(LoRa.parsePacket());
+	#if defined(HAB_SYSTEM)
+		loopHab();
+	#else
+		sensorLoop();
+	#endif
+
 }
