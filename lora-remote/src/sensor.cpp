@@ -30,7 +30,7 @@ void sensorLoop() {
         Serial.println(F("°C"));
     }
 
-    doc["from"] = "ChipAddrHere";
+    doc["from"] = chipID;
     doc["readings"][0]["sensorName"] = "temperature";
     doc["readings"][0]["value"] = event.temperature;
 

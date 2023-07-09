@@ -4,6 +4,7 @@
 #include "display.h"
 #include "alert.h"
 #include "sensor.h"
+#include "chipID.h"
 
 #if defined(HAB_SYSTEM)
 #include "hab.h"
@@ -12,6 +13,10 @@
 void setup() {
     // WIFI Kit series V1 not support Vext control
     Heltec.begin(true /*DisplayEnable Enable*/, true /*Heltec.Heltec.Heltec.LoRa Disable*/, true /*Serial Enable*/, true /*PABOOST Enable*/, LORA_BAND /*long BAND*/);
+
+	setChipId();
+	Serial.print("Chip ID booting: ");
+	Serial.println(chipID);
 
 	setupLora();
     Serial.println("LoRa init succeeded.");

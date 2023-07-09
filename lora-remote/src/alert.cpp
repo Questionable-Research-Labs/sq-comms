@@ -18,7 +18,7 @@ void sendAlert() {
     bool state = digitalRead(SWITCH_PIN);
     if (state != prevState) {
 
-        doc["from"] = "ChipAddrHere";
+        doc["from"] = chipID;
         doc["msg"] = "test alert";
         doc["active"] = state;
 
