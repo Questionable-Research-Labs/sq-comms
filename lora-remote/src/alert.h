@@ -2,3 +2,5 @@
 
 #include <ArduinoJson.h>
 #include <lora.h>
+
+void sendAlert();

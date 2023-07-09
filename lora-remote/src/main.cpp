@@ -38,7 +38,7 @@ void loop() {
 	#if !defined(HAB_SYSTEM)
 
     if (millis() - lastSendTime > interval) {
-		sendAlert()
+		sendAlert();
 		lastSendTime = millis();  //void loopHab() timestamp the message
 		interval = 1000;	  // 1 second
 		msgCount++;
