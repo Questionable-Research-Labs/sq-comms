@@ -58,6 +58,7 @@ void onReceive(int packetSize) {
         Serial.print(incoming[i], HEX);
     }
 
-
-    forwardPacket(topic, data);
+    #if defined(HAB_SYSTEM)
+        forwardPacket(topic, data);
+    #endif
 }
