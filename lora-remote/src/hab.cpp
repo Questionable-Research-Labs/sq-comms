@@ -34,7 +34,7 @@ void setupHab() {
     Serial.println("no");
 }
 
-void forwardPacket(char* topic, char* payload) {
+void forwardPacket(const char *topic, const char *payload) {
     // client.publish("outTopic", "hello world");
     Serial.print("Forwarding message to ");
     Serial.print(topic);

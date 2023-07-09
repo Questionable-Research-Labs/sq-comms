@@ -2,6 +2,10 @@
 #include "heltec.h"
 #include "config.h"
 
+#if defined(HAB_SYSTEM)
+#include "hab.h"
+#endif
+
 void setupLora();
 void onReceive(int packetSize);
 void sendRawMessage(char* outgoing);
