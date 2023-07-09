@@ -6,6 +6,10 @@
 #include "hab.h"
 #endif
 
+#if defined(ALERT_SYSTEM)
+#include "warningled.h"
+#endif
+
 void setupLora();
 void onReceive(int packetSize);
 void sendRawMessage(char* outgoing);

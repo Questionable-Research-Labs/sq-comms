@@ -4,6 +4,7 @@
 #include "display.h"
 #include "alert.h"
 #include "sensor.h"
+#include "warningled.h"
 
 #if defined(HAB_SYSTEM)
 #include "hab.h"
@@ -31,6 +32,7 @@ void setup() {
 
 	#if defined(ALERT_SYSTEM)
 		alertSetup();
+		setupLED();
 	#endif
 }
 

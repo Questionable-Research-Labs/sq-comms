@@ -1,5 +1,7 @@
 #include <alert.h>
 
+#ifdef ALERT_SYSTEM
+
 #define SWITCH_PIN 36
 bool prevState = false;
 bool state = false;
@@ -30,5 +32,13 @@ void sendAlert() {
 
         prevState = state;
         Serial.println("Switch toggled to " + String(state));
+
+        if(state) {
+            warningLED(true, false, true);
+        } else {
+            warningLED(false, false, false);
+        }
     }    
 }
+
+#endif

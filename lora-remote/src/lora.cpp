@@ -66,4 +66,8 @@ void onReceive(int packetSize) {
     #if defined(HAB_SYSTEM)
         forwardPacket(topic, data);
     #endif
+
+    #if defined(ALERT_SYSTEM)
+        forwardLED(topic, data);
+    #endif
 }
