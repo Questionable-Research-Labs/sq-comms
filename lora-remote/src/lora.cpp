@@ -2,6 +2,8 @@
 
 void setupLora() {
     LoRa.setSyncWord(0xe4);  // ranges from 0-0xFF, default 0x34, see API docs
+    LoRa.setCodingRate4(8);
+    LoRa.enableCrc();
 }
 
 void sendRawMessage(char* outgoing) {
