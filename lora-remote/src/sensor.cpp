@@ -1,4 +1,9 @@
 #include <sensor.h>
+#ifdef SENSOR_SYSTEM
+
+void sensorSetup() {
+    Serial.println("Setting up sensors");
+}
 
 void sensorLoop() {
     DynamicJsonDocument doc(1024);
@@ -12,3 +17,5 @@ void sensorLoop() {
     serializeJson(doc, serialisedJSON, 1024);
     sendMessage("SENSOR", serialisedJSON);
 }
+
+#endif

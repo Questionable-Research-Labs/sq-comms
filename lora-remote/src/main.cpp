@@ -23,6 +23,10 @@ void setup() {
 	#else
 	Serial.println("HAB init skipped.");
 	#endif
+
+	#if defined(SENSOR_SYSTEM)
+		sensorSetup();
+	#endif
 }
 
 
@@ -45,7 +49,7 @@ void loop() {
     onReceive(LoRa.parsePacket());
 	#if defined(HAB_SYSTEM)
 		loopHab();
-	#else
+	#elif defined(SENSOR_SYSTEM)
 		sensorLoop();
 	#endif
 
