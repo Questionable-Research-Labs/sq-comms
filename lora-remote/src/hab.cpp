@@ -46,19 +46,29 @@ void forwardPacket(char* topic, char* payload) {
 void reconnect() {
     // Loop until we're reconnected
     while (!client.connected()) {
-	Serial.print("Attempting MQTT connection...");
-	// Attempt to connect
-	String clientId = "ESP8266Client-";
-	clientId += String(random(0xffff), HEX);
-	if (client.connect(clientId.c_str())) {
-	    Serial.println("MQTT Connected");
-	} else {
-	    Serial.print("failed, rc=");
-	    Serial.print(client.state());
-	    Serial.println(" try again in 5 seconds");
-	    // Wait 5 seconds before retrying
-	    delay(5000);
-	}
+		Serial.print("Attempting MQTT connection...");
+
+		// Check if Wifi is connected
+		if ((WiFi.status() != WL_CONNECTED)) {
+			WiFi.disconnect();
+			WiFi.reconnect();
+			delay(500);
+			return reconnect();
+		}
+
+		// Attempt to connect
+		String clientId = "ESP8266Client-";
+		clientId += String(random(0xffff), HEX);
+		
+		if (client.connect(clientId.c_str())) {
+			Serial.println("MQTT Connected");
+		} else {
+			Serial.print("failed, rc=");
+			Serial.print(client.state());
+			Serial.println(" try again in 5 seconds");
+			// Wait 5 seconds before retrying
+			delay(5000);
+		}
     }
 }
 
