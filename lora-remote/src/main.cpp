@@ -3,6 +3,7 @@
 #include "lora.h"
 #include "display.h"
 #include "alert.h"
+#include "sensor.h"
 
 #if defined(HAB_SYSTEM)
 #include "hab.h"
