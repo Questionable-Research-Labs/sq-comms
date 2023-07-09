@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+<ul>
+    {% for device in data %}
+    {% if device.1 %}
+        <li style="background: red">{{ device.0 }}</li>
+    {% else %}
+        <li style="background: green">{{ device.0 }}</li>
+    {% endif %}
+    {% endfor %}
+
+    <li>hi</li>
+</ul>
+<br>
+{% if hab.alert %}
+    <p style="background: red">Hab</p>
+{% else %}
+    <p style="background: green">Hab</p>
+{% endif %}
+</body>
+</html>
