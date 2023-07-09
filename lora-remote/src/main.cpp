@@ -3,6 +3,10 @@
 #include "lora.h"
 #include "display.h"
 
+#if defined(HAB_SYSTEM)
+#include "hab.h"
+#endif
+
 byte msgCount = 0;	// count of outgoing messages
 int interval = 2000;	// interval between sends
 long lastSendTime = 0;	// time of last packet send
@@ -16,6 +20,13 @@ void setup() {
     Serial.println("LoRa init succeeded.");
 	initDisplay();
 	Serial.println("Display init succeeded.");
+
+	#if defined(HAB_SYSTEM)
+	setupHab();
+	Serial.println("HAB init succeeded.");
+	#else
+	Serial.println("HAB init skipped.");
+	#endif
 }
 
 void loop() {
