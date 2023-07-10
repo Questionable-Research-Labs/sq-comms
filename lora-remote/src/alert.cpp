@@ -1,6 +1,6 @@
 #include <alert.h>
 
-#define SWITCH_PIN 36
+#define SWITCH_PIN 13
 bool prevState = false;
 bool state = false;
 
