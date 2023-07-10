@@ -4,6 +4,8 @@
 #include "display.h"
 #include "alert.h"
 #include "sensor.h"
+#include "chipID.h"
+#include "warningled.h"
 
 #if defined(HAB_SYSTEM)
 #include "hab.h"
@@ -12,6 +14,10 @@
 void setup() {
     // WIFI Kit series V1 not support Vext control
     Heltec.begin(true /*DisplayEnable Enable*/, true /*Heltec.Heltec.Heltec.LoRa Disable*/, true /*Serial Enable*/, true /*PABOOST Enable*/, LORA_BAND /*long BAND*/);
+
+	setChipId();
+	Serial.print("Chip ID booting: ");
+	Serial.println(chipID);
 
 	setupLora();
     Serial.println("LoRa init succeeded.");
@@ -28,6 +34,11 @@ void setup() {
 	#if defined(SENSOR_SYSTEM)
 		sensorSetup();
 	#endif
+
+	#if defined(ALERT_SYSTEM)
+		alertSetup();
+		setupLED();
+	#endif
 }
 
 
@@ -37,11 +48,11 @@ long lastSendTime = 0;	// time of last packet send
 
 void loop() {
 	#if !defined(HAB_SYSTEM)
+	sendAlert();
 
     if (millis() - lastSendTime > interval) {
-		sendAlert();
+		sendPing();
 		lastSendTime = millis();  //void loopHab() timestamp the message
-		interval = 1000;	  // 1 second
 		msgCount++;
     }
 	#endif
