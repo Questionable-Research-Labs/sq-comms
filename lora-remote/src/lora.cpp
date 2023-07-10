@@ -7,7 +7,7 @@ typedef struct {
 
 const size_t handled_packet_max_size = 32;
 const size_t handled_packet_hash_size = 32;
-u32_t handled_packet[handled_packet_max_size] = {0};
+uint32_t handled_packet[handled_packet_max_size] = {0};
 size_t handled_packet_head = 0;             // size_t is an unsigned long
 
 void setupLora() {
@@ -25,7 +25,7 @@ void sendMessage(char* outgoing) {
     LoRa.endPacket();	   // finish packet and send it
 }
 
-void sendMessage(char* topic, char* hops, char* payload, u32_t packetID) {
+void sendMessage(char* topic, char* hops, char* payload, uint32_t packetID) {
     char outgoing[JSON_SERIALISATION_LIMIT];
 
     while (packetID == 0) {
@@ -49,9 +49,8 @@ void onReceive(int packetSize) {
 
     // read packet header bytes:
     String incoming = "";
-
     while (LoRa.available()) {
-	incoming += (char)LoRa.read();
+        incoming += (char)LoRa.read();
     }
 
     Serial.println("Message: " + String(incoming));
@@ -81,32 +80,9 @@ static topicPriority msgTypeMap[] = {
     {"SENSOR", 2},
     {"ALERT", -1},
     {"PING", 3},
+    {"UAB", 2},
+    {"ECHO", 0}
 };
-
-// Have to call delete[] on the result of this function
-char* copyCharRange(const char* src, int start, int end) {
-    int length = end - start + 1;
-    char* result = new char[length];
-    memcpy(result, &src[start], length);
-    result[length - 1] = '\0';
-    return result;
-}
-
-// Scan for sub string '[;]' in a char array, and return all results
-int scanForBreak(int* results, const char* src, int srcLength, const char* breakString, int maxLength) {
-    int breakLength = strlen(breakString);
-    int resultIndex = 0;
-    for (int i = 0; i < srcLength; i++) {
-        if (strncmp(&src[i], breakString, breakLength) == 0) {
-            results[resultIndex] = i;
-            resultIndex++;
-        }
-        if (resultIndex >= maxLength) {
-            return resultIndex;
-        }
-    }
-    return resultIndex;
-}
 
 int getMaxHopCount(char* topic) {
     int maxHopCount = -1;
@@ -133,7 +109,7 @@ void parsePacket(const char* loraMessage) {
 
     // Get the packet ID out of the incoming packet
     char* packetID = copyCharRange(loraMessage, 0, messageSplitIndex[0]);
-    u32_t packetIDInt = strtoul(packetID, NULL, 10);
+    uint32_t packetIDInt = strtoul(packetID, NULL, 10);
 
     // Is the packet already in the handled pile?
     for (int i = 0; i < handled_packet_max_size; i++) {
@@ -186,7 +162,7 @@ void parsePacket(const char* loraMessage) {
     delete[] hopsData;
 }
 
-void relayPacket(char* topic, char* hopsData, char* data, u32_t packetID) {
+void relayPacket(char* topic, char* hopsData, char* data, uint32_t packetID) {
     // Parse the json hops data
     DynamicJsonDocument doc(512);
     DeserializationError error = deserializeJson(doc, hopsData);
@@ -202,10 +178,11 @@ void relayPacket(char* topic, char* hopsData, char* data, u32_t packetID) {
         Serial.println("Invalid topic!");
         return;
     }
-    if (hopsCount + 1 >= maxHopCount) {
+    if ((hopsCount + 1 >= maxHopCount) && maxHopCount != -1) {
         Serial.println("Max hop count reached! No need to repeat");
         return;
     }
+    Serial.printf("Hops count: %d/%d\n", hopsCount,maxHopCount);
 
     // Add this chip to the hops data
     doc.createNestedObject();
