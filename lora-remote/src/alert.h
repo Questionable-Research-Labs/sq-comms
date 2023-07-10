@@ -1,7 +1,5 @@
 #pragma once
 
-#ifdef ALERT_SYSTEM
-
 #include <ArduinoJson.h>
 #include <lora.h>
 #include <chipID.h>
@@ -10,5 +8,3 @@
 
 void alertSetup();
 void sendAlert();
-
-#endif
