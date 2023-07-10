@@ -35,12 +35,24 @@ void setupHab() {
 }
 
 void forwardPacket(const char *topic, const char *payload) {
-    // client.publish("outTopic", "hello world");
     Serial.print("Forwarding message to ");
     Serial.print(topic);
     Serial.print(" ");
     Serial.println(payload);
     client.publish(topic, payload);
+}
+
+void processPingPacket(const char *payload, float rssi) {
+    Serial.println("Processing ping packet");
+    Serial.print("RSSI: ");
+    Serial.println(rssi);
+    // Inplant RSSI into json payload
+    StaticJsonDocument<JSON_SERIALISATION_LIMIT> doc;
+    deserializeJson(doc, payload);
+    doc["rssi"] = rssi;
+    char outgoing[JSON_SERIALISATION_LIMIT];
+    serializeJson(doc, outgoing);
+    forwardPacket("PING", outgoing);
 }
 
 void reconnect() {
