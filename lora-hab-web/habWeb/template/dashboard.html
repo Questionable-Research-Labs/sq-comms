@@ -3,14 +3,55 @@
 <head>
     <meta charset="UTF-8">
     <title>Title</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-9ndCyUaIbzAi2FUVXJi0CjmCapSmO7SnpJef0486qhLnuZ2cdeRhO02iuK6FUUVM" crossorigin="anonymous">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/hammer.js/2.0.8/hammer.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.8.0/Chart.bundle.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/chartjs-plugin-zoom/0.6.6/chartjs-plugin-zoom.js"></script>
 </head>
+<style>
+    h1, h2, li {
+        color: white;
+    }
+
+    .center {
+  margin: auto;
+  width: 50%;
+  padding: 10px;
+}
+</style>
+
 <body>
-<ul>
+<div class="center" style="background: black; width: 50vw; text-align: center;">
+<h1>Number of nodes online</h1>
+<h1>{{ count }}</h1>
+<h2>Node Status</h2>
+<div style=" width: 35vw; height: 3px; background: white; margin-top: 20px; margin-bottom: 20px; margin-left: auto; margin-right: auto"></div>
+
+<div class="center" style="background: #353535; width: 40vw; text-align: center;">
+
+    <div class="container">
+      <div class="row">
+        <div class="col-sm"  style="padding: 20px; background: red">
+          One of three columns
+        </div>
+        <div class="col-sm" style="margin: 20px; background: white">
+          On
+        </div>
+      </div>
+    </div>
+
+    <div style="background: #525252; width: 15vw; padding-left: 2.5px; height: 20px; text-align: center;"></div>
+
+</div>
+
+
+<ul class="list-group">
     {% for device in data %}
     {% if device.1 %}
-        <li style="background: red">{{ device.0 }}</li>
+        <li class="list-group-item" style="background: red; width: 200px">{{ device.0 }}</li>
     {% else %}
-        <li style="background: green">{{ device.0 }}</li>
+        <li class="list-group-item" style="background: green; width: 200px">{{ device.0 }}</li>
     {% endif %}
     {% endfor %}
 
@@ -22,5 +63,7 @@
 {% else %}
     <p style="background: green">Hab</p>
 {% endif %}
+</div>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"
 </body>
 </html>

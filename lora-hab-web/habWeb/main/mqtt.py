@@ -1,6 +1,8 @@
+import datetime
+
 from django.conf import settings
 import paho.mqtt.client as mqtt
-from .models import MqttMsg
+from .models import MqttMsg, Device
 
 
 def on_connect(mqtt_client, userdata, flags, rc):
@@ -18,8 +20,16 @@ def on_message(mqtt_client, userdata, msg):
         obj.type = msg.topic
         obj.fromID = payload["from"]
         obj.msg = payload["msg"]
-        obj.device_type = payload["class"]
         obj.save()
+
+        device = Device.objects.get_or_create(dId=obj.fromID)[0]
+        device.last_msg = obj.msg
+        device.last_ping = datetime.datetime.now()
+
+        device.alert = payload["active"] == 'true'
+
+        device.save()
+
         print(f'Received message on topic: {msg.topic} It has been processed.')
 
     elif msg.topic == "SENSOR":
@@ -29,6 +39,24 @@ def on_message(mqtt_client, userdata, msg):
         obj.fromID = payload["from"]
         obj.sensor_data = payload["readings"]
         obj.save()
+
+        device = Device.objects.get_or_create(dId=obj.fromID)[0]
+        device.last_sensor_data = obj.sensor_data
+        device.last_ping = datetime.datetime.now()
+
+        device.save()
+
+        print(f'Received message on topic: {msg.topic} It has been processed.')
+    elif msg.topic == "PING":
+        payload = eval(msg.payload)
+
+        device = Device.objects.get_or_create(dId=payload["from"])[0]
+        # device.rssi = payload["rssi"]
+        device.uptime = payload["uptime"]
+        device.last_ping = datetime.datetime.now()
+
+        device.save()
+
         print(f'Received message on topic: {msg.topic} It has been processed.')
 
     else:
