@@ -64,7 +64,11 @@ void onReceive(int packetSize) {
     Serial.println(data);
 
     #if defined(HAB_SYSTEM)
+    if (strcmp(topic, "PING") == 0) {
+        processPingPacket(data, LoRa.packetRssi());
+    } else {
         forwardPacket(topic, data);
+    }
     #endif
 
     #if defined(ALERT_SYSTEM)
