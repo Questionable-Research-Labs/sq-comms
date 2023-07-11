@@ -15,9 +15,9 @@
 
 void setupLora();
 void onReceive(int packetSize);
-void sendMessage(char* outgoing);
-void sendMessage(char* topic, char* payload);
-void sendMessage(char* topic, char* hops, char* payload, uint32_t packetID);
+void sendMessage(const char* outgoing);
+void sendMessage(const char* topic, const char* payload);
+void sendMessage(const char* topic, const char* hops, const char* payload, uint32_t packetID);
 void sendPing();
 void parsePacket(const char* loraMessage);
 void relayPacket(char* topic, char* hopsData, char* data, uint32_t packetID);

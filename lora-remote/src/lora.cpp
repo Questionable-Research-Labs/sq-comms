@@ -1,5 +1,10 @@
 #include <lora.h>
 
+#if defined(HAB_SYSTEM)
+#include <geolocate.h>
+#endif
+
+
 typedef struct {
     char* topic;
     int hopCount;
@@ -16,7 +21,7 @@ void setupLora() {
     LoRa.enableCrc();
 }
 
-void sendMessage(char* outgoing) {
+void sendMessage(const char* outgoing) {
     Serial.println("Sending message: ");
     Serial.println(outgoing);
 
@@ -25,7 +30,7 @@ void sendMessage(char* outgoing) {
     LoRa.endPacket();	   // finish packet and send it
 }
 
-void sendMessage(char* topic, char* hops, char* payload, uint32_t packetID) {
+void sendMessage(const char* topic, const char* hops, const char* payload, uint32_t packetID) {
     char outgoing[JSON_SERIALISATION_LIMIT];
 
     while (packetID == 0) {
@@ -40,18 +45,22 @@ void sendMessage(char* topic, char* hops, char* payload, uint32_t packetID) {
     sprintf(outgoing, "%u[;]%s[;]%s[;]%s", packetID, topic, hops, payload);
     sendMessage(outgoing);
 }
-void sendMessage(char* topic, char* payload) {
+void sendMessage(const char* topic, const char* payload) {
     sendMessage(topic, "[]", payload, 0);
 }
 
-void onReceive(int packetSize) {
-    if (packetSize == 0) return;  // if there's no packet, return
+void onReceive(int radioQueueSize) {
+    if (radioQueueSize == 0) return;  // if there's no packet, return
 
     // read packet header bytes:
-    String incoming = "";
+    char incoming[JSON_SERIALISATION_LIMIT] = "";
+    int packetLength = 0;
     while (LoRa.available()) {
-        incoming += (char)LoRa.read();
+        incoming[packetLength] = (char)LoRa.read();
+        packetLength++;
     }
+
+    incoming[packetLength] = '\0';  // Null terminate string
 
     Serial.println("Message: " + String(incoming));
     Serial.println("RSSI: " + String(LoRa.packetRssi()));
@@ -61,7 +70,7 @@ void onReceive(int packetSize) {
     Heltec.display->drawString(0, 10, incoming);
     Heltec.display->display();
 
-    parsePacket(incoming.c_str());
+    parsePacket(incoming);
 }
 
 void sendPing() {
@@ -154,7 +163,9 @@ void parsePacket(const char* loraMessage) {
 #endif
 
     // Forward packet if needed
+    #if !defined(HAB_SYSTEM)
     relayPacket(topic, hopsData, data, packetIDInt);
+    #endif
 
     // Cleanup
     delete[] topic;
