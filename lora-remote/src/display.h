@@ -1,4 +1,4 @@
 #pragma once
-#include "heltec.h"
+#include "Arduino.h"
 
 void initDisplay();

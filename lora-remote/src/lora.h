@@ -1,9 +1,10 @@
 #pragma once
-#include "heltec.h"
 #include "config.h"
 #include "ArduinoJson.h"
 #include "chipID.h"
 #include "helper.h"
+#include <RadioLib.h>
+
 
 #if defined(HAB_SYSTEM)
 #include "hab.h"
