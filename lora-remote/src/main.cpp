@@ -48,7 +48,7 @@ long lastSendTime = 0;	// time of last packet send
 
 void loop() {
 	#if !defined(HAB_SYSTEM)
-	sendAlert();
+	// sendAlert();
 
     if (millis() - lastSendTime > interval) {
 		sendPing();
