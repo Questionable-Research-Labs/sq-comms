@@ -17,12 +17,12 @@ void setupLora() {
 }
 
 void sendMessage(char* outgoing) {
-    Serial.println("Sending message: ");
-    Serial.println(outgoing);
-
     LoRa.beginPacket();	   // start packet
     LoRa.print(outgoing);  // add payload
     LoRa.endPacket();	   // finish packet and send it
+
+    // Serial.println("Sent message: ");
+    // Serial.println(outgoing);
 }
 
 void sendMessage(char* topic, char* hops, char* payload, uint32_t packetID) {
@@ -44,13 +44,23 @@ void sendMessage(char* topic, char* payload) {
     sendMessage(topic, "[]", payload, 0);
 }
 
-void onReceive(int packetSize) {
-    if (packetSize == 0) return;  // if there's no packet, return
+void onReceive(int radioQueueSize) {
+    if (radioQueueSize == 0) return;  // if there's no packet, return
 
     // read packet header bytes:
-    String incoming = "";
+    char incoming[JSON_SERIALISATION_LIMIT] = "";
+    int packetLength = 0;
     while (LoRa.available()) {
-        incoming += (char)LoRa.read();
+        incoming[packetLength] = (char)LoRa.read();
+        packetLength++;
+    }
+
+    incoming[packetLength] = '\0';  // Null terminate string
+
+    if (packetLength == 1) {
+        // Echo message
+        receiveEcho(incoming, &LoRa);
+        return;
     }
 
     Serial.println("Message: " + String(incoming));
@@ -61,7 +71,7 @@ void onReceive(int packetSize) {
     Heltec.display->drawString(0, 10, incoming);
     Heltec.display->display();
 
-    parsePacket(incoming.c_str());
+    parsePacket(incoming);
 }
 
 void sendPing() {

@@ -51,11 +51,13 @@ void loop() {
 	sendAlert();
 
     if (millis() - lastSendTime > interval) {
-		sendPing();
+		// sendPing();
+		sendEcho();
 		lastSendTime = millis();  //void loopHab() timestamp the message
 		msgCount++;
     }
 	#endif
+
 
     // parse for a packet, and call onReceive with the result:
     onReceive(LoRa.parsePacket());

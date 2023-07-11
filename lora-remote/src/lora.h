@@ -4,6 +4,7 @@
 #include "ArduinoJson.h"
 #include "chipID.h"
 #include "helper.h"
+#include "echo.h"
 
 #if defined(HAB_SYSTEM)
 #include "hab.h"
