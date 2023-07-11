@@ -31,8 +31,29 @@ void setupLora() {
 	radio.setCodingRate(8);
 	radio.setSpreadingFactor(12);
 
+	radio.setPacketReceivedAction(setNewMessageFlag);
+
+	state = radio.startReceive();
+	if (state == RADIOLIB_ERR_NONE) {
+		Serial.println(F("success!"));
+	} else {
+		Serial.print(F("failed, code "));
+		Serial.println(state);
+		while (true);
+	}
+
     // LoRa.setCodingRate4(8);
     // LoRa.enableCrc();
+}
+
+bool newLoraMessageWaiting = false;
+
+ICACHE_RAM_ATTR
+void setNewMessageFlag() {
+	if (newLoraMessageWaiting) {
+		Serial.println("New message waiting, but flag already set.");
+	}
+	newLoraMessageWaiting = true;
 }
 
 void sendMessage(const char* outgoing) {
@@ -65,8 +86,11 @@ void sendMessage(const char* topic, const char* payload) {
     sendMessage(topic, "[]", payload, 0);
 }
 
-void onReceive(int radioQueueSize) {
-    if (radioQueueSize == 0) return;  // if there's no packet, return
+void LoRaCheckForPacket() {
+	if (!newLoraMessageWaiting) {
+		return;
+	}
+	newLoraMessageWaiting = false;
 
     // read packet header bytes:
     String incoming = "";
@@ -75,6 +99,22 @@ void onReceive(int radioQueueSize) {
 	// incoming[packetLength] = (char)LoRa.read();
 	// packetLength++;
     // }
+
+    int state = radio.readData(incoming);
+
+    // you can also read received data as byte array
+    /*
+      byte byteArr[8];
+      int state = radio.readData(byteArr, 8);
+    */
+
+    if (state == RADIOLIB_ERR_CRC_MISMATCH) {
+		Serial.println(F("[SX1276] CRC error!"));
+	} else if (state != RADIOLIB_ERR_NONE) {
+      // some other error occurred
+      Serial.print(F("[SX1276] Failed, code "));
+      Serial.println(state);
+    }
 
     // incoming[packetLength] = '\0';  // Null terminate string
 

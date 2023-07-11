@@ -59,7 +59,8 @@ void loop() {
 	#endif
 
     // parse for a packet, and call onReceive with the result:
-    // onReceive(LoRa.parsePacket());
+    LoRaCheckForPacket();
+	
 	#if defined(HAB_SYSTEM)
 		loopHab();
 	#elif defined(SENSOR_SYSTEM)
