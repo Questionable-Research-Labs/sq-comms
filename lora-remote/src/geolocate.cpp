@@ -45,12 +45,12 @@ void newAlert(const char* alteredChipID, uint32_t packetID, alertNode firstHopNo
 }
 
 void estimateDistances(alertSet alert) {
-    Serial.println("Estimating distances");
     DynamicJsonDocument distances(1024);
     distances.createNestedArray("distances");
     for (int i = 0; i < alert.numRssis; i++) {
         alertNode node = alert.rssis[i];
 
+        // TODO: Actual mathmatical model to describe RSSI to distance
         float distanceSensors = node.rssi*-1 + 25;
 
         distances["distances"][i]["from"] = node.chipID;
@@ -90,10 +90,7 @@ void processAlert(const char* hops, const char* payload, uint32_t packetID, int 
 
 	// Get number of nodes
 	int numNodes = hopsDoc.size();
-    Serial.print("Number of nodes:");
-	Serial.println(numNodes);
 	for (int i = 0; i < numNodes; i++) {
-        Serial.println(i);
 	    if (hopsDoc[i]["order"] == 0) {
             const char* firstChipID = hopsDoc[i]["from"];
             int firstRssi = hopsDoc[i]["rssi"];

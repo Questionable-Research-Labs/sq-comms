@@ -43,9 +43,6 @@ void forwardPacket(const char *topic, const char *payload) {
 }
 
 void processPingPacket(const char *payload, float rssi) {
-    Serial.println("Processing ping packet");
-    Serial.print("RSSI: ");
-    Serial.println(rssi);
     // Inplant RSSI into json payload
     StaticJsonDocument<JSON_SERIALISATION_LIMIT> doc;
     deserializeJson(doc, payload);

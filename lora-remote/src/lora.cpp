@@ -1,15 +1,5 @@
 #include <lora.h>
 
-#if defined(HAB_SYSTEM)
-#include <geolocate.h>
-#endif
-
-
-typedef struct {
-    char* topic;
-    int hopCount;
-} topicPriority;
-
 const size_t handled_packet_max_size = 32;
 const size_t handled_packet_hash_size = 32;
 uint32_t handled_packet[handled_packet_max_size] = {0};
@@ -62,10 +52,10 @@ void onReceive(int radioQueueSize) {
 
     incoming[packetLength] = '\0';  // Null terminate string
 
-    Serial.println("Message: " + String(incoming));
-    Serial.println("RSSI: " + String(LoRa.packetRssi()));
-    Serial.println("Snr: " + String(LoRa.packetSnr()));
-    Serial.println();
+    Serial.println("\n######## LORA INCOMING PACKET ########");
+    Serial.printf("Message: %s\nRSSI: %i | Snr: %f\n", incoming, LoRa.packetRssi(), LoRa.packetSnr());
+
+
     Heltec.display->clear();
     Heltec.display->drawString(0, 10, incoming);
     Heltec.display->display();
@@ -80,7 +70,6 @@ void sendPing() {
 
     char serialisedJSON[1024];
     serializeJson(doc, serialisedJSON, 1024);
-    Serial.println("Sending Ping");
     Serial.println(serialisedJSON);
     sendMessage("PING", serialisedJSON);
 }
@@ -105,7 +94,6 @@ int getMaxHopCount(char* topic) {
 }
 
 void parsePacket(const char* loraMessage) {
-    Serial.println("Parsing packet...");
     // Scan for break points
     int messageSplitIndex[32];
     int messageSplitsCount = scanForBreak(messageSplitIndex, loraMessage, strlen(loraMessage), "[;]", 32);
@@ -113,8 +101,6 @@ void parsePacket(const char* loraMessage) {
         Serial.println("Invalid message format!");
         return;
     }
-
-    Serial.println("PacketID split: " + String(messageSplitIndex[0]));
 
     // Get the packet ID out of the incoming packet
     char* packetID = copyCharRange(loraMessage, 0, messageSplitIndex[0]);
@@ -154,13 +140,7 @@ void parsePacket(const char* loraMessage) {
     char* hopsData = copyCharRange(loraMessage, messageSplitIndex[1]+3, messageSplitIndex[2]);
 
     // Rest of the message is incoming
-    char* data = copyCharRange(loraMessage, messageSplitIndex[2]+3, strlen(loraMessage));
-
-
-    Serial.println(topic);
-    Serial.println(hopsData);
-    Serial.println(data);
-    
+    char* data = copyCharRange(loraMessage, messageSplitIndex[2]+3, strlen(loraMessage));    
 
 #if defined(HAB_SYSTEM)
     if (strcmp(topic, "PING") == 0) {

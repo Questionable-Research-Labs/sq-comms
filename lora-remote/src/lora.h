@@ -7,11 +7,17 @@
 
 #if defined(HAB_SYSTEM)
 #include "hab.h"
+#include <geolocate.h>
 #endif
 
 #if defined(ALERT_SYSTEM)
 #include "warningled.h"
 #endif
+
+typedef struct {
+    const char* topic;
+    int hopCount;
+} topicPriority;
 
 void setupLora();
 void onReceive(int packetSize);
