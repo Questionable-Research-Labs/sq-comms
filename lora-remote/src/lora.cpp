@@ -29,8 +29,9 @@ void setupLora() {
 
 	radio.setSyncWord(0xe4);
 	radio.setCodingRate(7);
-	radio.setSpreadingFactor(9);
+	radio.setSpreadingFactor(7);
 	radio.setCRC(true);
+	
 
 	radio.setPacketReceivedAction(setNewMessageFlag);
 
@@ -44,12 +45,17 @@ void setupLora() {
 	}
 }
 
+bool _enableInterrupt = true;
 bool newLoraMessageWaiting = false;
 
 ICACHE_RAM_ATTR
 void setNewMessageFlag() {
 	if (newLoraMessageWaiting) {
 		Serial.println("New message waiting, but flag already set.");
+	}
+	if (!_enableInterrupt) {
+		Serial.println("New message waiting, but interrupt disabled.");
+		return;
 	}
 	newLoraMessageWaiting = true;
 }
@@ -107,10 +113,14 @@ void LoRaCheckForPacket() {
 	}
 	newLoraMessageWaiting = false;
 
+	_enableInterrupt = false;
 
     // read packet header bytes:
     String incoming = "";
     int state = radio.readData(incoming);
+
+	_enableInterrupt = true;
+	radio.startReceive();
 
     Serial.println("\n######## LORA INCOMING PACKET ########");
     Serial.printf("Message: %s\nRSSI: %f | Snr: %f\n", incoming.c_str(), radio.getRSSI(), radio.getSNR());
