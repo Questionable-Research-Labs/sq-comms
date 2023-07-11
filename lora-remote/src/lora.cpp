@@ -28,8 +28,9 @@ void setupLora() {
     }
 
 	radio.setSyncWord(0xe4);
-	radio.setCodingRate(8);
-	radio.setSpreadingFactor(12);
+	radio.setCodingRate(7);
+	radio.setSpreadingFactor(9);
+	radio.setCRC(true);
 
 	radio.setPacketReceivedAction(setNewMessageFlag);
 
@@ -41,9 +42,6 @@ void setupLora() {
 		Serial.println(state);
 		while (true);
 	}
-
-    // LoRa.setCodingRate4(8);
-    // LoRa.enableCrc();
 }
 
 bool newLoraMessageWaiting = false;
@@ -60,11 +58,28 @@ void sendMessage(const char* outgoing) {
     Serial.println("Sending message: ");
     Serial.println(outgoing);
 
-	radio.transmit(outgoing);
+	int16_t status = radio.scanChannel();
+	if (status == RADIOLIB_PREAMBLE_DETECTED) {
+		// Already someone transmitting, start task in a random amount of time
+		Serial.println("[CSMA] Channel busy, waiting ...");
+		delay(random(10,100));
 
-    // LoRa.beginPacket();	   // start packet
-    // LoRa.print(outgoing);  // add payload
-    // LoRa.endPacket();	   // finish packet and send it
+		// Retry
+		sendMessage(outgoing);
+	} else if (status == RADIOLIB_CHANNEL_FREE) {
+		Serial.println("Transmitting Message ...");
+		unsigned long startTime = millis();
+		// No one transmitting, send message
+		radio.transmit(outgoing);
+		unsigned long endTime = millis();
+		Serial.print("Message sent in ");
+		Serial.print(endTime - startTime);
+		Serial.println("ms");
+	} else {
+		// Unkown Error
+		Serial.print("Unknown error when sending message, code: ");
+		Serial.println(status);
+	}
 }
 
 void sendMessage(const char* topic, const char* hops, const char* payload, uint32_t packetID) {
@@ -92,34 +107,23 @@ void LoRaCheckForPacket() {
 	}
 	newLoraMessageWaiting = false;
 
+
     // read packet header bytes:
     String incoming = "";
-    int packetLength = 0;
-    // while (LoRa.available()) {
-	// incoming[packetLength] = (char)LoRa.read();
-	// packetLength++;
-    // }
-
     int state = radio.readData(incoming);
 
-    // you can also read received data as byte array
-    /*
-      byte byteArr[8];
-      int state = radio.readData(byteArr, 8);
-    */
+    Serial.println("\n######## LORA INCOMING PACKET ########");
+    Serial.printf("Message: %s\nRSSI: %f | Snr: %f\n", incoming.c_str(), radio.getRSSI(), radio.getSNR());
 
     if (state == RADIOLIB_ERR_CRC_MISMATCH) {
 		Serial.println(F("[SX1276] CRC error!"));
+		return;
 	} else if (state != RADIOLIB_ERR_NONE) {
       // some other error occurred
       Serial.print(F("[SX1276] Failed, code "));
       Serial.println(state);
+	  return;
     }
-
-    // incoming[packetLength] = '\0';  // Null terminate string
-
-    Serial.println("\n######## LORA INCOMING PACKET ########");
-    Serial.printf("Message: %s\nRSSI: %f | Snr: %f\n", incoming.c_str(), radio.getRSSI(), radio.getSNR());
 
     // Heltec.display->clear();
     // Heltec.display->drawString(0, 10, incoming);

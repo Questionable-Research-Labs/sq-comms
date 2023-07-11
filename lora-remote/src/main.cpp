@@ -12,7 +12,6 @@
 
 void setup() {
     // WIFI Kit series V1 not support Vext control
-    // Heltec.begin(true /*DisplayEnable Enable*/, true /*Heltec.Heltec.Heltec.LoRa Disable*/, true /*Serial Enable*/, true /*PABOOST Enable*/, LORA_BAND /*long BAND*/);
 
 	Serial.begin(115200);
 
@@ -60,7 +59,7 @@ void loop() {
 
     // parse for a packet, and call onReceive with the result:
     LoRaCheckForPacket();
-	
+
 	#if defined(HAB_SYSTEM)
 		loopHab();
 	#elif defined(SENSOR_SYSTEM)
