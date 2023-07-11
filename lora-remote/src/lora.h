@@ -1,9 +1,10 @@
 #pragma once
-#include "heltec.h"
 #include "config.h"
 #include "ArduinoJson.h"
 #include "chipID.h"
 #include "helper.h"
+#include <RadioLib.h>
+
 
 #if defined(HAB_SYSTEM)
 #include "hab.h"
@@ -20,7 +21,8 @@ typedef struct {
 } topicPriority;
 
 void setupLora();
-void onReceive(int packetSize);
+void LoRaCheckForPacket();
+void setNewMessageFlag();
 void sendMessage(const char* outgoing);
 void sendMessage(const char* topic, const char* payload);
 void sendMessage(const char* topic, const char* hops, const char* payload, uint32_t packetID);
