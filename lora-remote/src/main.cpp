@@ -10,6 +10,10 @@
 #include "hab.h"
 #endif
 
+#if defined(OUTPUT_NEOPIXEL)
+#include "neolights.h"
+#endif
+
 void setup() {
     // WIFI Kit series V1 not support Vext control
 
@@ -29,6 +33,13 @@ void setup() {
 	Serial.println("HAB init succeeded.");
 	#else
 	Serial.println("HAB init skipped.");
+	#endif
+
+	#if defined(OUTPUT_NEOPIXEL)
+	setupNeoPixels();
+	Serial.println("Lights init succeeded.");
+	#else
+	Serial.println("Lights init skipped.");
 	#endif
 
 	#if defined(SENSOR_SYSTEM)

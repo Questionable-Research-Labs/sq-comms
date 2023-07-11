@@ -9,3 +9,7 @@
 #define JSON_SERIALISATION_LIMIT 1024
 
 #define MAX_SUPPORTED_CONNECTED_DEVICES 32
+
+#define NeoPixelPin 12
+#define NeoPixelCount 8
+#define NeoPixelFlags NEO_GRB + NEO_KHZ400
