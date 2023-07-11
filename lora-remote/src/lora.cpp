@@ -120,11 +120,26 @@ void parsePacket(const char* loraMessage) {
     char* packetID = copyCharRange(loraMessage, 0, messageSplitIndex[0]);
     uint32_t packetIDInt = strtoul(packetID, NULL, 10);
 
+    // Get the topic and data out of the incoming packet
+    char* topic = copyCharRange(loraMessage, messageSplitIndex[0]+3, messageSplitIndex[1]);
+
+
     // Is the packet already in the handled pile?
     for (int i = 0; i < handled_packet_max_size; i++) {
         if (handled_packet[i] == packetIDInt) {
             Serial.println("Packet already handled!");
+            #if defined(HAB_SYSTEM)
+            // Need to get multiple paths in order to geolocate, so we want duplicate transmissions
+            // Check if topic is ALERT
+            if (strcmp(topic, "ALERT") == 0) {
+                // If it is, we want to locate it
+                Serial.println("Keeping ALERT packet, Locating...");
+            } else {
+                return;
+            }
+            #else
             return;
+            #endif
         }
     }
 
@@ -134,9 +149,6 @@ void parsePacket(const char* loraMessage) {
     if (handled_packet_head >= handled_packet_max_size) {
         handled_packet_head = 0;
     }
-
-    // Get the topic and data out of the incoming packet
-    char* topic = copyCharRange(loraMessage, messageSplitIndex[0]+3, messageSplitIndex[1]);
 
     // Get the hops data out of the incoming packet
     char* hopsData = copyCharRange(loraMessage, messageSplitIndex[1]+3, messageSplitIndex[2]);
@@ -153,6 +165,8 @@ void parsePacket(const char* loraMessage) {
 #if defined(HAB_SYSTEM)
     if (strcmp(topic, "PING") == 0) {
 	processPingPacket(data, LoRa.packetRssi());
+    } else if (strcmp(topic, "ALERT") == 0) {
+        processAlert(hopsData,data, packetIDInt,LoRa.packetRssi());
     } else {
 	forwardPacket(topic, data);
     }
