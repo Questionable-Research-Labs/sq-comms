@@ -65,7 +65,7 @@
         function onConnect() {
             // Once a connection has been made, make a subscription and send a message.
             console.log("Connected to MQTT");
-            client.subscribe("#");
+            client.subscribe("SENSOR");
         }
 
         function onConnectionLost(responseObject: { errorCode: number; errorMessage: string; }) {
@@ -101,8 +101,8 @@
                                 label: (reading.sensorName.slice(0, 1).toUpperCase() + reading.sensorName.slice(1)),
                                 fill: true,
                                 lineTension: 0.3,
-                                backgroundColor: "rgba(225, 204,230, .3)",
-                                borderColor: "rgb(205, 130, 158)",
+                                backgroundColor: "rgba(139,52,40,0.4)",
+                                borderColor: "rgba(158, 67, 39, 1)",
                                 borderCapStyle: "butt",
                                 borderDash: [],
                                 borderDashOffset: 0.0,
@@ -125,7 +125,7 @@
                         x.datasets[0].data.push(reading.value);
                         x.labels.push("");
 
-                        if(x.datasets[0].data.length > 10) {
+                        if(x.datasets[0].data.length > 50) {
                             x.datasets[0].data.shift();
                             x.labels.shift();
                         }
@@ -137,45 +137,6 @@
 
             }
         }
-
-        // make up random data for testing, send it every second
-        setInterval(() => {
-            if (client.isConnected()) {
-                let data = {
-                from: "TEST_DEVICE",
-                readings: [
-                    {
-                        sensorName: "temperature",
-                        value: Math.random() * 100
-                    },
-                    {
-                        sensorName: "humidity",
-                        value: Math.random() * 100
-                    }
-                ]}
-                client.send("SENSOR", JSON.stringify(data));
-            } else {
-                console.log("Not connected to MQTT");
-            }
-
-            if (client.isConnected()) {
-                let data = {
-                from: "TEST_DEVICE_2",
-                readings: [
-                    {
-                        sensorName: "temperature",
-                        value: Math.random() * 100
-                    },
-                    {
-                        sensorName: "humidity",
-                        value: Math.random() * 100
-                    }
-                ]}
-                client.send("SENSOR", JSON.stringify(data));
-            } else {
-                console.log("Not connected to MQTT");
-            }
-        }, 1000);
     
     })
 
@@ -188,10 +149,14 @@
     <div class="device-container">
         {#each Object.keys(graphdata) as deviceid}
             <div class="device">
-                <h2>{deviceid}</h2>
-                {#each Object.entries(graphdata[deviceid]) as [sensor, dataset]}
-                    <Sensor dataset={dataset} sensorName={sensor} {deviceid}/>
-                {/each}
+                <h2>Device ID: {deviceid}</h2>
+                <div class="graph-flexbox">
+                    {#each Object.entries(graphdata[deviceid]) as [sensor, dataset]}
+                        <div class="graph">
+                            <Sensor dataset={dataset} sensorName={sensor} {deviceid}/>
+                        </div>
+                    {/each}
+                </div>
             </div>
         {/each}
     </div>
@@ -211,23 +176,43 @@
         box-sizing: border-box;
     }
 
+    h1 {
+        color: white;
+        margin: 20px;
+        font-size: 5em;
+    }
+
+    h2 {
+        color: white;
+        margin: 20px;
+        font-size: 2em;
+    }
+
+    .graph-flexbox {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        flex-direction: row;
+        flex-wrap: wrap;
+        gap: 20px;
+    }
+
     .container {
         width: 100%;
         height: 100vh;
         display: flex;
-        justify-content: center;
         align-items: center;
         flex-direction: column;
-        background-color: grey;
     }
 
     .device-container {
         width: 100%;
-        height: 100%;
+        height: fit-content;
         display: flex;
         justify-content: center;
         align-items: center;
         flex-wrap: wrap;
+        flex-direction: row;
     }
 
     .device {
@@ -235,10 +220,17 @@
         justify-content: center;
         align-items: center;
         flex-direction: column;
-        background-color: white;
-        border-radius: 10px;
         padding: 20px;
         margin: 20px;
+    }
+
+    .graph {
+        background-color: #1e1e1ee1;
+        border-radius: 10px;
+        padding: 10px;
+        backdrop-filter: blur(10px);
+        border: 1px solid #ffffff;  
+        box-shadow: 0px 0px 10px 0px rgba(0, 0, 0, 0.75);
     }
 
 </style>
