@@ -20,15 +20,22 @@ int override_target_r,override_target_g,override_target_b = 0;
 
 
 // After the new Powergrid code is downloaded, this function is called to change the NeoPixel updates
-void updateNeoPixels(int r, int g, int b) {
-    target_r = r;
-    target_g = g;
-    target_b = b;
+void flashNeoPixels() {
+    if (currentlyAlerting) {
+        target_r = 255;
+        target_g = 0;
+        target_b = 0;
+    } else {
+        target_r = 0;
+        target_g = 255;
+        target_b = 0;
+    }
+
 }
 
 void alertLight(bool state) {
     if (state) {
-        pixels.setPixelColor(NeoPixelCount-1, pixels.Color(255, 255, 255));
+        pixels.setPixelColor(NeoPixelCount-1, pixels.Color(255, 255, 0));
     } else {
         pixels.setPixelColor(NeoPixelCount-1, pixels.Color(0, 0, 0));
     }
@@ -56,7 +63,7 @@ void setAlerting(bool state) {
     currentlyAlerting = state;
     if (state) {
         alertLight(true);
-        resting_state_r = 255;
+        resting_state_r = 10;
         resting_state_g = 0;
         resting_state_b = 0;
 
@@ -69,18 +76,6 @@ void setAlerting(bool state) {
 }
 
 void animateNeoPixel() {
-    // if (currentlyAlerting) {
-
-    //     if (r < target_r) {r++;} else if (r > override_target_r) {r--;}
-    //     if (g < target_g) {g++;} else if (g > override_target_g) {g--;}
-    //     if (b < target_b) {b++;} else if (b > override_target_b) {b--;}
-    //     if (r == override_target_r) {override_target_r = 255;}
-    //     if (g == override_target_g) {override_target_g = 0;}
-    //     if (b == override_target_b) {override_target_b = 0;}
-    //     return;
-
-    // }
-
     if (r < target_r) {r++;} else if (r > target_r) {r--;}
     if (g < target_g) {g++;} else if (g > target_g) {g--;}
     if (b < target_b) {b++;} else if (b > target_b) {b--;}

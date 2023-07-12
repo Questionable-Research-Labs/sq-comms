@@ -1,6 +1,6 @@
 #include <alert.h>
 
-#ifdef REMOTE_SYSTEM
+#ifdef ALERT_SYSTEM
 
 #define SWITCH_PIN 36
 

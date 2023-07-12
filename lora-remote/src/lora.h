@@ -4,6 +4,7 @@
 #include "chipID.h"
 #include "helper.h"
 #include <RadioLib.h>
+#include <display.h>
 
 #if defined(OUTPUT_NEOPIXEL)
 #include "neolights.h"

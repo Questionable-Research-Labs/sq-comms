@@ -23,10 +23,10 @@ void setup() {
 	Serial.print("Chip ID booting: ");
 	Serial.println(chipID);
 
+	initDisplay();
+
 	setupLora();
     Serial.println("LoRa init succeeded.");
-	initDisplay();
-	Serial.println("Display init succeeded.");
 
 	#if defined(HAB_SYSTEM)
 	setupHab();
@@ -83,4 +83,6 @@ void loop() {
 	#if defined(OUTPUT_NEOPIXEL)
 		animateNeoPixel();
 	#endif
+
+	renderState();
 }

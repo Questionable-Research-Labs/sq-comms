@@ -1,5 +1,5 @@
 #pragma once
-void updateNeoPixels(int r, int g, int b);
+void flashNeoPixels();
 void setupNeoPixels();
 void showNeoPixelsError();
 void animateNeoPixel();

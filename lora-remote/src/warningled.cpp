@@ -1,6 +1,6 @@
 #include <warningled.h>
 
-#ifdef ALERT_SYSTEM
+#ifdef REMOTE_SYSTEM
 
 #define LED_RED 12
 #define LED_GREEN 25
