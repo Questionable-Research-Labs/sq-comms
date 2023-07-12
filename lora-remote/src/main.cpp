@@ -79,4 +79,8 @@ void loop() {
 	#elif defined(SENSOR_SYSTEM)
 		sensorLoop();
 	#endif
+
+	#if defined(OUTPUT_NEOPIXEL)
+		animateNeoPixel();
+	#endif
 }

@@ -205,10 +205,6 @@ void LoRaCheckForPacket() {
 	_enableInterrupt = true;
 	radio.startReceive();
 
-	#ifdef OUTPUT_NEOPIXEL
-	updateNeoPixels(0, 0, 0);
-	#endif
-
     Serial.println("\n######## LORA INCOMING PACKET ########");
     Serial.printf("Message: %s\nRSSI: %f | Snr: %f\n", incoming.c_str(), radio.getRSSI(), radio.getSNR());
 

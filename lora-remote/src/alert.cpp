@@ -28,10 +28,13 @@ void sendAlert() {
 
     if (state || alertState) {
         if ((millis() - lastAlertMS < 10000) && (state == alertState) ) {
-            Serial.println("Alert already sent in last 10 seconds");
             return;
         }
         alertState = state;
+        
+        #if defined(OUTPUT_NEOPIXEL)
+        setAlerting(state);
+        #endif
 
 
         doc["from"] = chipID;

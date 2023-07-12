@@ -6,6 +6,10 @@
 #include <config.h>
 #include <chipID.h>
 #include <hab.h>
+#if defined(OUTPUT_NEOPIXEL)
+    #include <neolights.h>
+#endif
+
 
 typedef struct {
     const char* chipID;

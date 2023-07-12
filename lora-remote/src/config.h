@@ -12,4 +12,4 @@
 
 #define NeoPixelPin 12
 #define NeoPixelCount 9
-#define NeoPixelFlags NEO_GRB + NEO_KHZ400
+#define NeoPixelFlags NEO_GRB + NEO_KHZ800
