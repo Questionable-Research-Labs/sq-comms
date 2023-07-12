@@ -7,7 +7,7 @@
 #define LED_BLUE 21
 
 void setupLED() {
-    Serial.println("Setting up warning LED");
+    //Serial.println("Setting up warning LED");
     pinMode(LED_RED, OUTPUT);
     pinMode(LED_GREEN, OUTPUT);
     pinMode(LED_BLUE, OUTPUT);

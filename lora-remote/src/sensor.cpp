@@ -9,7 +9,7 @@ uint32_t delayMS;
 DHT_Unified dht(DHTPIN, DHTTYPE);
 
 void sensorSetup() {
-    Serial.println("Setting up sensors");
+    //Serial.println("Setting up sensors");
     dht.begin();
     
     sensor_t sensor;
@@ -22,12 +22,12 @@ void sensorLoop() {
     sensors_event_t event;
     dht.temperature().getEvent(&event);
     if (isnan(event.temperature)) {
-        Serial.println(F("Error reading temperature!"));
+        //Serial.println(F("Error reading temperature!"));
     }
     else {
-        Serial.print(F("Temperature: "));
-        Serial.print(event.temperature);
-        Serial.println(F("°C"));
+        //Serial.print(F("Temperature: "));
+        //Serial.print(event.temperature);
+        //Serial.println(F("°C"));
     }
 
     doc["from"] = chipID;

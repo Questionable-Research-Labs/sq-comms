@@ -22,18 +22,18 @@ bool outgoingQueueFull = false;
 
 
 void setupLora() {
-    Serial.print(F("[LoRa] Initializing ... "));
-    Serial.print(F(" -> [SPI] Initializing ... "));
+    //Serial.print(F("[LoRa] Initializing ... "));
+    //Serial.print(F(" -> [SPI] Initializing ... "));
     SPI.begin(LoRa_SCK, LoRa_MISO, LoRa_MOSI);
-    Serial.print(F(" -> [SX1276] Initializing ... "));
+    //Serial.print(F(" -> [SX1276] Initializing ... "));
 
     int state = radio.begin();
 
     if (state == RADIOLIB_ERR_NONE) {
-		Serial.println(F("success!"));
+		//Serial.println(F("success!"));
     } else {
-		Serial.print(F("failed, code "));
-		Serial.println(state);
+		//Serial.print(F("failed, code "));
+		//Serial.println(state);
 		while (true);
     }
 
@@ -47,10 +47,10 @@ void setupLora() {
 
 	state = radio.startReceive();
 	if (state == RADIOLIB_ERR_NONE) {
-		Serial.println(F("success!"));
+		//Serial.println(F("success!"));
 	} else {
-		Serial.print(F("failed, code "));
-		Serial.println(state);
+		//Serial.print(F("failed, code "));
+		//Serial.println(state);
 		while (true);
 	}
 }
@@ -72,14 +72,14 @@ void addMessageToOutQueue(const char* outgoing) {
 
 	size_t outgoingLength = strlen(outgoing);
     if (outgoingLength > JSON_SERIALISATION_LIMIT) {
-        Serial.println("Tried to send oversize packet");
+        //Serial.println("Tried to send oversize packet");
     }
 
 	// If queue is full, overwrite oldest message
 	if (outgoingQueueFull) {
 		// Increment tail
 		outgoingQueueTail = (outgoingQueueTail + 1) % MAX_OUT_QUEUE_LENGTH;
-		Serial.println("Overwriting oldest packet");
+		//Serial.println("Overwriting oldest packet");
 	}
 
 	// Copy message to queue
@@ -109,9 +109,9 @@ void proccessOutQueueCycle() {
 	// Send packet
 	int status = sendMessage(outgoing);
 	if (status == CHANNEL_BUSY) {
-		Serial.println("Not removing packet from queue as Serial was busy");
+		//Serial.println("Not removing packet from queue as Serial was busy");
 	} else if (status == UNKOWN_ERROR) {
-		Serial.println("Not removing packet from queue as unknown error");
+		//Serial.println("Not removing packet from queue as unknown error");
 	} else {
 		// Remove packet from queue
 		outgoingQueueTail = (outgoingQueueTail + 1) % MAX_OUT_QUEUE_LENGTH;
@@ -120,23 +120,23 @@ void proccessOutQueueCycle() {
 }
 
 int sendMessage(const char* outgoing) {
-    Serial.println("Sending message: ");
-    Serial.println(outgoing);
+    //Serial.println("Sending message: ");
+    //Serial.println(outgoing);
 
 	if (newLoraMessageWaiting || !_enableInterrupt) {
-		Serial.println("New message waiting, not sending.");
+		//Serial.println("New message waiting, not sending.");
 		return CHANNEL_BUSY;
 	}
 
 	float live_rssi = radio.getRSSI(false);
 	if (live_rssi > -70) {
 		// Already someone transmitting, start task in a random amount of time
-		Serial.println("[CSMA] Channel busy, waiting ...");
-		Serial.printf("status: %f/-70, newLoraMessageWaiting: %d, _enableInterrupt: %d\n", live_rssi, newLoraMessageWaiting, _enableInterrupt);
+		//Serial.println("[CSMA] Channel busy, waiting ...");
+		//Serial.printf("status: %f/-70, newLoraMessageWaiting: %d, _enableInterrupt: %d\n", live_rssi, newLoraMessageWaiting, _enableInterrupt);
 
 		return CHANNEL_BUSY;
 	} else {
-		Serial.println("Transmitting Message ...");
+		//Serial.println("Transmitting Message ...");
 		radio.standby();
 		delay(50);
 		_enableInterrupt = false;
@@ -150,9 +150,9 @@ int sendMessage(const char* outgoing) {
 
 		radio.startReceive();
 
-		Serial.print("Message sent in ");
-		Serial.print(endTime - startTime);
-		Serial.println("ms");
+		//Serial.print("Message sent in ");
+		//Serial.print(endTime - startTime);
+		//Serial.println("ms");
 
 		return 0;
 	}
@@ -179,10 +179,12 @@ void sendMessage(const char* topic, const char* payload) {
     sendMessage(topic, "[]", payload, 0);
 }
 
+int packetCount = 0;
+
 void LoRaCheckForPacket() {
-    // Serial.printf("RSSI: %f | Snr: %f\n", radio.getRSSI(false), radio.getSNR());
+    // //Serial.printf("RSSI: %f | Snr: %f\n", radio.getRSSI(false), radio.getSNR());
 	// Debug message with queue status
-	// Serial.printf("Queue: Head: %d, Tail: %d, Full: %d\n", outgoingQueueHead, outgoingQueueTail, outgoingQueueFull);
+	// //Serial.printf("Queue: Head: %d, Tail: %d, Full: %d\n", outgoingQueueHead, outgoingQueueTail, outgoingQueueFull);
 
 	if (!newLoraMessageWaiting) {
 		proccessOutQueueCycle();
@@ -204,17 +206,19 @@ void LoRaCheckForPacket() {
 
 	_enableInterrupt = true;
 	radio.startReceive();
+	Serial.printf("%d,%f\n", packetCount, radio.getRSSI());
+	packetCount++;
 
-    Serial.println("\n######## LORA INCOMING PACKET ########");
-    Serial.printf("Message: %s\nRSSI: %f | Snr: %f\n", incoming.c_str(), radio.getRSSI(), radio.getSNR());
+    //Serial.println("\n######## LORA INCOMING PACKET ########");
+    //Serial.printf("Message: %s\nRSSI: %f | Snr: %f\n", incoming.c_str(), radio.getRSSI(), radio.getSNR());
 
     if (state == RADIOLIB_ERR_CRC_MISMATCH) {
-		Serial.println(F("[SX1276] CRC error!"));
+		//Serial.println(F("[SX1276] CRC error!"));
 		return;
 	} else if (state != RADIOLIB_ERR_NONE) {
       // some other error occurred
-      Serial.print(F("[SX1276] Failed, code "));
-      Serial.println(state);
+      //Serial.print(F("[SX1276] Failed, code "));
+      //Serial.println(state);
 	  return;
     }
 
@@ -232,7 +236,7 @@ void sendPing() {
 
     char serialisedJSON[1024];
     serializeJson(doc, serialisedJSON, 1024);
-    Serial.println(serialisedJSON);
+    //Serial.println(serialisedJSON);
     sendMessage("PING", serialisedJSON);
 }
 
@@ -259,7 +263,7 @@ void parsePacket(const char* loraMessage) {
     int messageSplitIndex[32];
     int messageSplitsCount = scanForBreak(messageSplitIndex, loraMessage, strlen(loraMessage), "[;]", 32);
     if (messageSplitsCount < 3) {
-	Serial.println("Invalid message format!");
+	//Serial.println("Invalid message format!");
 	return;
     }
 
@@ -273,13 +277,13 @@ void parsePacket(const char* loraMessage) {
     // Is the packet already in the handled pile?
     for (int i = 0; i < handled_packet_max_size; i++) {
 	if (handled_packet[i] == packetIDInt) {
-	    Serial.println("Packet already handled!");
+	    //Serial.println("Packet already handled!");
 #if defined(HAB_SYSTEM)
 	    // Need to get multiple paths in order to geolocate, so we want duplicate transmissions
 	    // Check if topic is ALERT
 	    if (strcmp(topic, "ALERT") == 0) {
 		// If it is, we want to locate it
-		Serial.println("Keeping ALERT packet, Locating...");
+		//Serial.println("Keeping ALERT packet, Locating...");
 	    } else {
 		return;
 	    }
@@ -332,7 +336,7 @@ void relayPacket(char* topic, char* hopsData, char* data, uint32_t packetID) {
     DynamicJsonDocument doc(512);
     DeserializationError error = deserializeJson(doc, hopsData);
     if (error) {
-	Serial.println("Failed to parse hops data");
+	//Serial.println("Failed to parse hops data");
 	return;
     }
     // Is in the following format:
@@ -340,14 +344,14 @@ void relayPacket(char* topic, char* hopsData, char* data, uint32_t packetID) {
     int hopsCount = doc.size();
     int maxHopCount = getMaxHopCount(topic);
     if (maxHopCount == -1) {
-	Serial.println("Invalid topic!");
+	//Serial.println("Invalid topic!");
 	return;
     }
     if ((hopsCount + 1 >= maxHopCount) && maxHopCount != -1) {
-	Serial.println("Max hop count reached! No need to repeat");
+	//Serial.println("Max hop count reached! No need to repeat");
 	return;
     }
-    Serial.printf("Hops count: %d/%d\n", hopsCount, maxHopCount);
+    //Serial.printf("Hops count: %d/%d\n", hopsCount, maxHopCount);
 
     // Add this chip to the hops data
     doc.createNestedObject();

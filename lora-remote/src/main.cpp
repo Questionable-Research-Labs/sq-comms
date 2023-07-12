@@ -20,26 +20,26 @@ void setup() {
 	Serial.begin(115200);
 
 	setChipId();
-	Serial.print("Chip ID booting: ");
-	Serial.println(chipID);
+	//Serial.print("Chip ID booting: ");
+	//Serial.println(chipID);
 
 	setupLora();
-    Serial.println("LoRa init succeeded.");
+    //Serial.println("LoRa init succeeded.");
 	initDisplay();
-	Serial.println("Display init succeeded.");
+	//Serial.println("Display init succeeded.");
 
 	#if defined(HAB_SYSTEM)
 	setupHab();
-	Serial.println("HAB init succeeded.");
+	//Serial.println("HAB init succeeded.");
 	#else
-	Serial.println("HAB init skipped.");
+	//Serial.println("HAB init skipped.");
 	#endif
 
 	#if defined(OUTPUT_NEOPIXEL)
 	setupNeoPixels();
-	Serial.println("Lights init succeeded.");
+	//Serial.println("Lights init succeeded.");
 	#else
-	Serial.println("Lights init skipped.");
+	//Serial.println("Lights init skipped.");
 	#endif
 
 	#if defined(SENSOR_SYSTEM)
@@ -65,6 +65,7 @@ void loop() {
 	#if !defined(HAB_SYSTEM)
 
     if (millis() - lastSendTime > interval) {
+		Serial.println("Sending packet: " + String(msgCount));
 		sendPing();
 		lastSendTime = millis();  //void loopHab() timestamp the message
 		msgCount++;

@@ -2,13 +2,13 @@
 #if defined(HAB_SYSTEM)
 
 void mqttCallback(char* topic, byte* payload, unsigned int length) {
-    Serial.print("Message arrived [");
-    Serial.print(topic);
-    Serial.print("] ");
+    //Serial.print("Message arrived [");
+    //Serial.print(topic);
+    //Serial.print("] ");
     for (unsigned int i = 0; i < length; i++) {
-	Serial.print((char)payload[i]);
+	//Serial.print((char)payload[i]);
     }
-    Serial.println();
+    //Serial.println();
 }
 
 WiFiClient wifiClient;
@@ -27,18 +27,18 @@ void setupHab() {
     wifiManager.setCountry("NZ");
     wifiManager.autoConnect();
 
-    Serial.println("");
-    Serial.println("WiFi connected");
-    Serial.println("IP address: ");
-    Serial.println(WiFi.localIP());
-    Serial.println("no");
+    //Serial.println("");
+    //Serial.println("WiFi connected");
+    //Serial.println("IP address: ");
+    //Serial.println(WiFi.localIP());
+    //Serial.println("no");
 }
 
 void forwardPacket(const char *topic, const char *payload) {
-    Serial.print("Forwarding message to ");
-    Serial.print(topic);
-    Serial.print(" ");
-    Serial.println(payload);
+    //Serial.print("Forwarding message to ");
+    //Serial.print(topic);
+    //Serial.print(" ");
+    //Serial.println(payload);
     client.publish(topic, payload);
 }
 
@@ -55,7 +55,7 @@ void processPingPacket(const char *payload, float rssi) {
 void reconnect() {
     // Loop until we're reconnected
     while (!client.connected()) {
-		Serial.print("Attempting MQTT connection...");
+		//Serial.print("Attempting MQTT connection...");
 
 		// Check if Wifi is connected
 		if ((WiFi.status() != WL_CONNECTED)) {
@@ -70,11 +70,11 @@ void reconnect() {
 		clientId += String(random(0xffff), HEX);
 		
 		if (client.connect(clientId.c_str())) {
-			Serial.println("MQTT Connected");
+			//Serial.println("MQTT Connected");
 		} else {
-			Serial.print("failed, rc=");
-			Serial.print(client.state());
-			Serial.println(" try again in 5 seconds");
+			//Serial.print("failed, rc=");
+			//Serial.print(client.state());
+			//Serial.println(" try again in 5 seconds");
 			// Wait 5 seconds before retrying
 			delay(5000);
 		}

@@ -6,8 +6,8 @@ alertSet currentAlerts[MAX_SUPPORTED_CONNECTED_DEVICES] = {};
 int currentAlertsIndex = 0;
 
 void newAlert(const char* alteredChipID, uint32_t packetID, alertNode firstHopNode) {
-    Serial.print("New alert data from: ");
-    Serial.println(alteredChipID);
+    //Serial.print("New alert data from: ");
+    //Serial.println(alteredChipID);
 
     // Check if alert doesn't exist
     int alertIndex = -1;
@@ -66,8 +66,8 @@ void estimateDistances(alertSet alert) {
 }
 
 void processAlert(const char* hops, const char* payload, uint32_t packetID, int rssi) {
-    Serial.println("Processing alert");
-    Serial.println(payload);
+    //Serial.println("Processing alert");
+    //Serial.println(payload);
     DynamicJsonDocument doc(1024);
     deserializeJson(doc, payload);
     const char* alteredChipID = doc["from"];

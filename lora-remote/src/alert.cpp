@@ -9,7 +9,7 @@ uint lastAlertMS = 0;
 bool alertState = false;
 
 void alertSetup() {
-    Serial.println("Setting up alert system");
+    //Serial.println("Setting up alert system");
     pinMode(SWITCH_PIN, INPUT);
 }
 
@@ -55,7 +55,7 @@ void sendAlert() {
         forwardPacket("ALERT", serialisedJSON);
         #endif
 
-        Serial.println(serialisedJSON);
+        //Serial.println(serialisedJSON);
 
         #if defined(REMOTE_SYSTEM)
 
