@@ -128,15 +128,14 @@ int sendMessage(const char* outgoing) {
 		return CHANNEL_BUSY;
 	}
 
-	// int16_t status = radio.scanChannel();
-	// if (status == RADIOLIB_PREAMBLE_DETECTED) {
-	// 	// Already someone transmitting, start task in a random amount of time
-	// 	Serial.println("[CSMA] Channel busy, waiting ...");
-	// 	Serial.printf("status: %d, newLoraMessageWaiting: %d, _enableInterrupt: %d\n", status, newLoraMessageWaiting, _enableInterrupt);
+	float live_rssi = radio.getRSSI(false);
+	if (live_rssi > -70) {
+		// Already someone transmitting, start task in a random amount of time
+		Serial.println("[CSMA] Channel busy, waiting ...");
+		Serial.printf("status: %f/-70, newLoraMessageWaiting: %d, _enableInterrupt: %d\n", live_rssi, newLoraMessageWaiting, _enableInterrupt);
 
-	// 	return CHANNEL_BUSY;
-	// } else 
-	if (true) {
+		return CHANNEL_BUSY;
+	} else {
 		Serial.println("Transmitting Message ...");
 		radio.standby();
 		delay(50);
@@ -149,16 +148,13 @@ int sendMessage(const char* outgoing) {
 		delay(50);
 		_enableInterrupt = true;
 
+		radio.startReceive();
+
 		Serial.print("Message sent in ");
 		Serial.print(endTime - startTime);
 		Serial.println("ms");
 
 		return 0;
-	} else {
-		// Unkown Error
-		Serial.print("Unknown error when sending message, code: ");
-		Serial.println(0);
-		return UNKOWN_ERROR;
 	}
 }
 
@@ -184,6 +180,10 @@ void sendMessage(const char* topic, const char* payload) {
 }
 
 void LoRaCheckForPacket() {
+    // Serial.printf("RSSI: %f | Snr: %f\n", radio.getRSSI(false), radio.getSNR());
+	// Debug message with queue status
+	// Serial.printf("Queue: Head: %d, Tail: %d, Full: %d\n", outgoingQueueHead, outgoingQueueTail, outgoingQueueFull);
+
 	if (!newLoraMessageWaiting) {
 		proccessOutQueueCycle();
 		return;
@@ -316,7 +316,7 @@ void parsePacket(const char* loraMessage) {
     }
 #endif
 
-#if defined(ALERT_SYSTEM)
+#if defined(REMOTE_SYSTEM)
     forwardLED(topic, data);
 #endif
 

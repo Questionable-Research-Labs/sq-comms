@@ -46,7 +46,7 @@ void setup() {
 		sensorSetup();
 	#endif
 
-	#if defined(ALERT_SYSTEM)
+	#if defined(REMOTE_SYSTEM)
 		alertSetup();
 		setupLED();
 	#endif
@@ -58,8 +58,11 @@ int interval = 2000;	// interval between sends
 long lastSendTime = 0;	// time of last packet send
 
 void loop() {
+	#if defined(ALERT_SYSTEM)
+	sendAlert();
+	#endif
+
 	#if !defined(HAB_SYSTEM)
-	// sendAlert();
 
     if (millis() - lastSendTime > interval) {
 		sendPing();
@@ -76,5 +79,4 @@ void loop() {
 	#elif defined(SENSOR_SYSTEM)
 		sensorLoop();
 	#endif
-
 }
