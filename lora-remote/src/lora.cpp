@@ -193,7 +193,7 @@ void LoRaCheckForPacket() {
 	_enableInterrupt = false;
 	
 	#ifdef OUTPUT_NEOPIXEL
-	updateNeoPixels(0, 255, 0);
+	flashNeoPixels();
 	#endif
 
 
@@ -207,6 +207,7 @@ void LoRaCheckForPacket() {
 
     Serial.println("\n######## LORA INCOMING PACKET ########");
     Serial.printf("Message: %s\nRSSI: %f | Snr: %f\n", incoming.c_str(), radio.getRSSI(), radio.getSNR());
+	displayUpdateLoraStats(radio.getRSSI());
 
     if (state == RADIOLIB_ERR_CRC_MISMATCH) {
 		Serial.println(F("[SX1276] CRC error!"));
@@ -305,10 +306,11 @@ void parsePacket(const char* loraMessage) {
 #if defined(HAB_SYSTEM)
     if (strcmp(topic, "PING") == 0) {
 	processPingPacket(data, radio.getRSSI());
-    } else if (strcmp(topic, "ALERT") == 0) {
-	processAlert(hopsData, data, packetIDInt, radio.getRSSI());
     } else {
-	forwardPacket(topic, data);
+		if (strcmp(topic, "ALERT") == 0) {
+			processAlert(hopsData, data, packetIDInt, radio.getRSSI());
+		}
+		forwardPacket(topic, data);
     }
 #endif
 
