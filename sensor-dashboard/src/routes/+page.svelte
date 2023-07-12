@@ -9,6 +9,8 @@
     import { onMount } from 'svelte'; 
     import Paho from 'paho-mqtt';
 
+    let connected = false;
+
     import {
         Chart as ChartJS,
         Title,
@@ -60,23 +62,27 @@
         let client = new Paho.Client("192.168.1.250", 8080, "clientId");
         client.onConnectionLost = onConnectionLost;
         client.onMessageArrived = onMessageArrived;
+
+
         client.connect({ onSuccess: onConnect });
         
         function onConnect() {
             // Once a connection has been made, make a subscription and send a message.
             console.log("Connected to MQTT");
+            connected = true;
             client.subscribe("SENSOR");
         }
 
         function onConnectionLost(responseObject: { errorCode: number; errorMessage: string; }) {
             if (responseObject.errorCode !== 0) {
                 console.log("Disconnected from MQTT: " + responseObject.errorMessage);
+                connected = false;
             }
 
             // retry connection in 5 seconds
             setTimeout(() => {
                 client.connect({ onSuccess: onConnect });
-            }, 5000);
+            }, 1000);
         }
 
         function onMessageArrived(message: { topic: string; payloadString: string; }) {
@@ -145,6 +151,11 @@
 
 <div class="container">
     <h1>Live Sensor Data</h1>
+    {#if !connected}
+        <h2>Connecting to MQTT...</h2>
+    {:else}
+        <h2>Connected to MQTT</h2>
+    {/if}
     <!-- 1 div for each deviceid, containing each graph from each sensor  -->
     <div class="device-container">
         {#each Object.keys(graphdata) as deviceid}
