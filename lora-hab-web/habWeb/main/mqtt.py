@@ -4,13 +4,17 @@ from django.conf import settings
 import paho.mqtt.client as mqtt
 from .models import MqttMsg, Device
 
+true = True
+false = False
 
 def on_connect(mqtt_client, userdata, flags, rc):
-   if rc == 0:
-       print('Connected successfully')
-       mqtt_client.subscribe('#')
-   else:
-       print('Bad connection. Code:', rc)
+    if rc == 0:
+        print('Connected successfully')
+        mqtt_client.subscribe('#')
+
+
+    else:
+        print('Bad connection. Code:', rc)
 
 
 def on_message(mqtt_client, userdata, msg):
@@ -26,13 +30,14 @@ def on_message(mqtt_client, userdata, msg):
         device.last_msg = obj.msg
         device.last_ping = datetime.datetime.now()
 
-        device.alert = payload["active"] == 'true'
+        device.alert = payload["active"]
 
         device.save()
 
         print(f'Received message on topic: {msg.topic} It has been processed.')
 
     elif msg.topic == "SENSOR":
+        null = 0
         payload = eval(msg.payload)
         obj = MqttMsg()
         obj.type = msg.topic
@@ -52,12 +57,23 @@ def on_message(mqtt_client, userdata, msg):
 
         device = Device.objects.get_or_create(dId=payload["from"])[0]
         # device.rssi = payload["rssi"]
-        device.uptime = payload["uptime"]
+        try:
+            device.uptime = payload["uptime"]
+        except KeyError:
+            device.uptime = payload["5ptime"]
         device.last_ping = datetime.datetime.now()
 
         device.save()
 
         print(f'Received message on topic: {msg.topic} It has been processed.')
+    elif msg.topic == "DISTANCES":
+        exp = {"distances": [{"from": "", "est_distance": 5.38993728e8}], "alerted_chip": ""}
+        payload = eval(msg.payload)
+        obj = MqttMsg()
+        obj.type = msg.topic
+        obj.fromID = payload["alerted_chip"]
+        obj.dists = msg.payload
+        obj.save()
 
     else:
         print(f'Received message on topic: {msg.topic} It has been been murdered.')

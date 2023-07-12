@@ -1,0 +1,166 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, shrink-to-fit=no">
+    <title>SQ</title>
+    <link rel="stylesheet" href="{% static 'assets/bootstrap/css/bootstrap.min.css' %}">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,700">
+    <link rel="stylesheet" href="{% static 'assets/css/Header-Blue.css' %}">
+    <link rel="stylesheet" href="{% static 'assets/css/styles.css' %}">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+</head>
+
+<style>
+    {#    html, body {#}
+    {#     width: 569px !important;#}
+    {#}#}
+</style>
+
+<body class="align-items-center" style="background: #2c2c2c;">
+<div>
+    <header class="header-blue" style="background: rgba(24,78,142,0);height: 14.1px;">
+        <nav class="navbar navbar-dark navbar-expand-md navigation-clean-search" style="background: linear-gradient(180deg, #9787FF 5.57%, rgba(147, 122, 248, 0.45) 44.06%, rgba(147, 122, 248, 0.00) 88.33%);">
+            <div class="container-fluid">
+                <div style="margin-right: auto;margin-left: auto;"><img src="{% static 'assets/img/Somewhat Questionable Design (2) 3.png' %}" style="height: 100.1px;"><img src="{% static 'assets/img/Somewhat Questionable Design (2) 4.png' %}" style="width: 200px;"></div>
+            </div>
+        </nav>
+        <h1 class="text-center text-white-50">Number of nodes online</h1>
+        <div style="background: url({% static 'assets/img/Rectangle 4.svg' %}) right / contain;height: 132px;width: 568.6px;padding-top: 51px;margin-left: auto;margin-right: auto;">
+            <p id="num" class="text-center text-white border rounded-circle" style="width: 73px;height: 73px;margin-left: auto;margin-right: auto;padding-top: 0px;margin-top: -19px;background: #9787ff;border-color: #9787ff !important; font-size: 50px"><br>{{ Online }}</p>
+            <div style="height: 82px;background: url({% static 'assets/img/Group 12.svg' %}) right / contain;padding: 4px;margin-top: -71px;"></div>
+        </div>
+    </header>
+    <h1 class="text-center text-white" style="margin-top: 224px;">Node Status</h1>
+    <div style="width: 70vw;margin-right: auto;margin-left: auto;background: var(--bs-white);height: 2px;margin-bottom: 14px;"></div>
+    <div style="background: #d9d9d90d;width: 95vw;margin-right: auto;margin-left: auto;padding: 12px;border-radius: 7.5px;border-width: 5px;margin-bottom: 14px;">
+        <h1 class="text-center text-white">EVAs In Progress</h1>
+        <div id="eva" class="container">
+            <div class="row">
+                <div class="col-md-6" style="width: 40%;background: #525252;padding: 17px;border-width: 5px;border-radius: 15px;">
+                    <div style="height: 1px;background: var(--bs-white);margin-bottom: 12px;"></div>
+                    <div class="d-sm-flex justify-content-sm-start align-items-sm-center"><img class="d-sm-flex justify-content-sm-start" src="{% static 'assets/img/eva.png' %}" style="height: 69px;">
+                        <p class="text-white justify-content-sm-end" style="font-size: 11px;padding-left: 8px;"><br>Last Ping: <br>Status - ONLINE <br>RSSI - <br>Uptime -<br></p>
+                    </div>
+                </div>
+                <div class="col-md-6" style="width: 20%;"></div>
+                <div class="col-md-6" style="width: 40%;background: #525252;padding: 17px;border-radius: 15px;">
+                    <div style="height: 1px;background: var(--bs-white);margin-bottom: 12px;"></div>
+                    <div class="d-sm-flex justify-content-sm-start align-items-sm-center"><img class="d-sm-flex justify-content-sm-start" src="{% static 'assets/img/eva.png' %}" style="height: 69px;">
+                        <p class="text-white justify-content-sm-end" style="font-size: 11px;padding-left: 8px;"><br>Last Ping: <br>Status - ONLINE <br>RSSI - <br>Uptime -<br></p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div style="background: #d9d9d90d;width: 95vw;margin-right: auto;margin-left: auto;padding: 12px;border-radius: 7.5px;border-width: 5px;">
+        <h1 class="text-center text-white">Active Nodes</h1>
+        <div id="nodes" class="container">
+            <div class="row">
+                <div class="col-md-6" style="width: 40%;background: #525252;padding: 17px;border-width: 5px;border-radius: 15px;">
+                    <div style="height: 1px;background: var(--bs-white);margin-bottom: 12px;"></div>
+                    <div class="d-sm-flex justify-content-sm-start align-items-sm-center"><img class="d-sm-flex justify-content-sm-start" src="{% static 'assets/img/node.png' %}" style="height: 69px;">
+                        <p class="text-white justify-content-sm-end" style="font-size: 11px;padding-left: 8px;"><br>Last Ping: <br>Status - ONLINE <br>RSSI - <br>Uptime -<br></p>
+                    </div>
+                </div>
+                <div class="col-md-6" style="width: 20%;"></div>
+                <div class="col-md-6" style="width: 40%;background: #525252;padding: 17px;border-radius: 15px;">
+                    <div style="height: 1px;background: var(--bs-white);margin-bottom: 12px;"></div>
+                    <div class="d-sm-flex justify-content-sm-start align-items-sm-center"><img class="d-sm-flex justify-content-sm-start" src="{% static 'assets/img/node.png' %}" style="height: 69px;">
+                        <p class="text-white justify-content-sm-end" style="font-size: 11px;padding-left: 8px;"><br>Last Ping: <br>Status - ONLINE <br>RSSI - <br>Uptime -<br></p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div style="background: #d9d9d90d;width: 95vw;margin-right: auto;margin-left: auto;padding: 12px;border-radius: 7.5px;border-width: 5px;margin-top: 14px;">
+        <h1 class="text-center text-white">Habitats</h1>
+        <div class="d-sm-flex justify-content-sm-center">
+            <div id="hab_style" style="background: #525252;padding: 17px;border-radius: 15px;width: 209.2px;">
+                <div style="height: 1px;background: var(--bs-white);margin-bottom: 12px;"></div>
+                <div class="d-sm-flex justify-content-sm-center align-items-sm-center"><img class="d-sm-flex justify-content-sm-start" src="{% static 'assets/img/hab.png' %}" style="height: 69px;">
+                    <p id="hab" class="text-white justify-content-sm-end" style="font-size: 11px;padding-left: 8px;"><br>Last Ping: <br>Status - ONLINE <br>RSSI - <br>Uptime -<br></p>
+                </div>
+            </div>
+        </div>
+    </div>
+    <script src="{% static 'assets/bootstrap/js/bootstrap.min.js' %}"></script>
+</div>
+<button id="play">click</button>
+</body>
+
+<script>
+
+    const intervalID = setInterval(click, 5000);
+
+
+function click() {
+    fetch("http://127.0.0.1:8000/test/api")
+.then(response => response.json()) // converts the response to JSON
+.then(data => {
+    $('#eva').empty()
+    for (i in data['evas']) {
+
+        $(`#eva`).append(data['evas'][i]);
+    }
+
+    $('#nodes').empty()
+    for (i in data['stations']) {
+
+        $(`#nodes`).append(data['stations'][i]);
+    }
+
+    $('#hab').empty()
+    $('#hab').append(`<br>Last Ping: ${data['hab']['ping']}<br>Status - ONLINE <br>RSSI: ${data['hab']['rssi']}<br>Uptime: ${data['hab']['uptime']}<br>`)
+
+    if (data["hab"]['alert'] === true) {
+        $('#hab_style').css('background', '#8a3421')
+    }
+    else {
+        $('#hab_style').css('background', '#525252')
+    }
+
+    $('#num').empty()
+    $('#num').append(`${data['num']}`)
+
+    if (data["noise"]) {
+        $("#play").trigger( "click" );
+     }
+
+  console.log(data);
+
+    return true
+  // do something (like update the DOM with the data)
+});
+
+}
+
+  const URL = 'http://127.0.0.1:8000/static/alarm.mp3';
+
+  const context = new AudioContext();
+  const playButton = document.querySelector('#play');
+
+  let yodelBuffer;
+
+  window.fetch(URL)
+    .then(response => response.arrayBuffer())
+    .then(arrayBuffer => context.decodeAudioData(arrayBuffer))
+    .then(audioBuffer => {
+      playButton.disabled = false;
+      yodelBuffer = audioBuffer;
+    });
+
+    playButton.onclick = () => play(yodelBuffer);
+
+  function play(audioBuffer) {
+    const source = context.createBufferSource();
+    source.buffer = audioBuffer;
+    source.connect(context.destination);
+    source.start();
+  }
+
+</script>
+<button onclick="click()">click</button>
+</html>

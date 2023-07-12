@@ -12,6 +12,7 @@ class MqttMsg(models.Model):
     # optinal
     msg = models.CharField(max_length=1024, null=True, blank=True)
     sensor_data = models.CharField(max_length=5000, null=True, blank=True)
+    dists = models.CharField(max_length=100000000, null=True, blank=True)
 
 
 class Device(models.Model):
@@ -24,3 +25,5 @@ class Device(models.Model):
     uptime = models.FloatField(default=0)
     type = models.CharField(choices=[('H', 'Hab'), ('S', 'Station'), ('P', 'Person')], default='P',
                             max_length=1)
+
+    rel_coords = models.CharField(max_length=200, null=True, blank=True)

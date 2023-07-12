@@ -1,0 +1,131 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="refresh" content="3" />
+    <title>Title</title>
+        <script src="https://code.jquery.com/jquery-3.6.1.min.js" crossorigin=""></script>
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.1/dist/leaflet.css"
+          integrity="sha256-sA+zWATbFveLLNqWO2gtiw3HL/lh1giY/Inf1BJ0z14="
+          crossorigin=""/>
+    <!-- Make sure you put this AFTER Leaflet's CSS -->
+    <script src="https://unpkg.com/leaflet@1.9.1/dist/leaflet.js"
+            integrity="sha256-NDI0K41gVbWqfkkaHj15IzU7PtMoelkzyKp8TOaFQ3s="
+            crossorigin=""></script>
+    <script src="{% static 'assets/bootstrap/js/bootstrap.min.js' %}"></script>
+    <link rel="stylesheet" href="{% static 'main/bootstrap.min.css' %}"/>
+    <link rel="stylesheet" href="{% static 'main/MarkerClusterCustom.css' %}" crossorigin=""/>
+    <link rel="stylesheet" href="https://unpkg.com/leaflet.markercluster@1.4.1/dist/MarkerCluster.css" crossorigin=""/>
+    <script src="https://unpkg.com/leaflet.markercluster@1.4.1/dist/leaflet.markercluster.js" crossorigin=""></script>
+    <link rel="stylesheet" href="{% static 'main/geojsonautocomplete.min.css' %}" crossorigin=""/>
+    <script src="{% static 'main/geojsonautocomplete.custom.js' %}" crossorigin=""></script>
+    <link rel="stylesheet" href="{% static 'main/leaflet.fusesearch.css' %}" crossorigin=""/>
+</head>
+<style>    #map { height: 100%} </style>
+
+<body style="background: #7e7e7e;">
+<img style="position: absolute; left: 30%; top: 0; z-index: 0;" src="http://127.0.0.1:8000/static/mars2.png">
+{#<div style="hidden; position: absolute; top: 90px; right: 0; left: 0; bottom: 0;"><div id="map"><div id="searchContainer"><div>#}
+<canvas id="myCanvas" width="500" height="500" style="position: absolute; left: 30%; top: 0; z-index: 1;"></canvas>
+<ul>
+    <li>{{ data.0 }}</li>
+    <li>{{ data.1 }}</li>
+    <li>{{ data.2 }}</li>
+    <li>{{ data.3 }}</li>
+
+
+</ul>
+</div></div></div>
+</div>
+</body>
+
+
+<script>
+var c = document.getElementById("myCanvas");
+var ctx = c.getContext("2d");
+
+{#ctx.fillStyle = "blue";#}
+{#ctx.fillRect(0, 0, 500, 500);#}
+
+{#var background = new Image();#}
+{#background.src = "http://127.0.0.1:8000/static/mars.png";#}
+{##}
+{#// Make sure the image is loaded first otherwise nothing will draw.#}
+{#background.onload = function(){#}
+{#    ctx.drawImage(background,0,0);#}
+{# } #}
+
+ctx.strokeStyle = "#8a3421"
+ctx.beginPath();
+ctx.arc(0, 0, {{ data.0 }}, 0, 2 * Math.PI);
+ctx.stroke();
+ctx.beginPath();
+ctx.arc(0, 500, {{ data.1 }}, 0, 2 * Math.PI);
+ctx.stroke();
+ctx.beginPath();
+ctx.arc(500, 500, {{ data.2 }}, 0, 2 * Math.PI);
+ctx.stroke();
+ctx.beginPath();
+ctx.arc(500, 0, {{ data.3 }}, 0, 2 * Math.PI);
+ctx.stroke();
+
+{#ctx.beginPath()#}
+{#ctx.arc(0, 0, 200, 0, 2 * Math.PI);#}
+{#ctx.arc(0, 500, 300, 0, 2 * Math.PI);#}
+{#ctx.arc(500, 500, 300, 0, 2 * Math.PI);#}
+{#ctx.arc(500, 0, 400, 0, 2 * Math.PI);#}
+{#ctx.fill()#}
+</script>
+
+
+{#<script>#}
+{#    var map = L.map('map').setView([0, 0], 6);#}
+{#    L.tileLayer('https://upload.wikimedia.org/wikipedia/commons/8/86/Solid_grey.svg', {#}
+{#        maxZoom: 20,#}
+{#        minZoom: 2,#}
+{#        attribution: '© JIIIIMMMMMM',#}
+{#        crs: L.CRS.Simple#}
+{#    }).addTo(map);#}
+{##}
+{#    var layer = L.marker(L.latLng(0, 0), {title: "0, 0"});#}
+{#    layer.addTo(map);#}
+{##}
+{#    var layer = L.marker(L.latLng(0, 10), {title: "0, 10"});#}
+{#    layer.addTo(map);#}
+{##}
+{#    var layer = L.marker(L.latLng(10, 10), {title: "10, 10"});#}
+{#    layer.addTo(map);#}
+{##}
+{#    var layer = L.marker(L.latLng(10, 0), {title: "10, 0"});#}
+{#    layer.addTo(map);#}
+{##}
+{#    var layer = L.marker(L.latLng(5, 5), {title: "5, 5"});#}
+{#    layer.addTo(map);#}
+{##}
+{#    L.geoJSON({{ data|safe }}).bindPopup(function (layer) {#}
+{#    return layer.feature.properties.name;}).addTo(map);#}
+{##}
+{#    var layer = L.polyline([[0, 0],#}
+{#    [0, 10],#}
+{#], {color: 'red'});#}
+{#    layer.addTo(map);#}
+{##}
+{#        var layer = L.polyline([[0, 0],#}
+{#    [5, 10],#}
+{#], {color: 'red'});#}
+{#    layer.addTo(map);#}
+{##}
+{#    var layer = L.polyline([[0, 10],#}
+{#    [5, 10],#}
+{#], {color: 'red'});#}
+{#    layer.addTo(map);#}
+{##}
+{#    var proj_rad = map.project([0, 1], 5)#}
+{#    console.log(proj_rad)#}
+{#    var layer = L.circle([0, 0], {radius: 5})#}
+{#    layer.addTo(map);#}
+{##}
+{#        var layer = L.circle([0, 0], {radius: 1200000})#}
+{#    layer.addTo(map);#}
+{#</script>#}
