@@ -2,10 +2,11 @@
 
 #ifdef ALERT_SYSTEM
 
-#define SWITCH_PIN 36
 
-#ifdef HAB_SYSTEM
-SWITCH_PIN = 13;
+#if defined(HAB_SYSTEM)
+#define SWITCH_PIN 13
+#else
+#define SWITCH_PIN 36
 #endif
 
 uint lastAlertMS = 0;
@@ -23,7 +24,6 @@ void sendAlert() {
 
     // query switch
     // if switch is on or toggled, send alert message, either true or false
-
 
     state = digitalRead(SWITCH_PIN);
 
@@ -56,6 +56,9 @@ void sendAlert() {
         char serialisedJSON[JSON_SERIALISATION_LIMIT];
         serializeJson(doc, serialisedJSON, JSON_SERIALISATION_LIMIT);
         sendMessage("ALERT", serialisedJSON);
+        if (!state) {
+            sendMessage("ALERT", serialisedJSON);
+        }
 
         #if defined(HAB_SYSTEM)
         forwardPacket("ALERT", serialisedJSON);

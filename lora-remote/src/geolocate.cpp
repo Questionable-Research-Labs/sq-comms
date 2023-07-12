@@ -50,8 +50,10 @@ void estimateDistances(alertSet alert) {
     for (int i = 0; i < alert.numRssis; i++) {
         alertNode node = alert.rssis[i];
 
-        // TODO: Actual mathmatical model to describe RSSI to distance
-        float distanceSensors = node.rssi*-1 + 25;
+        // Calculate using formula 10^((-40-RSSI)/(10*powerConstant))
+        float powerConstant = 2.8;
+        float distanceSensors = pow(10, ((-40 - node.rssi) / (10 * powerConstant)));
+
 
         distances["distances"][i]["from"] = node.chipID;
         distances["distances"][i]["est_distance"] = distanceSensors;

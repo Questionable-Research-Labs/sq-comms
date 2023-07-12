@@ -25,6 +25,13 @@ void setup() {
 
 	initDisplay();
 
+	#if defined(OUTPUT_NEOPIXEL)
+	setupNeoPixels();
+	Serial.println("Lights init succeeded.");
+	#else
+	Serial.println("Lights init skipped.");
+	#endif
+
 	setupLora();
     Serial.println("LoRa init succeeded.");
 
@@ -33,13 +40,6 @@ void setup() {
 	Serial.println("HAB init succeeded.");
 	#else
 	Serial.println("HAB init skipped.");
-	#endif
-
-	#if defined(OUTPUT_NEOPIXEL)
-	setupNeoPixels();
-	Serial.println("Lights init succeeded.");
-	#else
-	Serial.println("Lights init skipped.");
 	#endif
 
 	#if defined(SENSOR_SYSTEM)
@@ -54,7 +54,7 @@ void setup() {
 
 
 byte msgCount= 0;	// count of outgoing messages
-int interval = 2000;	// interval between sends
+int interval = 5000;	// interval between sends
 long lastSendTime = 0;	// time of last packet send
 
 void loop() {
