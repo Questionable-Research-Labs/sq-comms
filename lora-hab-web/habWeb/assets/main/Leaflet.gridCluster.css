@@ -1,0 +1,24 @@
+.cluster-symbols {
+    background-clip: padding-box;
+    border-radius: 20px;
+}
+.cluster-symbols div {
+    background-color: rgba(255, 255, 255, 0.8);
+    border-radius: 10px;
+    color: #444;
+    font: bold 12px "Helvetica Neue",Arial,Helvetica,sans-serif;
+    height: 30px;
+    margin-left: 5px;
+    margin-top: 5px;
+    text-align: center;
+    width: 30px;
+}
+.cluster-symbols span {
+    line-height: 30px;
+    padding: 2px;
+}
+.cluster-symbols.noCells div {
+    background-color: transparent;
+    color: white;
+    line-height: 30px;
+}
