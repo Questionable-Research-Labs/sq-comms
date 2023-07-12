@@ -160,10 +160,14 @@
                 }
 
                 // rename the second 'temp' from suit to 'temp 2'
-                if(data.sender == "Suit") {
+                if(data.sender == "Suit" || data.sender == "Backpack Outside" || data.sender == "Weather Station") {
+                    let tempCount = 0;
                     data.data.forEach((reading: {kind: string, value: number}) => {
                         if(reading.kind == "temp") {
-                            reading.kind = "temp 2";
+                            tempCount++;
+                            if(tempCount > 1) {
+                                reading.kind = "temp 2";
+                            }
                         }
                     });
                 }

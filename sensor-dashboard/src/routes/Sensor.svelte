@@ -34,11 +34,6 @@
         suggestedMin = 0;
         title = "Dust";
         unit = "Dust (ug/m3)";
-    } else if(sensorName == "temp") {
-        suggestedMax = 40;
-        suggestedMin = 0;
-        title = "Temperature";
-        unit = "Temperature (°C)";
     } else if(sensorName == "ecg") {
         suggestedMax = 120;
         suggestedMin = 0;
@@ -49,6 +44,11 @@
         suggestedMin = 0;
         title = "CO2";
         unit = "CO2 (ppm)";
+    } else if(sensorName.startsWith("temp")) {
+        suggestedMax = 40;
+        suggestedMin = 0;
+        title = "Temperature";
+        unit = "Temperature (°C)";
     } else {
         suggestedMax = 100;
         suggestedMin = 0;
