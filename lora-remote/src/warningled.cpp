@@ -1,5 +1,7 @@
 #include <warningled.h>
 
+#ifdef REMOTE_SYSTEM
+
 #define LED_RED 12
 #define LED_GREEN 25
 #define LED_BLUE 21
@@ -29,5 +31,9 @@ void forwardLED(const char *topic, const char *payload) {
         else {
             warningLED(false, false, false);
         }
+        const char *msg = doc["msg"];
+        displayRemoteAlert(active, msg);
     }
 }
+
+#endif

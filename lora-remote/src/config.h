@@ -7,3 +7,9 @@
 #define MQTT_HOST_PORT 1883
 
 #define JSON_SERIALISATION_LIMIT 1024
+
+#define MAX_SUPPORTED_CONNECTED_DEVICES 32
+
+#define NeoPixelPin 12
+#define NeoPixelCount 9
+#define NeoPixelFlags NEO_GRB + NEO_KHZ800

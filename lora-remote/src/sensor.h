@@ -8,6 +8,7 @@
 #include <DHT.h>
 #include <DHT_U.h>
 #include <chipID.h>
+#include <SoftwareSerial.h>
 
 void sensorSetup();
 void sensorLoop();
