@@ -11,5 +11,5 @@
 #define MAX_SUPPORTED_CONNECTED_DEVICES 32
 
 #define NeoPixelPin 12
-#define NeoPixelCount 8
+#define NeoPixelCount 9
 #define NeoPixelFlags NEO_GRB + NEO_KHZ400
