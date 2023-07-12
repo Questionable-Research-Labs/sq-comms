@@ -9,11 +9,29 @@
 // Parameter 3 = Pixel type flags, add together as needed:
 Adafruit_NeoPixel pixels(NeoPixelCount, NeoPixelPin, NeoPixelFlags);
 
+
+int r, g, b = 0;
+int target_r,target_b,target_g = 0;
+int resting_state_g, resting_state_r, resting_state_b = 0;
+
+bool currentlyAlerting = false;
+
+int override_target_r,override_target_g,override_target_b = 0;
+
+
 // After the new Powergrid code is downloaded, this function is called to change the NeoPixel updates
 void updateNeoPixels(int r, int g, int b) {
-    
-    pixels.fill(pixels.Color(r, g, b), 0, NeoPixelCount);
+    target_r = r;
+    target_g = g;
+    target_b = b;
+}
 
+void alertLight(bool state) {
+    if (state) {
+        pixels.setPixelColor(NeoPixelCount-1, pixels.Color(255, 255, 255));
+    } else {
+        pixels.setPixelColor(NeoPixelCount-1, pixels.Color(0, 0, 0));
+    }
     pixels.show();
 }
 
@@ -24,11 +42,56 @@ void setupNeoPixels() {
     delay(500);
     pixels.clear();  // Set all pixel colors to 'off'
     pixels.show();
+    setAlerting(false);
+    
 }
 
 
 void showNeoPixelsError() {
     pixels.fill(pixels.Color(255, 0, 255), 0, NeoPixelCount);
 	pixels.show();
+}
+
+void setAlerting(bool state) {
+    currentlyAlerting = state;
+    if (state) {
+        alertLight(true);
+        resting_state_r = 255;
+        resting_state_g = 0;
+        resting_state_b = 0;
+
+    } else {
+        alertLight(false);
+        resting_state_r = 0;
+        resting_state_g = 10;
+        resting_state_b = 0;
+    }
+}
+
+void animateNeoPixel() {
+    // if (currentlyAlerting) {
+
+    //     if (r < target_r) {r++;} else if (r > override_target_r) {r--;}
+    //     if (g < target_g) {g++;} else if (g > override_target_g) {g--;}
+    //     if (b < target_b) {b++;} else if (b > override_target_b) {b--;}
+    //     if (r == override_target_r) {override_target_r = 255;}
+    //     if (g == override_target_g) {override_target_g = 0;}
+    //     if (b == override_target_b) {override_target_b = 0;}
+    //     return;
+
+    // }
+
+    if (r < target_r) {r++;} else if (r > target_r) {r--;}
+    if (g < target_g) {g++;} else if (g > target_g) {g--;}
+    if (b < target_b) {b++;} else if (b > target_b) {b--;}
+
+    if (r == target_r) {target_r = resting_state_r;}
+    if (g == target_g) {target_g = resting_state_g;}
+    if (b == target_b) {target_b = resting_state_b;}
+
+    if (r!=target_r || g!=target_g || b!=target_b) {
+        pixels.fill(pixels.Color(r, g, b), 0, NeoPixelCount-1);
+    }
+    pixels.show();
 }
 #endif

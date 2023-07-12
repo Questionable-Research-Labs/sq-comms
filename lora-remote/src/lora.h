@@ -14,7 +14,7 @@
 #include <geolocate.h>
 #endif
 
-#if defined(ALERT_SYSTEM)
+#if defined(REMOTE_SYSTEM)
 #include "warningled.h"
 #endif
 

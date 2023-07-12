@@ -73,7 +73,9 @@ void processAlert(const char* hops, const char* payload, uint32_t packetID, int 
     const char* alteredChipID = doc["from"];
     // const char* msg = doc["msg"];
     bool active = doc["active"];
-
+    #if defined(OUTPUT_NEOPIXEL)
+    setAlerting(active);
+    #endif
     if (!active) {
         return;
     }
