@@ -200,6 +200,9 @@ def api(request):
         except IndexError:
             evas_html.append(mk_st_html(stations[-1].last_ping, "ONLINE", stations[-1].rssi, stations[-1].uptime, "null", "ONLINE", "null", "null", evas[-1].alert, False))
 
+        if habs[0].alert:
+            noise = True
+
         return JsonResponse({"noise": noise, "num": devices.count(), "hab": {"ping": habs[0].last_ping, "status": "ONLINE", "rssi": habs[0].rssi, "uptime": habs[0].uptime, "alert":habs[0].alert}, "evas": evas_html, "stations": stations_html}, status=200)
 
     return JsonResponse({}, status=400)

@@ -102,7 +102,7 @@
 
 <script>
 
-    const intervalID = setInterval(click, 5000);
+    const intervalID = setInterval(click, 2000);
 
 
 function click() {
@@ -122,7 +122,7 @@ function click() {
     }
 
     $('#hab').empty()
-    $('#hab').append(`<br>Last Ping: ${data['hab']['ping']}<br>Status - ONLINE <br>RSSI: ${data['hab']['rssi']}<br>Uptime: ${data['hab']['uptime']}<br>`)
+    $('#hab').append(`<br>Last Ping: ${data['hab']['ping']}<br>Status - ONLINE <br>RSSI: ${data['hab']['rssi']}`)
 
     if (data["hab"]['alert'] === true) {
         $('#hab_style').css('background', '#8a3421')
