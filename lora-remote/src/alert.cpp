@@ -2,11 +2,16 @@
 
 #ifdef REMOTE_SYSTEM
 
-#define SWITCH_PIN 13
+#define SWITCH_PIN 36
+
+#ifdef HAB_SYSTEM
+SWITCH_PIN = 13;
+#endif
 
 uint lastAlertMS = 0;
 
 bool alertState = false;
+bool state = false;
 
 void alertSetup() {
     Serial.println("Setting up alert system");
@@ -19,7 +24,8 @@ void sendAlert() {
     // query switch
     // if switch is on or toggled, send alert message, either true or false
 
-    bool state = digitalRead(SWITCH_PIN);
+
+    state = digitalRead(SWITCH_PIN);
 
     #if defined(HAB_SYSTEM)
     // Hab system is reverse
