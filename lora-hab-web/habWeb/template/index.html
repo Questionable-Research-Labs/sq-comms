@@ -14,77 +14,86 @@
 </head>
 
 <style>
-    {#    html, body {#}
-    {#     width: 569px !important;#}
-    {#}#}
+
 </style>
 
-<body class="align-items-center" style="background: #2c2c2c;">
+<body class="align-items-center" >
 <div>
     <header class="header-blue" style="background: rgba(24,78,142,0);height: 14.1px;">
-        <nav class="navbar navbar-dark navbar-expand-md navigation-clean-search" style="background: linear-gradient(180deg, #9787FF 5.57%, rgba(147, 122, 248, 0.45) 44.06%, rgba(147, 122, 248, 0.00) 88.33%);">
+        <nav class="navbar navbar-dark navbar-expand-md navigation-clean-search" >
             <div class="container-fluid">
                 <div style="margin-right: auto;margin-left: auto;"><img src="{% static 'assets/img/Somewhat Questionable Design (2) 3.png' %}" style="height: 100.1px;"><img src="{% static 'assets/img/Somewhat Questionable Design (2) 4.png' %}" style="width: 200px;"></div>
             </div>
         </nav>
-        <h1 class="text-center text-white-50">Number of nodes online</h1>
-        <div style="background: url({% static 'assets/img/Rectangle 4.svg' %}) right / contain;height: 132px;width: 568.6px;padding-top: 51px;margin-left: auto;margin-right: auto;">
-            <p id="num" class="text-center text-white border rounded-circle" style="width: 73px;height: 73px;margin-left: auto;margin-right: auto;padding-top: 0px;margin-top: -19px;background: #9787ff;border-color: #9787ff !important; font-size: 50px"><br>{{ Online }}</p>
-            <div style="height: 82px;background: url({% static 'assets/img/Group 12.svg' %}) right / contain;padding: 4px;margin-top: -71px;"></div>
-        </div>
     </header>
-    <h1 class="text-center text-white" style="margin-top: 224px;">Node Status</h1>
-    <div style="width: 70vw;margin-right: auto;margin-left: auto;background: var(--bs-white);height: 2px;margin-bottom: 14px;"></div>
-    <div style="background: #d9d9d90d;width: 95vw;margin-right: auto;margin-left: auto;padding: 12px;border-radius: 7.5px;border-width: 5px;margin-bottom: 14px;">
-        <h1 class="text-center text-white">EVAs In Progress</h1>
-        <div id="eva" class="container">
-            <div class="row">
-                <div class="col-md-6" style="width: 40%;background: #525252;padding: 17px;border-width: 5px;border-radius: 15px;">
-                    <div style="height: 1px;background: var(--bs-white);margin-bottom: 12px;"></div>
-                    <div class="d-sm-flex justify-content-sm-start align-items-sm-center"><img class="d-sm-flex justify-content-sm-start" src="{% static 'assets/img/eva.png' %}" style="height: 69px;">
-                        <p class="text-white justify-content-sm-end" style="font-size: 11px;padding-left: 8px;"><br>Last Ping: <br>Status - ONLINE <br>RSSI - <br>Uptime -<br></p>
-                    </div>
-                </div>
-                <div class="col-md-6" style="width: 20%;"></div>
-                <div class="col-md-6" style="width: 40%;background: #525252;padding: 17px;border-radius: 15px;">
-                    <div style="height: 1px;background: var(--bs-white);margin-bottom: 12px;"></div>
-                    <div class="d-sm-flex justify-content-sm-start align-items-sm-center"><img class="d-sm-flex justify-content-sm-start" src="{% static 'assets/img/eva.png' %}" style="height: 69px;">
-                        <p class="text-white justify-content-sm-end" style="font-size: 11px;padding-left: 8px;"><br>Last Ping: <br>Status - ONLINE <br>RSSI - <br>Uptime -<br></p>
-                    </div>
-                </div>
-            </div>
-        </div>
+    <div class="hills-container">
+        <svg width="100%" viewBox="0 0 1900 450" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <path d="M0 92.7374C0 92.7374 198.075 87.9209 334 124.737C474.299 162.739 544.583 284.762 689 301.237C882.852 323.353 1020.5 280.237 1205 209.737C1363.04 149.348 1483.6 10.5397 1652.5 0.737366C1766.55 -5.88151 1900 34.2374 1900 34.2374V440.237H1263.5H848.5H413.5H0V92.7374Z" fill="#9E4327"/>
+        </svg>
+        <h1 class="nodes-online-label">Number of nodes online</h1>
+        <div class="hill-text" id="num">{{ Online }}</div>
+        <svg width="100%" viewBox="0 0 1900 450" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <path d="M1424.5 359.5C1520.88 322.111 1627.36 224.143 1727.5 198.5C1793.36 181.635 1900 175 1900 175V450H1470H1167C1167 450 1211.51 442.129 1424.5 359.5Z" fill="#943B27"/>
+            <path d="M1415.5 405.5C1509.18 361.783 1630.36 266.643 1730.5 241C1796.36 224.135 1900 215.5 1900 215.5V450H1469.5H1275C1275 450 1370 426.734 1415.5 405.5Z" fill="#8B3428"/>
+            <path d="M0 241.5C0 241.5 21 219.5 68 207C113.621 194.867 113.405 195 154 195C205 195 230.5 253 347.5 253C444.5 253 497.344 348.792 602.5 376.5C695.832 401.093 826.645 327.899 923 333.5C1020.27 339.154 1034.94 276.086 1127 308C1202 334 1336 450 1336 450H426H0V241.5Z" fill="#903927"/>
+            <path d="M0 286.5C0 286.5 21 264.5 68 252C113.621 239.867 113.405 240 154 240C205 240 230.5 298 347.5 298C444.5 298 497.344 393.792 602.5 421.5C695.832 446.093 826.645 372.899 923 378.5C1020.27 384.154 1034.94 321.086 1127 353C1202 379 1264 449.763 1264 449.763H424.5H0V286.5Z" fill="#8B3428"/>
+        </svg>
     </div>
-    <div style="background: #d9d9d90d;width: 95vw;margin-right: auto;margin-left: auto;padding: 12px;border-radius: 7.5px;border-width: 5px;">
-        <h1 class="text-center text-white">Active Nodes</h1>
-        <div id="nodes" class="container">
-            <div class="row">
-                <div class="col-md-6" style="width: 40%;background: #525252;padding: 17px;border-width: 5px;border-radius: 15px;">
-                    <div style="height: 1px;background: var(--bs-white);margin-bottom: 12px;"></div>
-                    <div class="d-sm-flex justify-content-sm-start align-items-sm-center"><img class="d-sm-flex justify-content-sm-start" src="{% static 'assets/img/node.png' %}" style="height: 69px;">
-                        <p class="text-white justify-content-sm-end" style="font-size: 11px;padding-left: 8px;"><br>Last Ping: <br>Status - ONLINE <br>RSSI - <br>Uptime -<br></p>
+    <div class="primary-container">
+        <h1 class="primary-header">Node Status</h1>
+        <div style="margin-right: auto;margin-left: auto;background: var(--bs-white);height: 2px;margin-bottom: 14px;"></div>
+        <div class="node-group" >
+            <h1 class="text-center text-white">EVAs In Progress</h1>
+            <div id="eva" class="container">
+                <div class="row">
+                    <div class="col-md-6" style="width: 40%;background: #525252;padding: 17px;border-width: 5px;border-radius: 15px;">
+                        <div style="height: 1px;background: var(--bs-white);margin-bottom: 12px;"></div>
+                        <div class="d-sm-flex justify-content-sm-start align-items-sm-center"><img class="d-sm-flex justify-content-sm-start" src="{% static 'assets/img/eva.png' %}" style="height: 69px;">
+                            <p class="text-white justify-content-sm-end" style="font-size: 11px;padding-left: 8px;"><br>Last Ping: <br>Status - ONLINE <br>RSSI - <br>Uptime -<br></p>
+                        </div>
                     </div>
-                </div>
-                <div class="col-md-6" style="width: 20%;"></div>
-                <div class="col-md-6" style="width: 40%;background: #525252;padding: 17px;border-radius: 15px;">
-                    <div style="height: 1px;background: var(--bs-white);margin-bottom: 12px;"></div>
-                    <div class="d-sm-flex justify-content-sm-start align-items-sm-center"><img class="d-sm-flex justify-content-sm-start" src="{% static 'assets/img/node.png' %}" style="height: 69px;">
-                        <p class="text-white justify-content-sm-end" style="font-size: 11px;padding-left: 8px;"><br>Last Ping: <br>Status - ONLINE <br>RSSI - <br>Uptime -<br></p>
+                    <div class="col-md-6" style="width: 20%;"></div>
+                    <div class="col-md-6" style="width: 40%;background: #525252;padding: 17px;border-radius: 15px;">
+                        <div style="height: 1px;background: var(--bs-white);margin-bottom: 12px;"></div>
+                        <div class="d-sm-flex justify-content-sm-start align-items-sm-center"><img class="d-sm-flex justify-content-sm-start" src="{% static 'assets/img/eva.png' %}" style="height: 69px;">
+                            <p class="text-white justify-content-sm-end" style="font-size: 11px;padding-left: 8px;"><br>Last Ping: <br>Status - ONLINE <br>RSSI - <br>Uptime -<br></p>
+                        </div>
                     </div>
                 </div>
             </div>
         </div>
-    </div>
-    <div style="background: #d9d9d90d;width: 95vw;margin-right: auto;margin-left: auto;padding: 12px;border-radius: 7.5px;border-width: 5px;margin-top: 14px;">
-        <h1 class="text-center text-white">Habitats</h1>
-        <div class="d-sm-flex justify-content-sm-center">
-            <div id="hab_style" style="background: #525252;padding: 17px;border-radius: 15px;width: 209.2px;">
-                <div style="height: 1px;background: var(--bs-white);margin-bottom: 12px;"></div>
-                <div class="d-sm-flex justify-content-sm-center align-items-sm-center"><img class="d-sm-flex justify-content-sm-start" src="{% static 'assets/img/hab.png' %}" style="height: 69px;">
-                    <p id="hab" class="text-white justify-content-sm-end" style="font-size: 11px;padding-left: 8px;"><br>Last Ping: <br>Status - ONLINE <br>RSSI - <br>Uptime -<br></p>
+        <div style="background: #d9d9d90d;margin-right: auto;margin-left: auto;padding: 12px;border-radius: 7.5px;border-width: 5px;">
+            <h1 class="text-center text-white">Active Nodes</h1>
+            <div id="nodes" class="container">
+                <div class="row">
+                    <div class="col-md-6" style="width: 40%;background: #525252;padding: 17px;border-width: 5px;border-radius: 15px;">
+                        <div style="height: 1px;background: var(--bs-white);margin-bottom: 12px;"></div>
+                        <div class="d-sm-flex justify-content-sm-start align-items-sm-center"><img class="d-sm-flex justify-content-sm-start" src="{% static 'assets/img/node.png' %}" style="height: 69px;">
+                            <p class="text-white justify-content-sm-end" style="font-size: 11px;padding-left: 8px;"><br>Last Ping: <br>Status - ONLINE <br>RSSI - <br>Uptime -<br></p>
+                        </div>
+                    </div>
+                    <div class="col-md-6" style="width: 20%;"></div>
+                    <div class="col-md-6" style="width: 40%;background: #525252;padding: 17px;border-radius: 15px;">
+                        <div style="height: 1px;background: var(--bs-white);margin-bottom: 12px;"></div>
+                        <div class="d-sm-flex justify-content-sm-start align-items-sm-center"><img class="d-sm-flex justify-content-sm-start" src="{% static 'assets/img/node.png' %}" style="height: 69px;">
+                            <p class="text-white justify-content-sm-end" style="font-size: 11px;padding-left: 8px;"><br>Last Ping: <br>Status - ONLINE <br>RSSI - <br>Uptime -<br></p>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
+        <div style="background: #d9d9d90d;margin-right: auto;margin-left: auto;padding: 12px;border-radius: 7.5px;border-width: 5px;margin-top: 14px;">
+            <h1 class="text-center text-white">Habitats</h1>
+            <div class="d-sm-flex justify-content-sm-center">
+                <div id="hab_style" style="background: #525252;padding: 17px;border-radius: 15px;width: 209.2px;">
+                    <div style="height: 1px;background: var(--bs-white);margin-bottom: 12px;"></div>
+                    <div class="d-sm-flex justify-content-sm-center align-items-sm-center"><img class="d-sm-flex justify-content-sm-start" src="{% static 'assets/img/hab.png' %}" style="height: 69px;">
+                        <p id="hab" class="text-white justify-content-sm-end" style="font-size: 11px;padding-left: 8px;"><br>Last Ping: <br>Status - ONLINE <br>RSSI - <br>Uptime -<br></p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    
     </div>
     <script src="{% static 'assets/bootstrap/js/bootstrap.min.js' %}"></script>
 </div>

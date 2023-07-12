@@ -1,0 +1,62 @@
+.hills-container {
+    height: 45vh;
+    position: relative;
+    margin-bottom: 2em;
+}
+.hills-container svg {
+    position: absolute;
+    bottom: 0;
+    transform: scaleY(0.75) translateY(1.3333333333);
+}
+.hills-container .hill-text {
+    position: absolute;
+    bottom: 20%;
+    left: 50%;
+    width: 12rem;
+    height: 12rem;
+    line-height: 12rem;
+    text-align: center;
+    color: white;
+    background-color: #9787FF;
+    border-radius: 50%;
+    font-size: 10rem;
+    text-align: center;
+    transform: translate(-50%, 0);
+}
+.hills-container .nodes-online-label {
+    position: absolute;
+    bottom: calc(20% + 13rem);
+    left: 50%;
+    width: 70%;
+    text-align: center;
+    color: white;
+    font-size: 2rem;
+    text-align: center;
+    transform: translate(-50%, 0);
+    text-transform: uppercase;
+    font-weight: bold;
+}
+
+body {
+    padding: 0;
+    background: linear-gradient(180deg, rgba(78,71,129,1) 0%, rgba(44,44,44,1) 30%);
+}
+
+.primary-container {
+    margin: 0 auto;
+    width: 70vw;
+    display: flex;
+    justify-content: center;
+    flex-direction: column;
+}
+.primary-header {
+    color: white;
+    text-align: center;
+    border-bottom: white solid 2px;
+}
+.node-group {
+    background-color: #d9d9d90d;
+    padding: 1em;
+    border-radius: 1rem;
+    margin-bottom: 1rem;
+}
