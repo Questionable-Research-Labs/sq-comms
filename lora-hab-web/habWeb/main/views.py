@@ -28,15 +28,22 @@ def map(request):
 
     dat = MqttMsg.objects.filter(~Q(dists__isnull=True)).order_by("-timestamp")
     dat = dat[0]
-    out = [x["est_distance"] * 2.8 for x in eval(eval(dat.dists))["distances"]]
+    out_raw = [x["est_distance"] for x in eval(eval(dat.dists))["distances"]]
+    out = [x["est_distance"] * 60 for x in eval(eval(dat.dists))["distances"]]
     while True:
         if len(out) != 4:
             out.append(0)
         else:
             break
 
+    while True:
+        if len(out_raw) != 4:
+            out_raw.append(0)
+        else:
+            break
+
     return render(request, 'map.html',
-                  {'data': out})
+                  {'data': out, "data_raw": out_raw})
 
 
 def dashboard(request):
