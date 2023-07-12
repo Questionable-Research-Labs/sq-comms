@@ -31,6 +31,8 @@ void forwardLED(const char *topic, const char *payload) {
         else {
             warningLED(false, false, false);
         }
+        const char *msg = doc["msg"];
+        displayRemoteAlert(active, msg);
     }
 }
 

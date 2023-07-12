@@ -33,6 +33,24 @@ void displayUpdateLoraStats(float rssi) {
     lastLoRaPacketTime = millis();
 }
 
+bool remoteAlert = false;
+char remoteAlertMsg[22] = "";
+bool localAlert = false;
+
+void displayRemoteAlert(bool alerting, const char * msg) {
+    if (strlen(msg) > 21) {
+        Serial.println("Message too long for display!");
+    }
+    memccpy(remoteAlertMsg, msg, 0, 21);
+    remoteAlertMsg[21] = '\0';
+    
+    remoteAlert = alerting;
+}
+
+void displayLocalAlert(bool alerting) {
+    localAlert = alerting;
+}
+
 uint32_t lastDisplayUpdate = 0;
 
 void renderState() {
@@ -41,6 +59,7 @@ void renderState() {
     }
 
     display.clear();
+    display.normalDisplay();
     display.setFont(ArialMT_Plain_10);
     display.drawString(0, 0, "Chip ID: " + String(chipID));
     
@@ -54,6 +73,26 @@ void renderState() {
     float secondsSinceLastPacket = (float)(millis() - lastLoRaPacketTime) / 1000;
     sprintf(loraStats, "TSU %0.1fs, RSSI: %.0f", secondsSinceLastPacket, lastLoRaPacketRssi);
     display.drawString(0, 20, loraStats);
+
+    if (remoteAlert || localAlert) {
+        display.setFont(ArialMT_Plain_16);
+        display.drawString(0, 30, "ALERT");
+        display.setFont(ArialMT_Plain_10);
+
+        // Invert display every two seconds;
+        if (millis() / 1000 % 2) {
+            display.invertDisplay();
+        } else {
+            display.normalDisplay();
+        }
+
+        if (remoteAlert) {
+            display.drawString(0, 46, remoteAlertMsg);
+        }
+        else if (localAlert) {
+            display.drawString(0, 46, "BROADCASTING");
+        }
+    }
 
     #endif
 

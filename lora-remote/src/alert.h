@@ -5,6 +5,8 @@
 #include <ArduinoJson.h>
 #include <lora.h>
 #include <chipID.h>
+#include <display.h>
+
 #if defined(REMOTE_SYSTEM)
 #include "warningled.h"
 #endif

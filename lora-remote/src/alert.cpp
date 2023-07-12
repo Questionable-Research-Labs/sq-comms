@@ -62,9 +62,9 @@ void sendAlert() {
         #endif
 
         Serial.println(serialisedJSON);
-
+        displayLocalAlert(state);
         #if defined(REMOTE_SYSTEM)
-
+        
         if(state) {
             warningLED(true, false, true);
         } else {

@@ -245,7 +245,7 @@ static topicPriority msgTypeMap[] = {
     {"ECHO", 0}};
 
 int getMaxHopCount(char* topic) {
-    int maxHopCount = -1;
+    int maxHopCount = 0;
     for (int i = 0; i < sizeof(msgTypeMap) / sizeof(topicPriority); i++) {
 	if (strcmp(topic, msgTypeMap[i].topic) == 0) {
 	    maxHopCount = msgTypeMap[i].hopCount;
@@ -341,12 +341,9 @@ void relayPacket(char* topic, char* hopsData, char* data, uint32_t packetID) {
     // [{from: "chipID", rssi: "56.2", order: "0"}, {from: "chipID2", rssi: "5.2", order: "1"}]
     int hopsCount = doc.size();
     int maxHopCount = getMaxHopCount(topic);
-    if (maxHopCount == -1) {
-	Serial.println("Invalid topic!");
-	return;
-    }
+
     if ((hopsCount + 1 >= maxHopCount) && maxHopCount != -1) {
-	Serial.println("Max hop count reached! No need to repeat");
+		Serial.println("Max hop count reached! No need to repeat");
 	return;
     }
     Serial.printf("Hops count: %d/%d\n", hopsCount, maxHopCount);
