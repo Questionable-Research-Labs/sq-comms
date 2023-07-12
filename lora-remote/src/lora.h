@@ -5,6 +5,9 @@
 #include "helper.h"
 #include <RadioLib.h>
 
+#if defined(OUTPUT_NEOPIXEL)
+#include "neolights.h"
+#endif
 
 #if defined(HAB_SYSTEM)
 #include "hab.h"
@@ -23,9 +26,11 @@ typedef struct {
 void setupLora();
 void LoRaCheckForPacket();
 void setNewMessageFlag();
-void sendMessage(const char* outgoing);
+int sendMessage(const char* outgoing);
 void sendMessage(const char* topic, const char* payload);
 void sendMessage(const char* topic, const char* hops, const char* payload, uint32_t packetID);
 void sendPing();
 void parsePacket(const char* loraMessage);
 void relayPacket(char* topic, char* hopsData, char* data, uint32_t packetID);
+void addMessageToOutQueue(const char* outgoing);
+void proccessOutQueueCycle();
