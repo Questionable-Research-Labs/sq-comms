@@ -75,10 +75,6 @@ def on_message(mqtt_client, userdata, msg):
         obj.dists = msg.payload
         obj.save()
 
-    else:
-        print(f'Received message on topic: {msg.topic} It has been been murdered.')
-
-
 client = mqtt.Client()
 client.on_connect = on_connect
 client.on_message = on_message

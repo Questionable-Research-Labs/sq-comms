@@ -15,50 +15,7 @@ from math import sin, pi
 import datetime
 
 
-def publish_message(request):
-    # request_data = json.loads(request.body)
-    # rc, mid = mqtt_client.publish(request_data['topic'], request_data['msg'])
-    # b = [x for x in range(sin(datetime.datetime.now().microsecond))]
-    # c =
 
-    frequency = 10
-    amplitude = 1
-    theta = 0
-    t = 0
-
-
-    while True:
-        t += 1
-        sinewave = amplitude * sin(2 * pi * frequency * t + theta)
-        # b = sin(datetime.datetime.now().microsecond)
-        # a = random.randrange(-999, 500)
-        a = sinewave
-        mqtt_client.publish("UAB", f"""{{
-  "sender": "Weather Station",
-  "data": [
-    {{
-      "kind": "temp",
-      "value": {a}
-    }},
-    {{
-      "kind": "pressure",
-      "value": {a}
-    }},
-    {{
-      "kind": "co2",
-      "co2": {a}
-    }},
-    {{
-      "kind": "dust",
-      "dust": {a}
-    }},
-    {{
-      "kind": "SHIT LEVEL",
-      "dust": {a}
-    }}
-  ]
-}}""")
-    return JsonResponse({'code': rc})
 
 
 def map(request):
@@ -83,8 +40,11 @@ def map(request):
 
 
 def dashboard(request):
+    print("Dashboard")
     eva_objs = Device.objects.filter(type='P')
+    print(eva_objs)
     act = Device.objects.filter(type='S')
+    print(act)
     return render(request, "index.html", context={"eva": eva_objs, "act": act, "hab": Device.objects.get(dId=settings.HAB_ID), "count": Device.objects.all().count()})
 
 
@@ -227,9 +187,9 @@ def api(request):
                         "ONLINE", evas[num + 1].rssi, evas[num + 1].uptime, evas[num].alert, evas[num + 1].alert))
 
         if evas.count() % 2 != 0:
-            if evas[num].alert:
-                noise = True
             index = evas.count() - 1
+            if evas[index].alert:
+                noise = True
             evas_html.append(
                 mk_st_html(evas[index].last_ping, "ONLINE", evas[index].rssi, evas[index].uptime, "null", "ONLINE",
                            "null", "null", evas[index].alert, False))

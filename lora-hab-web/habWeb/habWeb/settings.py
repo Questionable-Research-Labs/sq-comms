@@ -55,7 +55,7 @@ ROOT_URLCONF = 'habWeb.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [r"D:\sq-comms-master\sq-comms\lora-hab-web\habWeb\template"],
+        'DIRS': [BASE_DIR / "template"],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
@@ -135,4 +135,4 @@ MQTT_KEEPALIVE = 60
 MQTT_USER = ''
 MQTT_PASSWORD = ''
 
-HAB_ID = "Hab"
+HAB_ID = "5C0A6FA4AE30"
