@@ -1,6 +1,6 @@
 #pragma once
 
-#ifdef ALERT_SYSTEM
+#ifdef REMOTE_SYSTEM
 
 #include <Arduino.h>
 #include <ArduinoJson.h>
