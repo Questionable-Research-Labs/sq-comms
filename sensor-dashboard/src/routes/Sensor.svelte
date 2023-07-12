@@ -2,6 +2,7 @@
     import type { ChartData, Point, Chart, Colors } from 'chart.js';
     import { Line } from 'svelte-chartjs';
     import type { Writable } from 'svelte/store';
+  import Page from './+page.svelte';
     export let dataset: Writable<ChartData<"line", (number | Point)[], unknown>>;
     export let sensorName: string;
     export let deviceid: string;
@@ -33,6 +34,21 @@
         suggestedMin = 0;
         title = "Dust";
         unit = "Dust (ug/m3)";
+    } else if(sensorName == "ecg") {
+        suggestedMax = 120;
+        suggestedMin = 0;
+        title = "ECG";
+        unit = "Heart Rate (BPM)";
+    } else if(sensorName == "co2") {
+        suggestedMax = 700;
+        suggestedMin = 0;
+        title = "CO2";
+        unit = "CO2 (ppm)";
+    } else if(sensorName.startsWith("temp")) {
+        suggestedMax = 40;
+        suggestedMin = 0;
+        title = "Temperature";
+        unit = "Temperature (°C)";
     } else {
         suggestedMax = 100;
         suggestedMin = 0;
@@ -62,9 +78,6 @@
         plugins: {
             legend: {
                 display: false,
-            },
-            tooltip: {
-                enabled: false,
             },
             title: {
                 display: true,

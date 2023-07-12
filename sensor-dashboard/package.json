@@ -22,6 +22,7 @@
 	},
 	"type": "module",
 	"dependencies": {
+		"@sveltejs/adapter-static": "^2.0.2",
 		"chart.js": "^4.3.0",
 		"mqtt": "^4.3.7",
 		"paho-mqtt": "^1.1.0",

@@ -59,7 +59,7 @@
 
     onMount(() => {
 
-        let client = new Paho.Client("192.168.1.250", 8080, "clientId");
+        let client = new Paho.Client("192.168.1.250", 8080, `liveDashboard_${Math.random().toString(36).substring(7)}`);
         client.onConnectionLost = onConnectionLost;
         client.onMessageArrived = onMessageArrived;
 
@@ -71,6 +71,7 @@
             console.log("Connected to MQTT");
             connected = true;
             client.subscribe("SENSOR");
+            client.subscribe("UAB");
         }
 
         function onConnectionLost(responseObject: { errorCode: number; errorMessage: string; }) {
@@ -140,6 +141,82 @@
                     });
     
                 });
+
+            }
+
+            if(message.topic == "UAB") {
+                // UAB messages: 
+                // Backpack device: {"sender": "Backpack Outside", "data": [{"kind": "co2", "co2":561},{"kind": "temp", "value":22.00},{"kind": "pressure", "value":100804.00},{"kind": "humidity", "value":36.00}]}
+                // Suit Device: {"sender":"Suit", "data":[{"kind":"temp","value":20.30},{"kind":"pressure","value":100691.00},{"kind":"humidity","value":44.00},{"kind":"temp", "value":20.00},{"kind":"co2", "co2":487},{"kind":"ecg","bpm":0}]}
+                // Weather Station: {"sender":"Weather Station","data":[{"kind":"temp","value":22.1},{"kind":"pressure","value":1004.50},{"kind":"co2","co2":549},{"kind":"dust","dust":233.98},{"kind":"temp","value":21.2},{"kind":"humidity","value":46.0}]}
+
+                let data = JSON.parse(message.payloadString);
+
+                // Each device should have ID's of UAB Backpack, UAB Suit, or UAB Weather Station
+
+                // add to graphdata
+                if(!graphdata[data.sender]) {
+                    graphdata[data.sender] = {};
+                }
+
+                // rename the second 'temp' from suit to 'temp 2'
+                if(data.sender == "Suit" || data.sender == "Backpack Outside" || data.sender == "Weather Station") {
+                    let tempCount = 0;
+                    data.data.forEach((reading: {kind: string, value: number}) => {
+                        if(reading.kind == "temp") {
+                            tempCount++;
+                            if(tempCount > 1) {
+                                reading.kind = "temp 2";
+                            }
+                        }
+                    });
+                }
+
+
+                // add the data to the graphdata array
+                data.data.forEach((reading: {kind: string, value: number}) => {
+                    if(!graphdata[data.sender][reading.kind]) {
+                        graphdata[data.sender][reading.kind] = writable({
+                            labels: [""],
+                            datasets:[{
+                                data:[0], 
+                                label: (reading.kind.slice(0, 1).toUpperCase() + reading.kind.slice(1)),
+                                fill: true,
+                                lineTension: 0.3,
+                                backgroundColor: "rgba(139,52,40,0.4)",
+                                borderColor: "rgba(158, 67, 39, 1)",
+                                borderCapStyle: "butt",
+                                borderDash: [],
+                                borderDashOffset: 0.0,
+                                borderJoinStyle: "miter",
+                                pointBorderColor: "rgb(205, 130,1 58)",
+                                pointBackgroundColor: "rgb(255, 255, 255)",
+                                pointBorderWidth: 10,
+                                pointHoverRadius: 5,
+                                pointHoverBackgroundColor: "rgb(0, 0, 0)",
+                                pointHoverBorderColor: "rgba(220, 220, 220,1)",
+                                pointHoverBorderWidth: 2,
+                                pointRadius: 0,
+                                pointHitRadius: 10,
+                            }]
+                        });
+                    }
+
+                    // update the graph data, reading 'value' doesn't exist for co2 and dust, so just use the second value
+                    graphdata[data.sender][reading.kind].update((x)=>{
+                        x.datasets[0].data.push(reading.value || reading.co2 || reading.dust || reading.bpm);                        
+                        x.labels.push("");
+                        if(x.datasets[0].data.length > 50) {
+                            x.datasets[0].data.shift();
+                            x.labels.shift();
+                        }
+                        
+                        return x;
+                    });
+
+
+                });
+
 
             }
         }
