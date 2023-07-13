@@ -59,14 +59,14 @@ def mk_habs_html(ping, st, rs, up, alarm):
     if alarm:
         return f"""<div style="background: #8a3421;padding: 17px;border-radius: 15px;width: 209.2px;">
         <div style="height: 1px;background: var(--bs-white);margin-bottom: 12px;"></div>
-        <div class="d-sm-flex justify-content-sm-center align-items-sm-center"><img class="d-sm-flex justify-content-sm-start" src="http://127.0.0.1:8000/static/assets/img/hab.png" style="height: 69px;" />
+        <div class="d-sm-flex justify-content-sm-center align-items-sm-center"><img class="d-sm-flex justify-content-sm-start" src="/static/assets/img/hab.png" style="height: 69px;" />
             <p class="text-white justify-content-sm-end" style="font-size: 11px;padding-left: 8px;"><br />Last Ping: {ping.strf("%d-%m-%y")}<br />Status: {st} <br />RSSI: {rs}  <br />Uptime {up}<br /></p>
         </div>
     </div>"""
     else:
         return f"""<div style="background: #525252;padding: 17px;border-radius: 15px;width: 209.2px;">
             <div style="height: 1px;background: var(--bs-white);margin-bottom: 12px;"></div>
-            <div class="d-sm-flex justify-content-sm-center align-items-sm-center"><img class="d-sm-flex justify-content-sm-start" src="http://127.0.0.1:8000/static/assets/img/hab.png" style="height: 69px;" />
+            <div class="d-sm-flex justify-content-sm-center align-items-sm-center"><img class="d-sm-flex justify-content-sm-start" src="/static/assets/img/hab.png" style="height: 69px;" />
                 <p class="text-white justify-content-sm-end" style="font-size: 11px;padding-left: 8px;"><br />Last Ping: {ping.strf("%d-%m-%y")}<br />Status: {st} <br />RSSI: {rs}  <br />Uptime {up}<br /></p>
             </div>
         </div>"""
@@ -77,14 +77,14 @@ def mk_eva_html(ping1, st1, rs1, up1, ping2, st2, rs2, up2, alarm1, alarm2):
         return f"""<<div class="row" style="margin-top: 17px;">
         <div class="col-md-6" style="width: 40%;background: #8a3421;padding: 17px;border-width: 5px;border-radius: 15px;">
             <div style="height: 1px;background: var(--bs-white);margin-bottom: 12px;"></div>
-            <div class="d-sm-flex justify-content-sm-start align-items-sm-center"><img class="d-sm-flex justify-content-sm-start" src="http://127.0.0.1:8000/static/assets/img/eva.png" style="height: 69px;" />
+            <div class="d-sm-flex justify-content-sm-start align-items-sm-center"><img class="d-sm-flex justify-content-sm-start" src="/static/assets/img/eva.png" style="height: 69px;" />
                 <p class="text-white justify-content-sm-end" style="font-size: 11px;padding-left: 8px;"><br />Last Ping: {ping1} <br />Status: {st1} <br />RSSI: {rs1} <br />Uptime: {up1}<br /></p>
             </div>
         </div>
         <div class="col-md-6" style="width: 20%;"></div>
         <div class="col-md-6" style="width: 40%;background: #525252;padding: 17px;border-radius: 15px;">
             <div style="height: 1px;background: var(--bs-white);margin-bottom: 12px;"></div>
-            <div class="d-sm-flex justify-content-sm-start align-items-sm-center"><img class="d-sm-flex justify-content-sm-start" src="http://127.0.0.1:8000/static/assets/img/eva.png" style="height: 69px;" />
+            <div class="d-sm-flex justify-content-sm-start align-items-sm-center"><img class="d-sm-flex justify-content-sm-start" src="/static/assets/img/eva.png" style="height: 69px;" />
                 <p class="text-white justify-content-sm-end" style="font-size: 11px;padding-left: 8px;"><br />Last Ping: {ping2} <br />Status: {st2} <br />RSSI: {rs2} <br />Uptime: {up2}<br /></p>
             </div>
         </div>
@@ -93,14 +93,14 @@ def mk_eva_html(ping1, st1, rs1, up1, ping2, st2, rs2, up2, alarm1, alarm2):
         return f"""<<div class="row" style="margin-top: 17px;">
         <div class="col-md-6" style="width: 40%;background: #525252;padding: 17px;border-width: 5px;border-radius: 15px;">
             <div style="height: 1px;background: var(--bs-white);margin-bottom: 12px;"></div>
-            <div class="d-sm-flex justify-content-sm-start align-items-sm-center"><img class="d-sm-flex justify-content-sm-start" src="http://127.0.0.1:8000/static/assets/img/eva.png" style="height: 69px;" />
+            <div class="d-sm-flex justify-content-sm-start align-items-sm-center"><img class="d-sm-flex justify-content-sm-start" src="/static/assets/img/eva.png" style="height: 69px;" />
                 <p class="text-white justify-content-sm-end" style="font-size: 11px;padding-left: 8px;"><br />Last Ping: {ping1} <br />Status: {st1} <br />RSSI: {rs1} <br />Uptime: {up1}<br /></p>
             </div>
         </div>
         <div class="col-md-6" style="width: 20%;"></div>
         <div class="col-md-6" style="width: 40%;background: #8a3421;padding: 17px;border-radius: 15px;">
             <div style="height: 1px;background: var(--bs-white);margin-bottom: 12px;"></div>
-            <div class="d-sm-flex justify-content-sm-start align-items-sm-center"><img class="d-sm-flex justify-content-sm-start" src="http://127.0.0.1:8000/static/assets/img/eva.png" style="height: 69px;" />
+            <div class="d-sm-flex justify-content-sm-start align-items-sm-center"><img class="d-sm-flex justify-content-sm-start" src="/static/assets/img/eva.png" style="height: 69px;" />
                 <p class="text-white justify-content-sm-end" style="font-size: 11px;padding-left: 8px;"><br />Last Ping: {ping2} <br />Status: {st2} <br />RSSI: {rs2} <br />Uptime: {up2}<br /></p>
             </div>
         </div>
@@ -109,14 +109,14 @@ def mk_eva_html(ping1, st1, rs1, up1, ping2, st2, rs2, up2, alarm1, alarm2):
         return f"""<<div class="row" style="margin-top: 17px;">
                 <div class="col-md-6" style="width: 40%;background: #525252;padding: 17px;border-width: 5px;border-radius: 15px;">
                     <div style="height: 1px;background: var(--bs-white);margin-bottom: 12px;"></div>
-                    <div class="d-sm-flex justify-content-sm-start align-items-sm-center"><img class="d-sm-flex justify-content-sm-start" src="http://127.0.0.1:8000/static/assets/img/eva.png" style="height: 69px;" />
+                    <div class="d-sm-flex justify-content-sm-start align-items-sm-center"><img class="d-sm-flex justify-content-sm-start" src="/static/assets/img/eva.png" style="height: 69px;" />
                         <p class="text-white justify-content-sm-end" style="font-size: 11px;padding-left: 8px;"><br />Last Ping: {ping1} <br />Status: {st1} <br />RSSI: {rs1} <br />Uptime: {up1}<br /></p>
                     </div>
                 </div>
                 <div class="col-md-6" style="width: 20%;"></div>
                 <div class="col-md-6" style="width: 40%;background: #525252;padding: 17px;border-radius: 15px;">
                     <div style="height: 1px;background: var(--bs-white);margin-bottom: 12px;"></div>
-                    <div class="d-sm-flex justify-content-sm-start align-items-sm-center"><img class="d-sm-flex justify-content-sm-start" src="http://127.0.0.1:8000/static/assets/img/eva.png" style="height: 69px;" />
+                    <div class="d-sm-flex justify-content-sm-start align-items-sm-center"><img class="d-sm-flex justify-content-sm-start" src="/static/assets/img/eva.png" style="height: 69px;" />
                         <p class="text-white justify-content-sm-end" style="font-size: 11px;padding-left: 8px;"><br />Last Ping: {ping2} <br />Status: {st2} <br />RSSI: {rs2} <br />Uptime: {up2}<br /></p>
                     </div>
                 </div>
@@ -128,14 +128,14 @@ def mk_st_html(ping1, st1, rs1, up1, ping2, st2, rs2, up2, alarm1, alarm2):
         return f"""<div class="row"  style="margin-top: 17px;">
         <div class="col-md-6" style="width: 40%;background: #8a3421;padding: 17px;border-width: 5px;border-radius: 15px;">
             <div style="height: 1px;background: var(--bs-white);margin-bottom: 12px;"></div>
-            <div class="d-sm-flex justify-content-sm-start align-items-sm-center"><img class="d-sm-flex justify-content-sm-start" src="http://127.0.0.1:8000/static/assets/img/node.png" style="height: 69px;" />
+            <div class="d-sm-flex justify-content-sm-start align-items-sm-center"><img class="d-sm-flex justify-content-sm-start" src="/static/assets/img/node.png" style="height: 69px;" />
                 <p class="text-white justify-content-sm-end" style="font-size: 11px;padding-left: 8px;"><br />Last Ping: {ping1} <br />Status: {st1} <br />RSSI: {rs1} <br />Uptime: {up1}<br /></p>
             </div>
         </div>
         <div class="col-md-6" style="width: 20%;"></div>
         <div class="col-md-6" style="width: 40%;background: #525252;padding: 17px;border-radius: 15px;">
             <div style="height: 1px;background: var(--bs-white);margin-bottom: 12px;"></div>
-            <div class="d-sm-flex justify-content-sm-start align-items-sm-center"><img class="d-sm-flex justify-content-sm-start" src="http://127.0.0.1:8000/static/assets/img/node.png" style="height: 69px;" />
+            <div class="d-sm-flex justify-content-sm-start align-items-sm-center"><img class="d-sm-flex justify-content-sm-start" src="/static/assets/img/node.png" style="height: 69px;" />
                 <p class="text-white justify-content-sm-end" style="font-size: 11px;padding-left: 8px;"><br />Last Ping: {ping2} <br />Status: {st2} <br />RSSI: {rs2} <br />Uptime: {up2}<br /></p>
             </div>
         </div>
@@ -144,14 +144,14 @@ def mk_st_html(ping1, st1, rs1, up1, ping2, st2, rs2, up2, alarm1, alarm2):
         return f"""<div class="row"  style="margin-top: 17px;">
         <div class="col-md-6" style="width: 40%;background: #525252;padding: 17px;border-width: 5px;border-radius: 15px;">
             <div style="height: 1px;background: var(--bs-white);margin-bottom: 12px;"></div>
-            <div class="d-sm-flex justify-content-sm-start align-items-sm-center"><img class="d-sm-flex justify-content-sm-start" src="http://127.0.0.1:8000/static/assets/img/node.png" style="height: 69px;" />
+            <div class="d-sm-flex justify-content-sm-start align-items-sm-center"><img class="d-sm-flex justify-content-sm-start" src="/static/assets/img/node.png" style="height: 69px;" />
                 <p class="text-white justify-content-sm-end" style="font-size: 11px;padding-left: 8px;"><br />Last Ping: {ping1} <br />Status: {st1} <br />RSSI: {rs1} <br />Uptime: {up1}<br /></p>
             </div>
         </div>
         <div class="col-md-6" style="width: 20%;"></div>
         <div class="col-md-6" style="width: 40%;background: #8a3421;padding: 17px;border-radius: 15px;">
             <div style="height: 1px;background: var(--bs-white);margin-bottom: 12px;"></div>
-            <div class="d-sm-flex justify-content-sm-start align-items-sm-center"><img class="d-sm-flex justify-content-sm-start" src="http://127.0.0.1:8000/static/assets/img/node.png" style="height: 69px;" />
+            <div class="d-sm-flex justify-content-sm-start align-items-sm-center"><img class="d-sm-flex justify-content-sm-start" src="/static/assets/img/node.png" style="height: 69px;" />
                 <p class="text-white justify-content-sm-end" style="font-size: 11px;padding-left: 8px;"><br />Last Ping: {ping2} <br />Status: {st2} <br />RSSI: {rs2} <br />Uptime: {up2}<br /></p>
             </div>
         </div>
@@ -160,14 +160,14 @@ def mk_st_html(ping1, st1, rs1, up1, ping2, st2, rs2, up2, alarm1, alarm2):
         return f"""<div class="row"  style="margin-top: 17px;">
             <div class="col-md-6" style="width: 40%;background: #525252;padding: 17px;border-width: 5px;border-radius: 15px;">
                 <div style="height: 1px;background: var(--bs-white);margin-bottom: 12px;"></div>
-                <div class="d-sm-flex justify-content-sm-start align-items-sm-center"><img class="d-sm-flex justify-content-sm-start" src="http://127.0.0.1:8000/static/assets/img/node.png" style="height: 69px;" />
+                <div class="d-sm-flex justify-content-sm-start align-items-sm-center"><img class="d-sm-flex justify-content-sm-start" src="/static/assets/img/node.png" style="height: 69px;" />
                     <p class="text-white justify-content-sm-end" style="font-size: 11px;padding-left: 8px;"><br />Last Ping: {ping1} <br />Status: {st1} <br />RSSI: {rs1} <br />Uptime: {up1}<br /></p>
                 </div>
             </div>
             <div class="col-md-6" style="width: 20%;"></div>
             <div class="col-md-6" style="width: 40%;background: #525252;padding: 17px;border-radius: 15px;">
                 <div style="height: 1px;background: var(--bs-white);margin-bottom: 12px;"></div>
-                <div class="d-sm-flex justify-content-sm-start align-items-sm-center"><img class="d-sm-flex justify-content-sm-start" src="http://127.0.0.1:8000/static/assets/img/node.png" style="height: 69px;" />
+                <div class="d-sm-flex justify-content-sm-start align-items-sm-center"><img class="d-sm-flex justify-content-sm-start" src="/static/assets/img/node.png" style="height: 69px;" />
                     <p class="text-white justify-content-sm-end" style="font-size: 11px;padding-left: 8px;"><br />Last Ping: {ping2} <br />Status: {st2} <br />RSSI: {rs2} <br />Uptime: {up2}<br /></p>
                 </div>
             </div>

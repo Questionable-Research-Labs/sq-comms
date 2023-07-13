@@ -1,3 +1,4 @@
 django
 paho-mqtt
 geojson
+gunicorn
