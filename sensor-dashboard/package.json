@@ -12,6 +12,7 @@
 	"devDependencies": {
 		"@fontsource/merriweather": "^5.0.5",
 		"@sveltejs/adapter-auto": "^2.0.0",
+		"@sveltejs/adapter-cloudflare": "^2.3.1",
 		"@sveltejs/kit": "^1.20.4",
 		"@types/chart.js": "^2.9.37",
 		"svelte": "^3.59.2",
@@ -22,7 +23,6 @@
 	},
 	"type": "module",
 	"dependencies": {
-		"@sveltejs/adapter-static": "^2.0.2",
 		"chart.js": "^4.3.0",
 		"mqtt": "^4.3.7",
 		"paho-mqtt": "^1.1.0",

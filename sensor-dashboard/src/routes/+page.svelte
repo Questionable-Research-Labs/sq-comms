@@ -8,6 +8,7 @@
     // and listen to topic "SENSOR"
     import { onMount } from 'svelte'; 
     import Paho from 'paho-mqtt';
+    import {MQTT_SERVER, MQTT_PORT} from "../const.ts"
 
     let connected = false;
 
@@ -58,8 +59,8 @@
     // }
 
     onMount(() => {
-
-        let client = new Paho.Client("192.168.1.250", 8080, `liveDashboard_${Math.random().toString(36).substring(7)}`);
+        // Server allows read-only anonymous connections, so no need for username and password
+        let client = new Paho.Client(MQTT_SERVER, MQTT_PORT, `liveDashboard_${Math.random().toString(36).substring(7)}`);
         client.onConnectionLost = onConnectionLost;
         client.onMessageArrived = onMessageArrived;
 
