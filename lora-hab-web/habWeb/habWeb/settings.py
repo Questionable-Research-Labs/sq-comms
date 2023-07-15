@@ -11,6 +11,11 @@ https://docs.djangoproject.com/en/4.2/ref/settings/
 """
 
 from pathlib import Path
+import environ
+
+env = environ.Env()
+environ.Env.read_env()
+
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -25,7 +30,7 @@ SECRET_KEY = 'django-insecure-lrlyjtgyhcc-ee5$*-fi-4d81u3-#i@-f=+wf2qg0m#%w(2h%0
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ["192.168.1.250"]
+ALLOWED_HOSTS = ["*"]
 
 
 # Application definition
@@ -77,7 +82,7 @@ WSGI_APPLICATION = 'habWeb.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': BASE_DIR / 'db.sqlite3',
+        'NAME': BASE_DIR / 'db/db.sqlite3',
     }
 }
 
@@ -123,16 +128,18 @@ STATICFILES_DIRS = [
     BASE_DIR / "assets",
 ]
 
+STATIC_ROOT = BASE_DIR / 'static/'
+
 # Default primary key field type
 # https://docs.djangoproject.com/en/4.2/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 
-MQTT_SERVER = "192.168.1.250"
-MQTT_PORT = 1883
+MQTT_SERVER = env('MQTT_SERVER')
+MQTT_PORT = int(env('MQTT_PORT'))
 MQTT_KEEPALIVE = 60
-MQTT_USER = ''
-MQTT_PASSWORD = ''
+MQTT_USER = env('MQTT_USER')
+MQTT_PASSWORD = env('MQTT_PASS')
 
-HAB_ID = "5C0A6FA4AE30"
+HAB_ID = env('HAB_ID')

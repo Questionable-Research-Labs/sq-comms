@@ -1,7 +1,7 @@
 """Gunicorn *development* config file"""
 
 # Django WSGI application path in pattern MODULE_NAME:VARIABLE_NAME
-wsgi_app = "hasWeb.wsgi:application"
+wsgi_app = "habWeb.wsgi:application"
 # The granularity of Error log outputs
 loglevel = "debug"
 # The number of worker processes for handling requests
@@ -17,4 +17,4 @@ capture_output = True
 # PID file so you can easily fetch process ID
 pidfile = "/var/run/gunicorn/dev.pid"
 # Daemonize the Gunicorn process (detach & enter background)
-daemon = True
+daemon = False

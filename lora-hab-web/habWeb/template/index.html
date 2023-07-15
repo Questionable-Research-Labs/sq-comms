@@ -5,7 +5,7 @@
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, shrink-to-fit=no">
-    <title>SQ</title>
+    <title>SignalQuo Alert Dashboard</title>
     <link rel="stylesheet" href="{% static 'assets/bootstrap/css/bootstrap.min.css' %}">
     <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,700">
     <link rel="stylesheet" href="{% static 'assets/css/Header-Blue.css' %}">
@@ -102,11 +102,12 @@
 
 <script>
 
-    const intervalID = setInterval(click, 2000);
+    const intervalID = setInterval(click, 1000);
+    click();
 
 
 function click() {
-    fetch("/test/api")
+    fetch("/api")
 .then(response => response.json()) // converts the response to JSON
 .then(data => {
     $('#eva').empty()

@@ -2,3 +2,4 @@ django
 paho-mqtt
 geojson
 gunicorn
+django-environ
