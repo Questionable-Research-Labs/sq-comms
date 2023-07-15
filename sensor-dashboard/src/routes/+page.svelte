@@ -65,7 +65,7 @@
         client.onMessageArrived = onMessageArrived;
 
 
-        client.connect({ onSuccess: onConnect });
+        client.connect({ onSuccess: onConnect, useSSL: true });
         
         function onConnect() {
             // Once a connection has been made, make a subscription and send a message.
