@@ -50,7 +50,8 @@ void setupNeoPixels() {
     pixels.clear();  // Set all pixel colors to 'off'
     pixels.show();
     setAlerting(false);
-    pixels.rainbow(0, NeoPixelCount-1); // Show default rainbow to show it's working
+    pixels.rainbow(); // Show default rainbow to show it's working
+    alertLight(false); // Ensure alert light starts off
     pixels.show();
 }
 

@@ -37,6 +37,12 @@ void sendAlert() {
             return;
         }
         alertState = state;
+
+        if (state) {
+            Serial.println("\n########## BROADCASTING ALERT ##########");
+        } else {
+            Serial.println("\n############ CLEARING ALERT ############");
+        }
         
         #if defined(OUTPUT_NEOPIXEL)
         setAlerting(state);
@@ -57,6 +63,7 @@ void sendAlert() {
         serializeJson(doc, serialisedJSON, JSON_SERIALISATION_LIMIT);
         sendMessage("ALERT", serialisedJSON);
         if (!state) {
+            // Send twice to increase reliability of message
             sendMessage("ALERT", serialisedJSON);
         }
 

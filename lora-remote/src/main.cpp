@@ -50,6 +50,9 @@ void setup() {
 		alertSetup();
 		setupLED();
 	#endif
+
+
+	Serial.println("\n########## Setup complete ##########\n");
 }
 
 
