@@ -65,14 +65,12 @@ void loop() {
 	sendAlert();
 	#endif
 
-	#if !defined(HAB_SYSTEM)
 
     if (millis() - lastSendTime > interval) {
 		sendPing();
 		lastSendTime = millis();  //void loopHab() timestamp the message
 		msgCount++;
     }
-	#endif
 
     // parse for a packet, and call onReceive with the result:
     LoRaCheckForPacket();

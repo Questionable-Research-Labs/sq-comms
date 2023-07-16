@@ -1,6 +1,7 @@
 import type { Message } from 'paho-mqtt';
 import { z } from "zod";
 import { devices } from './store';
+import dayjs, {type Dayjs} from 'dayjs';
 import { get } from 'svelte/store';
 
 
@@ -15,6 +16,7 @@ const ValidMessageSchema = z.union([
                 value: z.number(),
             })),
         }),
+        datetime: z.instanceof(dayjs as unknown as typeof Dayjs),
     }),
     z.object({
         topic: z.literal("ALERT"),
@@ -23,6 +25,7 @@ const ValidMessageSchema = z.union([
             msg: z.string(),
             active: z.boolean(),
         }),
+        datetime: z.instanceof(dayjs as unknown as typeof Dayjs),
     }),
     z.object({
         topic: z.literal("PING"),
@@ -30,6 +33,7 @@ const ValidMessageSchema = z.union([
             from: z.string(),
             uptime: z.number(),
         }),
+        datetime: z.instanceof(dayjs as unknown as typeof Dayjs),
     }),
     z.object({
         topic: z.literal("DISTANCES"),
@@ -41,6 +45,7 @@ const ValidMessageSchema = z.union([
                 est_distance: z.number(),
             })),
         }),
+        datetime: z.instanceof(dayjs as unknown as typeof Dayjs),
     }),
 ]);
 
@@ -48,7 +53,7 @@ export type ValidMessage = z.infer<typeof ValidMessageSchema>;
 
 async function validateMessage(message: Message) {
     try {
-        const validMessage = ValidMessageSchema.parse(JSON.parse(message.payloadString));
+        const validMessage = ValidMessageSchema.parse({topic: message.destinationName, payload: JSON.parse(message.payloadString), datetime: dayjs()});
         return validMessage;
     } catch (error) {
         console.error(error);
@@ -68,8 +73,9 @@ export async function newMessage(message: Message) {
             devices.set(validMessage.payload.from, {
                 chipID: validMessage.payload.from,
                 name: validMessage.payload.from,
-                location: [0, 0],
+                location: null,
                 messageLog: [validMessage],
+                class: "station",
             });
         } else {
             device.messageLog.push(validMessage);

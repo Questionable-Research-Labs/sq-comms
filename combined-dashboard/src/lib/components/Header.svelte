@@ -55,7 +55,7 @@
     @use "sass:math";
 
     .header-container {
-        background: linear-gradient(180deg, rgba(78,71,129,1) 0%, rgba(44,44,44,1) 60%);
+        background: radial-gradient(farthest-corner at top,rgba(78,71,129,1) 0%, rgba(44,44,44,1) 80%);
         overflow: clip;
         border-bottom: white solid 4px;
     }
@@ -91,6 +91,7 @@
             text-align: center;
             color: white;
             background-color: #9787ff;
+            border: 4px solid #8078c2;
             border-radius: 50%;
             font-size: calc(var(--node-count-size) - 2rem);
             text-align: center;

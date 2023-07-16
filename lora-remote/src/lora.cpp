@@ -234,7 +234,11 @@ void sendPing() {
     char serialisedJSON[1024];
     serializeJson(doc, serialisedJSON, 1024);
     Serial.println(serialisedJSON);
+	#if defined(HAB_SYSTEM)
+	forwardPacket("PING", serialisedJSON);
+	#else
     sendMessage("PING", serialisedJSON);
+	#endif
 }
 
 static topicPriority msgTypeMap[] = {
