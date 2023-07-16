@@ -25,3 +25,9 @@ export const devices: Writable<Map<string,Device>> = writable(new Map(Object.ent
         class: "hub",
     }
 })));
+
+export type DistanceMeasurement = {
+    from: string,
+    est_distance: number,
+}[];
+export let alertTable: Writable<Map<string,DistanceMeasurement>> = writable(new Map());

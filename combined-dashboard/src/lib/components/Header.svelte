@@ -1,8 +1,12 @@
 <script lang="ts">
     import Logo from "$lib/assets/logo.png"
-    import { devices } from "$lib/store";
+    import { alertTable, devices } from "$lib/store";
+    import { tweened } from "svelte/motion";
+
+    let backgroundColor = tweened([78,71,129]);
+    $: $backgroundColor = $alertTable.size > 0 ? [129, 71, 71] : [78,71,129];
 </script>
-<div class="header-container">
+<div class="header-container" style="--backgroundColor: {$backgroundColor.join(", ")}">
     <div class="logo-container">
         <img src={Logo} alt="Signal Quo Logo">
         <span>SIGNAL QUO</span>
@@ -55,7 +59,7 @@
     @use "sass:math";
 
     .header-container {
-        background: radial-gradient(farthest-corner at top,rgba(78,71,129,1) 0%, rgba(44,44,44,1) 80%);
+        background: radial-gradient(farthest-corner at top,rgba(var(--backgroundColor),1) 0%, rgba(44,44,44,1) 80%);
         overflow: clip;
         border-bottom: white solid 4px;
     }

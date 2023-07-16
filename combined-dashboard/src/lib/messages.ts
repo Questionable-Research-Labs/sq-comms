@@ -3,6 +3,7 @@ import { z } from "zod";
 import { devices } from './store';
 import dayjs, {type Dayjs} from 'dayjs';
 import { get } from 'svelte/store';
+import { processAlertMessages } from './alert';
 
 
 // Zod schema
@@ -78,8 +79,11 @@ export async function newMessage(message: Message) {
                 class: "station",
             });
         } else {
-            device.messageLog.push(validMessage);
+            device.messageLog.unshift(validMessage);
         }
         return devices;
     });
+
+    // Process alert messages
+    processAlertMessages(validMessage);
 }

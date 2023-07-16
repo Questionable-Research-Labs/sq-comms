@@ -3,6 +3,7 @@
   import Header from "$lib/components/Header.svelte";
   import { onMount } from "svelte";
   import { mqttConnect, mqttConnected } from "$lib/mqtt";
+    import Audio from "$lib/components/Audio.svelte";
 
   onMount(() => {
     mqttConnect();
@@ -11,6 +12,7 @@
 
 <div class="app">
   <Header />
+  <Audio/>
 
   <main>
     <slot />

@@ -1,13 +1,13 @@
 <script lang="ts">
-    import dayjs from 'dayjs';
-    import relativeTime from 'dayjs/plugin/relativeTime';
+    import dayjs from "dayjs";
+    import relativeTime from "dayjs/plugin/relativeTime";
 
     import { getLastPing, getIsConnected } from "$lib/helper";
     import HubIcon from "$lib/icons/HubIcon.svelte";
     import PersonalIcon from "$lib/icons/PersonalIcon.svelte";
     import StationIcon from "$lib/icons/StationIcon.svelte";
-    import { devices } from "$lib/store";
-    import { onDestroy } from 'svelte';
+    import { alertTable, devices } from "$lib/store";
+    import { onDestroy } from "svelte";
 
     dayjs.extend(relativeTime);
 
@@ -20,12 +20,18 @@
         clearInterval(timer);
     });
 </script>
+
 <!-- <div class="title"><h2>Connected Nodes</h2></div> -->
 <div class="device-container">
     {#each $devices.values() as device}
-    {@const lastPing = getLastPing(device)}
-    {@const isConnected = getIsConnected(device)}
-        <div class="device-config" class:connected={isConnected && lastPing} class:disconnected={!isConnected  && lastPing}>
+        {@const lastPing = getLastPing(device)}
+        {@const isConnected = getIsConnected(device)}
+        <div
+            class="device-config"
+            class:connected={isConnected && lastPing}
+            class:disconnected={!isConnected && lastPing}
+            class:alerting={$alertTable.has(device.chipID)}
+        >
             {#if device.class == "hub"}
                 <HubIcon />
             {:else if device.class == "station"}
@@ -40,7 +46,10 @@
             </div>
             <div class="device-config-item">
                 <span class="property">Last Ping:</span>
-                <span class="value" title={lastPing?.datetime.toISOString() || "N/A"}>
+                <span
+                    class="value"
+                    title={lastPing?.datetime.toISOString() || "N/A"}
+                >
                     {#key timerKey}
                         {lastPing?.datetime.fromNow(false) || "N/A"}
                     {/key}
@@ -90,10 +99,10 @@
                 justify-content: space-between;
                 align-items: center;
                 padding: 0.15em 0 0.2em 0;
-                
+
                 border-top: 1px solid #eee;
                 border-top-style: dashed;
-                
+
                 .value {
                     background-color: #222;
                     padding: 0.2em 0.25em;
@@ -110,6 +119,21 @@
             }
             &.disconnected {
                 border-color: $color-error-neutral;
+            }
+            &.alerting {
+                border-color: $color-error-neutral;
+                animation: alert 0.5s ease-in-out infinite alternate;
+
+                @keyframes alert {
+                    0% {
+                        border-color: $color-error-neutral;
+                        box-shadow: 0 0 0 0 $color-error-neutral;
+                    }
+                    100% {
+                        border-color: $color-error-bright;
+                        box-shadow: 0 0 10px 4px $color-error-bright;
+                    }
+                }
             }
         }
     }
