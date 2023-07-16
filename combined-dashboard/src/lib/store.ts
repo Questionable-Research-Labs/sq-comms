@@ -1,5 +1,6 @@
 import { writable, type Writable } from "svelte/store";
 import type { ValidMessage } from "./messages";
+import type { Dayjs } from "dayjs";
 
 export type Device = {
     chipID: string,
@@ -20,7 +21,7 @@ export const devices: Writable<Map<string,Device>> = writable(new Map(Object.ent
     "5C0A6FA4AE30": {
         chipID: "5C0A6FA4AE30",
         name: "Hub Device",
-        location: [0,0],
+        location: [-35.68315810486083, 174.32884720522713],
         messageLog: [],
         class: "hub",
     }
@@ -29,5 +30,6 @@ export const devices: Writable<Map<string,Device>> = writable(new Map(Object.ent
 export type DistanceMeasurement = {
     from: string,
     est_distance: number,
-}[];
-export let alertTable: Writable<Map<string,DistanceMeasurement>> = writable(new Map());
+    datetime: Dayjs
+};
+export let alertTable: Writable<Map<string,DistanceMeasurement[]>> = writable(new Map());

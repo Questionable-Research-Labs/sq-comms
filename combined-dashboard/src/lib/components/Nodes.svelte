@@ -6,8 +6,12 @@
     import HubIcon from "$lib/icons/HubIcon.svelte";
     import PersonalIcon from "$lib/icons/PersonalIcon.svelte";
     import StationIcon from "$lib/icons/StationIcon.svelte";
-    import { alertTable, devices } from "$lib/store";
-    import { onDestroy } from "svelte";
+    import { alertTable, devices, type Device } from "$lib/store";
+    import { getContext, onDestroy } from "svelte";
+    import Map from "./Map.svelte";
+
+    const { open } = getContext("simple-modal") as any;
+
 
     dayjs.extend(relativeTime);
 
@@ -19,6 +23,12 @@
     onDestroy(() => {
         clearInterval(timer);
     });
+
+    function openAlertMap(device: Device) {
+        if ($alertTable.has(device.chipID)) {
+            open(Map, {alertingNode: device.chipID});
+        }
+    }
 </script>
 
 <!-- <div class="title"><h2>Connected Nodes</h2></div> -->
@@ -31,6 +41,7 @@
             class:connected={isConnected && lastPing}
             class:disconnected={!isConnected && lastPing}
             class:alerting={$alertTable.has(device.chipID)}
+            on:click={() => {openAlertMap(device)}}
         >
             {#if device.class == "hub"}
                 <HubIcon />
@@ -134,6 +145,7 @@
                         box-shadow: 0 0 10px 4px $color-error-bright;
                     }
                 }
+                cursor: pointer;
             }
         }
     }

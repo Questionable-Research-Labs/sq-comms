@@ -1,0 +1,126 @@
+@use "variables.scss" as *;
+
+.__modal-bg {
+	// fixed top-0 left-0 w-screen h-screen flex flex-col justify-center bg-orange-100/[.9]
+	position: fixed;
+	top: 0;
+	left: 0;
+	width: 100vw;
+	height: 100vh;
+	display: flex;
+	flex-direction: column;
+	justify-content: center;
+	background-color: rgba(0, 0, 0, 0.66);
+	z-index: 1000;
+}
+
+@supports (-webkit-touch-callout: none) {
+	body {
+		/* The hack for Safari iOS */
+		height: -webkit-fill-available;
+	}
+}
+
+.__modal-window-wrap {
+	// relative m-2 max-h-full
+	position: relative;
+	margin: 2rem;
+	max-height: 100%;
+	@media screen and (max-width: $mobile-transition) {
+		margin: 0;
+	}
+}
+
+.__modal-window {
+	// relative w-40 max-w-full max-h-full my-2 mx-auto text-orange-200 rounded shadow-md bg-indigo-900
+	position: relative;
+	width: 40rem;
+	max-width: 100%;
+	max-height: 100%;
+	margin: 2rem auto;
+	color: #fff;
+	border-radius: 0.25rem;
+	box-shadow: 0 0.25rem 0.5rem rgba(0, 0, 0, 0.25);
+	background: $color-bg-0;
+	border: 2px solid #fff;
+	@media screen and (max-width: $mobile-transition) {
+		border-right: none;
+		border-left: none;
+	}
+
+	display: flex;
+}
+
+.__modal-content {
+	// relative p-2 overflow-auto
+	position: relative;
+	padding: 2rem;
+	overflow: auto;
+	flex: 1;
+}
+
+.__modal-close-button {
+	display: block;
+	box-sizing: border-box;
+	position: absolute;
+	z-index: 1000;
+	top: 1rem;
+	right: 1rem;
+	margin: 0;
+	padding: 0;
+	width: 1.5rem;
+	height: 1.5rem;
+	border: 0;
+	color: white;
+	border-radius: 1.5rem;
+	background: black;
+	box-shadow: 0 0 0 1px white;
+	transition: transform 0.2s cubic-bezier(0.25, 0.1, 0.25, 1), background 0.2s cubic-bezier(0.25, 0.1, 0.25, 1);
+	appearance: none;
+	cursor: pointer;
+
+	&:before,
+	&:after {
+		content: "";
+		display: block;
+		box-sizing: border-box;
+		position: absolute;
+		top: 50%;
+		width: 1rem;
+		height: 1px;
+		background: white;
+		transform-origin: center;
+		transition: height 0.2s cubic-bezier(0.25, 0.1, 0.25, 1), background 0.2s cubic-bezier(0.25, 0.1, 0.25, 1);
+	}
+	&:before {
+		-webkit-transform: translate(0, -50%) rotate(45deg);
+		-moz-transform: translate(0, -50%) rotate(45deg);
+		transform: translate(0, -50%) rotate(45deg);
+		left: 0.25rem;
+	}
+	&:after {
+		-webkit-transform: translate(0, -50%) rotate(-45deg);
+		-moz-transform: translate(0, -50%) rotate(-45deg);
+		transform: translate(0, -50%) rotate(-45deg);
+		left: 0.25rem;
+	}
+	&:hover {
+		background: black;
+		&:before, &:after {
+			height: 2px;
+			background: white;
+		}
+	}
+	&:focus {
+		border-color: #3399ff;
+		box-shadow: 0 0 0 2px #3399ff;
+	}
+	&:active {
+		transform: scale(0.9);
+	}
+	&:hover,
+	&:focus,
+	&:active {
+		outline: none;
+	}
+}

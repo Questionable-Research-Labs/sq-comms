@@ -10,6 +10,11 @@
     "@jridgewell/gen-mapping" "^0.3.0"
     "@jridgewell/trace-mapping" "^0.3.9"
 
+"@beyonk/svelte-mapbox@^9.1.0":
+  version "9.1.0"
+  resolved "https://registry.yarnpkg.com/@beyonk/svelte-mapbox/-/svelte-mapbox-9.1.0.tgz#d1c39dcbdd88e6ca27bad50262eae833f668a2a1"
+  integrity sha512-VtwDQbzM7c0VL246VrEqYZxaGtzHlUvy75Ilnj6fhw5LXZpYPnxRZJc5yDbRAQt5WgKMtIP0SAHeYlG/4Q6LCA==
+
 "@esbuild/android-arm64@0.18.13":
   version "0.18.13"
   resolved "https://registry.yarnpkg.com/@esbuild/android-arm64/-/android-arm64-0.18.13.tgz#70ef455455654c7800c31ae55ae295d81712238c"
@@ -866,6 +871,11 @@ svelte-preprocess@^5.0.4:
     magic-string "^0.27.0"
     sorcery "^0.11.0"
     strip-indent "^3.0.0"
+
+svelte-simple-modal@^1.6.1:
+  version "1.6.1"
+  resolved "https://registry.yarnpkg.com/svelte-simple-modal/-/svelte-simple-modal-1.6.1.tgz#8a7d77de6d8c28b9125e7df0a55e9729a0c0f58e"
+  integrity sha512-D4/Z7LQ6ThawYb7FlAeS/qGbcwVlqzRHn1zZgWPlEK0cp4l2UMcscqel58mp+gTuk4UX9gl516GYXcHFvuyslA==
 
 svelte@^4.0.5:
   version "4.0.5"

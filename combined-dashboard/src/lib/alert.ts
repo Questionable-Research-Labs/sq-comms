@@ -17,9 +17,15 @@ export function processAlertMessages(message: ValidMessage) {
         });
     } else if (message.topic === "DISTANCES") {
         alertTable.update((alertTable) => {
-            if (alertTable.has(message.payload.alerted_chip)) {
-                alertTable.set(message.payload.alerted_chip, message.payload.distances);
-            }
+            let chipID = message.payload.alerted_chip;
+            let existingDistances = alertTable.get(chipID) || [];
+            let newDistances = message.payload.distances.map((distance) => {
+                return {
+                    ...distance,
+                    datetime: message.datetime,
+                };
+            });
+            alertTable.set(chipID, [ ...newDistances, ...existingDistances]);
             return alertTable;
         });
     }

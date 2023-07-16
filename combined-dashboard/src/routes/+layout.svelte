@@ -1,30 +1,42 @@
 <script>
   import "../app.scss";
+  import "../modal.scss";
+
   import Header from "$lib/components/Header.svelte";
   import { onMount } from "svelte";
   import { mqttConnect, mqttConnected } from "$lib/mqtt";
-    import Audio from "$lib/components/Audio.svelte";
+  import Audio from "$lib/components/Audio.svelte";
+  import Modal from "svelte-simple-modal";
 
   onMount(() => {
     mqttConnect();
   });
 </script>
 
-<div class="app">
-  <Header />
-  <Audio/>
+<Modal
+  unstyled={true}
+  classBg="__modal-bg"
+  classWindowWrap="__modal-window-wrap"
+  classWindow="__modal-window"
+  classContent="__modal-content fancy-scrollbar"
+  classCloseButton="__modal-close-button"
+>
+  <div class="app">
+    <Header />
+    <Audio />
 
-  <main>
-    <slot />
-  </main>
-  <div class="connection-indicator">
-    {#if $mqttConnected}
-      <span class="connected">Connected</span>
-    {:else}
-      <span class="disconnected">Connecting...</span>
-    {/if}
+    <main>
+      <slot />
+    </main>
+    <div class="connection-indicator">
+      {#if $mqttConnected}
+        <span class="connected">Connected</span>
+      {:else}
+        <span class="disconnected">Connecting...</span>
+      {/if}
+    </div>
   </div>
-</div>
+</Modal>
 
 <style lang="scss">
   .connection-indicator {
@@ -48,8 +60,8 @@
         vertical-align: middle;
       }
       &.connected::before {
-          color: green;
-        }
+        color: green;
+      }
       &.disconnected::before {
         color: red;
       }
