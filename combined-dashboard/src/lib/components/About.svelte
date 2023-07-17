@@ -11,6 +11,7 @@
 
     import Image from "$lib/components/Image.svelte";
     import Gallery from 'svelte-image-gallery/Gallery.svelte';
+    import qrlLogo from "$lib/assets/qrl.svg";
 
     let images = [
         TechOnGear,
@@ -41,12 +42,16 @@
 
 <h1>About Signal Quo</h1>
 <p>
-    Signal Quo is an award-winning prototype built by Somewhat Questionable. Our
+    Signal Quo is an prototype built by Somewhat Questionable. Our
     team of six claimed a top-place finish at <a
         href="https://ymcachch.org.nz/grapple/"
         target="_blank">Grapple23</a
     >, a week-long maker hackathon, held in
     <a href="https://4c.nz/">YMCA’s 4C Centre</a> in Christchurch, New Zealand.
+</p>
+
+<p>
+    During the week, we developed a secondary emergency communication network for a Mars colony. Consisting of a main hub, personal transmitters, and environmental monitoring devices, Signal Quo is designed to operate during even severe Martian dust storms. The system utilizes long range (LoRa) technology, and incorporates a novel HopTrace protocol that records each signal's path, enabling geolocation for nodes in distress.
 </p>
 
 <p>
@@ -66,7 +71,7 @@
 <ul>
     <li>
         <span class="name">Jude Wilson</span> and
-        <span class="name">Sean Jang</span> were the dynamic duo of the team. Calling
+        <span class="name">Sean Jang</span> were the dynamic design duo of the team. Calling
         Auckland home, they worked in tandem on the physical design of our innovative
         devices, shaping the aesthetics and ergonomics to suit the challenging Martian
         environment.
@@ -134,12 +139,15 @@
     <a href="https://ymcachch.org.nz/grapple/" target="_blank">Grapple23</a>
     website.
 </p>
+<hr />
 <Gallery on:click={openImage} hover={true} loading maxColumnWidth={600}>
     {#each images as image, i}
         <img src={image[0]}  class="image-{i}"/>
     {/each}
 </Gallery>
-
+<a href="https://questionable.org.nz/" target="_blank" class="qrl-Logo">
+    <img src={qrlLogo} alt="Questionable Research Labs Logo" width="256" height="256"/>
+</a>
 <style lang="scss">
     @use "../../variables.scss" as *;
     h1 {
@@ -179,5 +187,17 @@
     }
     :global(img) {
         cursor: pointer;
+    }
+
+    .qrl-Logo {
+
+        img {
+            display: block;
+            margin: 1em auto;
+            margin: 5rem auto;
+        }
+    }
+    hr {
+        margin: 2rem 0;
     }
 </style>
