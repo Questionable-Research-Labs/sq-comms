@@ -51,7 +51,7 @@
 </script>
 <div class="header-container" style="--backgroundColor: {$backgroundColor.join(", ")}">
     <div class="logo-container">
-        <img src={Logo[0]} alt="Signal Quo Logo">
+        <img src={Logo} alt="Signal Quo Logo">
         <span>SIGNAL QUO</span>
     </div>
     

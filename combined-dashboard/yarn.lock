@@ -1152,6 +1152,11 @@ svelte-hmr@^0.15.2:
   resolved "https://registry.yarnpkg.com/svelte-hmr/-/svelte-hmr-0.15.2.tgz#d2f6fc82e040f2734abd54cea5cbef46828f2538"
   integrity sha512-q/bAruCvFLwvNbeE1x3n37TYFb3mTBJ6TrCq6p2CoFbSTNhDE9oAtEfpy+wmc9So8AG0Tja+X0/mJzX9tSfvIg==
 
+svelte-image-gallery@^1.7.0:
+  version "1.7.0"
+  resolved "https://registry.yarnpkg.com/svelte-image-gallery/-/svelte-image-gallery-1.7.0.tgz#27f63ee84f12be64dc8b77d927eea7f070e1ffab"
+  integrity sha512-BLlxyYh4MPi8CU2UZrSQ7W5NfHmsA6M1r0uw0ES9hz31/Tf+H2VnJhrjM2urE9ZM3/LP0jJSJX7TqzwfNkdncQ==
+
 svelte-particles@^2.11.0:
   version "2.11.0"
   resolved "https://registry.yarnpkg.com/svelte-particles/-/svelte-particles-2.11.0.tgz#d683e27e31faf51a7e1af708c73ddbae0bd9fea9"
