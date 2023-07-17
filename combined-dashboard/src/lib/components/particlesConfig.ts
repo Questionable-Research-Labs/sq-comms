@@ -1,4 +1,6 @@
-{
+import type { ParticlesProps } from "svelte-particles";
+
+export const config: ParticlesProps["options"] = {
     "autoPlay": true,
     "background": {
       "color": {
