@@ -1,14 +1,57 @@
 <script lang="ts">
-    import Logo from "$lib/assets/logo.png"
+    import Logo from "$lib/assets/logo.png?as=url";
     import { alertTable, devices } from "$lib/store";
+    import { onDestroy } from "svelte";
     import { tweened } from "svelte/motion";
 
-    let backgroundColor = tweened([78,71,129]);
-    $: $backgroundColor = $alertTable.size > 0 ? [129, 71, 71] : [78,71,129];
+    const backgroundColorAnimationSpeed = 500;
+    let backgroundColor = tweened([78,71,129], {
+        duration: backgroundColorAnimationSpeed,
+    });
+    let pulse = false;
+    let alerting = false;
+    function pulseUpdate() {
+        if (alerting) {
+            console.log(pulse);
+            if (pulse) {
+                backgroundColor.set([129, 71, 71]);
+            } else {
+                backgroundColor.set([176, 40, 40]);
+            }
+        } else {
+            backgroundColor.set([78,71,129]);
+        }
+        pulse = !pulse;
+    }
+
+    let lifetime = setInterval(pulseUpdate, backgroundColorAnimationSpeed);
+
+    // Overcomplicated method to sync pulses with node page
+    let subscription = alertTable.subscribe((table)=>{
+        if (table.size > 0) {
+            if (!alerting) {
+                alerting = true;
+                //Immediately restart animation to sync with the next pulse
+                clearInterval(lifetime);
+                lifetime = setInterval(pulseUpdate, backgroundColorAnimationSpeed);
+                pulse = false;
+                pulseUpdate();
+            } else {
+                alerting = true;
+            }
+        } else {
+            alerting = false;
+        }
+    })
+    
+    onDestroy(() => {
+        clearInterval(lifetime);
+        subscription();
+    });
 </script>
 <div class="header-container" style="--backgroundColor: {$backgroundColor.join(", ")}">
     <div class="logo-container">
-        <img src={Logo} alt="Signal Quo Logo">
+        <img src={Logo[0]} alt="Signal Quo Logo">
         <span>SIGNAL QUO</span>
     </div>
     

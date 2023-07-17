@@ -3,8 +3,9 @@
 	import LiveGraphs from "$lib/components/LiveGraphs.svelte";
     import dayjs from "dayjs";
     import Particles from "$lib/components/Particles.svelte";
+	import About from "$lib/components/About.svelte";
 
-	let pageState: "nodes" | "sensors" = "nodes";
+	let pageState: "nodes" | "sensors" | "about" = "nodes";
 </script>
 
 <svelte:head>
@@ -15,6 +16,7 @@
 <nav>
 	<button on:click={()=>{pageState="nodes"}} class:selected={pageState=="nodes"}>Nodes</button>
 	<button on:click={()=>{pageState="sensors"}} class:selected={pageState=="sensors"}>Sensors</button>
+	<button on:click={()=>{pageState="about"}} class:selected={pageState=="about"}>About</button>
 </nav>
 
 <div class="switching-content">
@@ -24,6 +26,8 @@
 			<Nodes />
 		{:else if pageState=="sensors"}
 			<LiveGraphs />
+		{:else if pageState==="about"}
+			<About />
 		{/if}
 	</div>
 </div>
@@ -36,6 +40,9 @@
 		justify-content: center;
 		gap: 1rem;
 		padding: 1rem;
+		// Fade from background to transparent
+		background: linear-gradient(180deg, $color-bg-0 80%, rgba(0,0,0,0) 100%);
+		box-sizing: border-box;
 		button {
 			display: block;
 			color: $color-text;
