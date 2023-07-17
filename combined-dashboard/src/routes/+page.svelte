@@ -2,6 +2,7 @@
 	import Nodes from "$lib/components/Nodes.svelte";
 	import LiveGraphs from "$lib/components/LiveGraphs.svelte";
     import dayjs from "dayjs";
+    import Particles from "$lib/components/Particles.svelte";
 
 	let pageState: "nodes" | "sensors" = "nodes";
 </script>
@@ -15,7 +16,9 @@
 	<button on:click={()=>{pageState="nodes"}} class:selected={pageState=="nodes"}>Nodes</button>
 	<button on:click={()=>{pageState="sensors"}} class:selected={pageState=="sensors"}>Sensors</button>
 </nav>
+
 <div class="switching-content">
+	<Particles />
 	<div class="switching-content-wrapper">
 		{#if pageState=="nodes"}
 			<Nodes />
@@ -62,6 +65,7 @@
 		display: flex;
 		justify-content: center;
 		padding: 1rem;
+		position: relative;
 		.switching-content-wrapper {
 			width: 100%;
 			max-width: 1200px;

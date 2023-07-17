@@ -1,8 +1,10 @@
 <script lang="ts">
     import { MAPBOX_API_TOKEN } from "$lib/const";
     import { alertTable, devices } from "$lib/store";
-    import { Map, Geocoder, Marker, controls } from "@beyonk/svelte-mapbox";
+    import { Map as MapboxMap, Geocoder, Marker, controls } from "@beyonk/svelte-mapbox";
     import MapCircle from "./MapCircle.svelte";
+    import type { Dayjs } from "dayjs";
+    import { writable, type Readable, type Writable, derived } from "svelte/store";
     const { GeolocateControl, NavigationControl, ScaleControl } = controls;
 
 
@@ -15,32 +17,51 @@
         return [location[1], location[0]];
     }
 
-    // $: (fitBounds ? ()=>{
-    //     console.log("testr")
-    //     let bounds = ($alertTable.get(alertingNode) || []).map((location) => {
-    //         const device = $devices.get(location.from);
-    //         console.log(device, location)
-    //         return flipLatLon(device?.location);
-    //     }).filter((location) => location);
-    //     console.log(bounds);
-    //     fitBounds(bounds);
-    // } : ()=>{})();
+    interface geoLocationPoint {
+        lat: number;
+        lon: number;
+        est_distance: number;
+        datetime: Dayjs;
+        name: string;
+        chipID: string;
+    }
+    let geolocationPoints: Readable<Map<string,geoLocationPoint>> = derived(alertTable,()=>{
+        let points = new Map<string,geoLocationPoint>();
+        ($alertTable.get(alertingNode) || []).forEach((location) => {
+            const device = $devices.get(location.from);
+            if (!device) return;
+            if (!device.location) return;
+
+            if (points.has(location.from)) {
+                if (points.get(location.from)?.datetime?.isAfter(location.datetime)) return;
+            }
+
+            points.set(location.from, {
+                lat: device.location[0],
+                lon: device.location[1],
+                est_distance: location.est_distance,
+                datetime: location.datetime,
+                name: device.name || device.chipID,
+                chipID: location.from
+            })
+        });
+        return points;
+    });
 
     function findDeviceLocationAverage() {
-        let locations = ($alertTable.get(alertingNode) || []).map(
-            (location) => {
-                const device = $devices.get(location.from);
-                return flipLatLon(device?.location);
-            }
-        );
         let latSum = 0;
         let lonSum = 0;
-        locations.forEach((location) => {
-            if (!location) return;
-            latSum += location[0];
-            lonSum += location[1];
+        let count = 0;
+        ($alertTable.get(alertingNode) || []).forEach((location) => {
+            const device = $devices.get(location.from);
+            if (!device) return;
+            if (!device.location) return;
+
+            latSum += device.location[0];
+            lonSum += device.location[1];
+            count++;
         });
-        return [latSum / locations.length, lonSum / locations.length];
+        return [lonSum / count, latSum / count];
     }
 
     $: locationAverage = findDeviceLocationAverage();
@@ -48,43 +69,40 @@
 
 <h2>Alert Geolocation: {$devices.get(alertingNode)?.name || "Not Found"}</h2>
 <div class="map-container">
-    <Map
+    <MapboxMap
         accessToken={MAPBOX_API_TOKEN}
         options={{ style: "mapbox://styles/mapbox/dark-v10" }}
         bind:fitBounds
         center={locationAverage}
         zoom={20}
     >
-        {#each $alertTable.get(alertingNode) || [] as geolocationPoint}
-            {@const device = $devices.get(geolocationPoint.from)}
-            {#if device?.location}
+        {#each $geolocationPoints.values() as geolocationPoint}
                 <Marker
-                    lat={device?.location[0]}
-                    lng={device?.location[1]}
+                    lat={geolocationPoint.lat}
+                    lng={geolocationPoint.lon}
                     color="rgb(255,0,0)"
                     label="some marker label"
                     popupClassName="class-name"
                 >
-                    {device.name}
+                    {geolocationPoint.name}
                     <svelte:fragment slot="popup">
                         <div class="popup">
-                            <h3>{device.name}</h3>
-                            <p>LatLon: {device.location[0].toPrecision(5)}, {device.location[1].toPrecision(5)}</p>
+                            <h3>{geolocationPoint.name}</h3>
+                            <p>LatLon: {geolocationPoint.lat.toPrecision(5)}, {geolocationPoint.lon.toPrecision(5)}</p>
                             <p>Distance: {geolocationPoint.est_distance.toPrecision(3)}m</p>
                             <p>Time: {geolocationPoint.datetime?.format("YYYY-MM-DD HH:mm:ss a")}</p>
                         </div>
                     </svelte:fragment>
                 </Marker>
                 <MapCircle
-                    lat={device?.location[0]}
-                    lng={device?.location[1]}
+                    lat={geolocationPoint.lat}
+                    lng={geolocationPoint.lon}
                     radius_meters={geolocationPoint.est_distance}
                 />
-            {/if}
         {/each}
         <NavigationControl />
         <ScaleControl />
-    </Map>
+    </MapboxMap>
     <div class="location-estimate-wrapper">
         <table class="location-estimate">
             <thead>

@@ -6,18 +6,18 @@ dayjs.extend(duration)
 
 export function getLastPing(device: Device) {
     const ping = device.messageLog.find((message) => message.topic === "PING");
-    if (!ping) {
+    if (!ping || ping.topic !== "PING") {
         return null;
     }
     return ping;
 }
 
-export function getIsConnected(device: Device) {
+export function getIsConnected(device: Device, key: any = null) {
     const ping = getLastPing(device);
     if (!ping) {
         return false;
     }
-    return dayjs().diff(ping.datetime) < dayjs.duration(5, "minute").asMilliseconds();
+    return dayjs().diff(ping.datetime) < dayjs.duration(30, "second").asMilliseconds();
 }
 
 export function createGeoJSONCircle(center: [number,number], radiusInKm: number, points: number = 64) {

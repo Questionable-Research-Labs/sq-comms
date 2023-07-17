@@ -8,17 +8,16 @@
     import StationIcon from "$lib/icons/StationIcon.svelte";
     import { alertTable, devices, type Device } from "$lib/store";
     import { getContext, onDestroy } from "svelte";
-    import Map from "./Map.svelte";
+    import GeolocationMap from "./GeolocationMap.svelte";
 
     const { open } = getContext("simple-modal") as any;
-
 
     dayjs.extend(relativeTime);
 
     let timerKey = 0;
     let timer = setInterval(() => {
         timerKey++;
-    }, 1000);
+    }, 0.1);
 
     onDestroy(() => {
         clearInterval(timer);
@@ -26,7 +25,7 @@
 
     function openAlertMap(device: Device) {
         if ($alertTable.has(device.chipID)) {
-            open(Map, {alertingNode: device.chipID});
+            open(GeolocationMap, { alertingNode: device.chipID });
         }
     }
 </script>
@@ -36,37 +35,81 @@
     {#each $devices.values() as device}
         {@const lastPing = getLastPing(device)}
         {@const isConnected = getIsConnected(device)}
-        <div
-            class="device-config"
-            class:connected={isConnected && lastPing}
-            class:disconnected={!isConnected && lastPing}
-            class:alerting={$alertTable.has(device.chipID)}
-            on:click={() => {openAlertMap(device)}}
-        >
-            {#if device.class == "hub"}
-                <HubIcon />
-            {:else if device.class == "station"}
-                <StationIcon />
-            {:else}
-                <PersonalIcon />
-            {/if}
-            <h3 title={device.chipID}>{device.name}</h3>
-            <div class="device-config-item">
-                <span class="property">Message Count:</span>
-                <span class="value">{device.messageLog.length}</span>
-            </div>
-            <div class="device-config-item">
-                <span class="property">Last Ping:</span>
-                <span
-                    class="value"
-                    title={lastPing?.datetime.toISOString() || "N/A"}
+        {@const lastPingTime = lastPing?.datetime}
+        {@const bootTime = lastPingTime?.subtract(
+            dayjs.duration(lastPing?.payload.uptime || 0, "milliseconds")
+        )}
+        {@const lastPingDuration = dayjs.duration(dayjs().diff(lastPingTime))}
+        {#key getIsConnected(device, timerKey)}
+            <div
+                class="device-config"
+                class:connected={isConnected && lastPing}
+                class:alerting={$alertTable.has(device.chipID)}
+            >
+                {#if device.class == "hub"}
+                    <HubIcon />
+                {:else if device.class == "station"}
+                    <StationIcon />
+                {:else}
+                    <PersonalIcon />
+                {/if}
+                <h3 title={device.chipID}>
+                    {device.name}
+                    {#if device.location}
+                        <span class="value">
+                            {device.location[0].toPrecision(6)},
+                            {device.location[1].toPrecision(6)}
+                        </span>
+                    {/if}
+                </h3>
+                <div class="device-config-item">
+                    <span class="property">Message Count:</span>
+                    <span class="value">{device.messageLog.length}</span>
+                </div>
+                <div class="device-config-item">
+                    <span class="property">Last Ping:</span>
+                    <span
+                        class="value"
+                        title={lastPingTime?.toISOString() || "N/A"}
+                    >
+                        {#key timerKey}
+                            {#if lastPingDuration}
+                                {Math.round(lastPingDuration.asSeconds())}s
+                            {:else}
+                                N/A
+                            {/if}
+                        {/key}
+                    </span>
+                </div>
+                <div class="device-config-item">
+                    <span class="property">Uptime:</span>
+                    <span class="value">
+                        {#if bootTime && isConnected}
+                            <!-- If connected, be positive and show uptime ticking up between pings -->
+                            {dayjs
+                                .duration(dayjs().diff(bootTime))
+                                .format("HH:mm:ss")}
+                        {:else if bootTime && !isConnected && lastPingTime}
+                            <!-- If not connected, show definite uptime -->
+                            {dayjs
+                                .duration(lastPingTime.diff(bootTime))
+                                .format("HH:mm:ss")}+
+                        {:else}
+                            N/A
+                        {/if}
+                    </span>
+                </div>
+                <button
+                    class="geolocation-map"
+                    on:click={() => {
+                        openAlertMap(device);
+                    }}
+                    disabled={!$alertTable.has(device.chipID)}
                 >
-                    {#key timerKey}
-                        {lastPing?.datetime.fromNow(false) || "N/A"}
-                    {/key}
-                </span>
+                    Geolocation Map
+                </button>
             </div>
-        </div>
+        {/key}
     {/each}
 </div>
 
@@ -92,6 +135,7 @@
             border: $color-bg-1 solid 4px;
             border-radius: 4px * 2;
             padding: 1em;
+            background-color: $color-bg-0;
             h3 {
                 margin: 0;
                 margin-bottom: 0.5em;
@@ -99,7 +143,7 @@
             :global(svg) {
                 position: absolute;
                 bottom: 0;
-                left: 0;
+                right: 0;
                 height: 100%;
                 fill: #444;
                 z-index: -1;
@@ -107,29 +151,29 @@
             .device-config-item {
                 display: flex;
                 flex-direction: row;
-                justify-content: space-between;
+                justify-content: left;
                 align-items: center;
-                padding: 0.15em 0 0.2em 0;
+                padding: 0.1em 0 0.1em 0;
 
-                border-top: 1px solid #eee;
-                border-top-style: dashed;
+                // border-top: 1px solid #eee;
+                // border-top-style: dashed;
 
-                .value {
-                    background-color: #222;
-                    padding: 0.2em 0.25em;
-                    border-radius: 4px;
-                    font-family: $font-mono;
-                }
                 .property {
                     margin-right: 0.5em;
                 }
+
+            }
+            .value {
+                background-color: #222;
+                padding: 0.2em 0.25em;
+                border-radius: 4px;
+                font-family: $font-mono;
+                font-size: 0.9rem;
+                font-weight: 100;
             }
 
             &.connected {
                 border-color: $color-success-neutral;
-            }
-            &.disconnected {
-                border-color: $color-error-neutral;
             }
             &.alerting {
                 border-color: $color-error-neutral;
@@ -146,6 +190,31 @@
                     }
                 }
                 cursor: pointer;
+            }
+            .geolocation-map {
+                $border-size: 4px;
+                $padding-size: 0.5em;
+                margin-top: $padding-size;
+                padding: calc($padding-size - ($border-size / 2));
+                border-radius: $border-size;
+                border: none;
+                background-color: $color-bg-1;
+                color: $color-text;
+                font-size: 1rem;
+                font-weight: 100;
+                cursor: pointer;
+                transition: background-color 0.2s ease-in-out;
+                border: $color-text-selected solid $border-size;
+                &:disabled {
+                    background-color: $color-bg-1;
+                    color: $color-text-disabled;
+                    cursor: default;
+                    border: $color-bg-1 solid $border-size;
+                }
+                &:hover:not(:disabled) {
+                    // background-color: $color-bg-0;
+                    background-color: $color-text-selected;
+                }
             }
         }
     }
