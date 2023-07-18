@@ -146,6 +146,7 @@
             position: absolute;
             bottom: $node-count-position;
             left: 50%;
+            font-weight: bold;
             width: var(--node-count-size);
             height: var(--node-count-size);
             line-height: var(--node-count-size);
