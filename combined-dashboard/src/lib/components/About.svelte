@@ -43,15 +43,15 @@
 <h1>About Signal Quo</h1>
 <p>
     Signal Quo is an prototype built by Somewhat Questionable. Our
-    team of six claimed a top-place finish at <a
+    team claimed a first-place finish at <a
         href="https://ymcachch.org.nz/grapple/"
         target="_blank">Grapple23</a
-    >, a week-long maker hackathon, held in
+    >, a week-long engineering competition, held in
     <a href="https://4c.nz/">YMCA’s 4C Centre</a> in Christchurch, New Zealand.
 </p>
 
 <p>
-    During the week, we developed a secondary emergency communication network for a Mars colony. Consisting of a main hub, personal transmitters, and environmental monitoring devices, Signal Quo is designed to operate during even severe Martian dust storms. The system utilizes long range (LoRa) technology, and incorporates a novel HopTrace protocol that records each signal's path, enabling geolocation for nodes in distress.
+    The prompt was to build something that would improve life on Mars. During the week, we developed a secondary emergency communication network for a Mars colony. Consisting of a main hub, personal transmitters, and environmental monitoring devices, Signal Quo is designed to operate during even severe Martian dust storms. The system utilizes long range (LoRa) technology, and incorporates a novel HopTrace protocol that records each signal's path, enabling geolocation for nodes in distress.
 </p>
 
 <p>
@@ -77,7 +77,7 @@
         environment.
     </li>
     <li>
-        <span class="name">Jasper Miller-Waugh</span> and Taine Reader were our Whangarei
+        <span class="name">Jasper Miller-Waugh</span> and <span class="name">Taine Reader</span> were our Whangarei
         whizzes who took on the electronics coding. Jasper worked on writing a streamlined
         C++ firmware for the devices and developed the geolocation and HopTrace protocol.
         At the same time, Taine brought his skill set in electronics to create our
