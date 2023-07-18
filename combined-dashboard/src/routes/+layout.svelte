@@ -54,11 +54,12 @@
     bottom: 0;
     right: 0;
     padding: 0.5rem;
-    background: #000000aa;
+    background: #00000077;
     color: white;
     font-size: 0.8rem;
     line-height: 1rem;
     font-weight: bold;
+    border-radius: 1rem 0 0 1rem;
     span {
       margin-left: 0.5rem;
       &::before {
