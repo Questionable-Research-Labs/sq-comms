@@ -176,6 +176,8 @@
         background-color: #333;
         box-shadow: 0 0px 1em 3em #333;
         margin-bottom: 3em;
+        position: relative;
+        z-index: -1;
     }
 
     .image-row {

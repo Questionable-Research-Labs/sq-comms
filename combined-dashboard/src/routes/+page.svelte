@@ -9,8 +9,8 @@
 </script>
 
 <svelte:head>
-	<title>Home</title>
-	<meta name="description" content="Svelte demo app" />
+	<title>Signal Quo</title>
+	<meta name="description" content="Signal Quo is an prototype built by Somewhat Questionable during Grapple23. It's an emergency secondary communication network designed for a Mars colony." />
 </svelte:head>
 
 <nav>
