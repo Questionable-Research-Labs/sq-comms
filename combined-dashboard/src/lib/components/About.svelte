@@ -39,7 +39,7 @@
         }
     }
 </script>
-
+<div class="body-text">
 <h1>About Signal Quo</h1>
 <p>
     Signal Quo is an prototype built by Somewhat Questionable. Our
@@ -139,7 +139,8 @@
     <a href="https://ymcachch.org.nz/grapple/" target="_blank">Grapple23</a>
     website.
 </p>
-<hr />
+</div>
+
 <Gallery on:click={openImage} hover={true} loading maxColumnWidth={600}>
     {#each images as image, i}
         <img src={image[0]}  class="image-{i}"/>
@@ -174,6 +175,7 @@
     .body-text {
         background-color: #333;
         box-shadow: 0 0px 1em 3em #333;
+        margin-bottom: 3em;
     }
 
     .image-row {
@@ -190,14 +192,9 @@
     }
 
     .qrl-Logo {
-
-        img {
-            display: block;
-            margin: 1em auto;
-            margin: 5rem auto;
-        }
-    }
-    hr {
-        margin: 2rem 0;
+        width: 256px;
+        display: block;
+        margin: 1em auto;
+        margin: 5rem auto;
     }
 </style>

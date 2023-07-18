@@ -25,8 +25,6 @@ export async function mqttConnect() {
     }
     
     function onMessageArrived(message: Paho.Message) {
-        console.log(`MQTT message received: ${message.payloadString}`);
-
         // Escape callback hell
         setTimeout(()=>{newMessage(message)})
     }

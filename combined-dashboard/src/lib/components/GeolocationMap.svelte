@@ -1,16 +1,18 @@
 <script lang="ts">
-    import { MAPBOX_API_TOKEN } from "$lib/const";
+    import { MAPBOX_API_TOKEN, MAPBOX_STYLE } from "$lib/const";
     import { alertTable, devices } from "$lib/store";
     import { Map as MapboxMap, Geocoder, Marker, controls } from "@beyonk/svelte-mapbox";
     import MapCircle from "./MapCircle.svelte";
     import type { Dayjs } from "dayjs";
     import { writable, type Readable, type Writable, derived } from "svelte/store";
+
+    import "../../mapbox.scss";
+
     const { GeolocateControl, NavigationControl, ScaleControl } = controls;
 
 
     export let alertingNode: string;
 
-    let fitBounds: (bbox: any, data?: {}) => void;
 
     function flipLatLon(location: [number, number] | null | undefined) {
         if (!location) return;
@@ -33,9 +35,9 @@
             if (!device.location) return;
 
             if (points.has(location.from)) {
-                if (points.get(location.from)?.datetime?.isAfter(location.datetime)) return;
+                return;
+                // if (points.get(location.from)?.datetime?.isBefore(location.datetime)) return;
             }
-
             points.set(location.from, {
                 lat: device.location[0],
                 lon: device.location[1],
@@ -71,12 +73,12 @@
 <div class="map-container">
     <MapboxMap
         accessToken={MAPBOX_API_TOKEN}
-        options={{ style: "mapbox://styles/mapbox/dark-v10" }}
-        bind:fitBounds
+        options={{ style: MAPBOX_STYLE }}
         center={locationAverage}
         zoom={20}
     >
         {#each $geolocationPoints.values() as geolocationPoint}
+        {console.log(geolocationPoint.est_distance)}
                 <Marker
                     lat={geolocationPoint.lat}
                     lng={geolocationPoint.lon}
@@ -98,6 +100,7 @@
                     lat={geolocationPoint.lat}
                     lng={geolocationPoint.lon}
                     radius_meters={geolocationPoint.est_distance}
+                    chipID={geolocationPoint.chipID}
                 />
         {/each}
         <NavigationControl />

@@ -1,6 +1,7 @@
 <script lang="ts">
     import Logo from "$lib/assets/logo.png?as=url";
-    import { alertTable, devices } from "$lib/store";
+    import { getIsConnected } from "$lib/helper";
+    import { alertTable, devices, type Device } from "$lib/store";
     import { onDestroy } from "svelte";
     import { tweened } from "svelte/motion";
 
@@ -12,7 +13,6 @@
     let alerting = false;
     function pulseUpdate() {
         if (alerting) {
-            console.log(pulse);
             if (pulse) {
                 backgroundColor.set([129, 71, 71]);
             } else {
@@ -43,6 +43,17 @@
             alerting = false;
         }
     })
+
+    function calculatedConnected(devices: Map<string,Device>) {
+        let count = 0;
+        for (let device of devices.values()) {
+            if (getIsConnected(device)) {
+                count+=1;
+            }
+        }
+        return count;
+    }
+    $: devicesConnected = calculatedConnected($devices);
     
     onDestroy(() => {
         clearInterval(lifetime);
@@ -68,8 +79,8 @@
                 fill="#9E4327"
             />
         </svg>
-        <h1 class="nodes-online-label">nodes online</h1>
-        <div class="hill-text" id="num">{$devices.size}</div>
+        <h1 class="nodes-online-label">Nodes Online</h1>
+        <div class="hill-text" id="num">{devicesConnected}</div>
         <svg
             width="100%"
             viewBox="0 0 1900 450"
@@ -105,6 +116,9 @@
         background: radial-gradient(farthest-corner at top,rgba(var(--backgroundColor),1) 0%, rgba(44,44,44,1) 80%);
         overflow: clip;
         border-bottom: white solid 4px;
+        position: relative;
+        // Float over main-text's box-shadow
+        z-index: 2;
     }
 
     .hills-container {

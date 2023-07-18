@@ -2,6 +2,7 @@ import dayjs from "dayjs";
 import type { Device } from "./store";
 // let duration = require('dayjs/plugin/duration')
 import duration from 'dayjs/plugin/duration'
+import type { GeoJSONSourceRaw } from "mapbox-gl";
 dayjs.extend(duration)
 
 export function getLastPing(device: Device) {
@@ -20,7 +21,7 @@ export function getIsConnected(device: Device, key: any = null) {
     return dayjs().diff(ping.datetime) < dayjs.duration(30, "second").asMilliseconds();
 }
 
-export function createGeoJSONCircle(center: [number,number], radiusInKm: number, points: number = 64) {
+export function createGeoJSONCircle(center: [number,number], radiusInKm: number, points: number = 64): GeoJSONSourceRaw {
     let coords = {
         latitude: center[1],
         longitude: center[0]
@@ -48,6 +49,7 @@ export function createGeoJSONCircle(center: [number,number], radiusInKm: number,
             "type": "FeatureCollection",
             "features": [{
                 "type": "Feature",
+                "properties": {},
                 "geometry": {
                     "type": "Polygon",
                     "coordinates": [ret]

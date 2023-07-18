@@ -3,3 +3,4 @@
 export const MQTT_SERVER = 'sq-comms-mqtt.host.qrl.nz';
 export const MQTT_PORT = 443;
 export const MAPBOX_API_TOKEN = "pk.eyJ1IjoiZmFsbHN0b3AiLCJhIjoiY2xrNWQzMXpsMTRmdDNlcTF5aDh2M3MxdyJ9.Y93vkLoYI3HRPErZImVQ1w";
+export const MAPBOX_STYLE = "mapbox://styles/mapbox/dark-v10";

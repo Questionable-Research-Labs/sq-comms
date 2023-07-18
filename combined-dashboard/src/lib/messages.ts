@@ -67,7 +67,6 @@ export async function newMessage(message: Message) {
     if (!validMessage) {
         return;
     }
-    console.log("Valid!",validMessage);
     devices.update((devices) => {
         let device = devices.get(validMessage.payload.from);
         if (!device) {
