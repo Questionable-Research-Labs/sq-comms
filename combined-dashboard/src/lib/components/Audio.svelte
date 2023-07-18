@@ -67,6 +67,8 @@
         border: none;
         background: none;
         cursor: pointer;
+        z-index: 3;
+
         :global(svg) {
             height: 100%;
             fill: $color-text

@@ -143,10 +143,11 @@
         gap: 1em;
         flex: 1 0 21%; /* explanation below */
         .device-config-wrapper {
-            $border-width: 4px;
+            $device-config-border-width: 4px;
+            $device-config-padding: 1em;
             position: relative;
             .device-config-background {
-                border-radius:  $border-width * 2;
+                border-radius:  $device-config-border-width * 2;
                 position: absolute;
                 top: 0;
                 left: 0;
@@ -154,17 +155,19 @@
                 bottom: 0;
                 z-index: -1;
                 background-color: $color-bg-0;
+                padding: $device-config-padding;
+
                 :global(svg) {
                     position: absolute;
-                    bottom: 0;
-                    right: 0;
-                    height: 100%;
+                    bottom: calc($device-config-padding + $device-config-border-width);
+                    right: calc($device-config-padding + $device-config-border-width);
+                    height: calc(100% - (($device-config-padding +  $device-config-border-width) * 2));
                     fill: #444;
                 }
             }
             .device-config {
-                border: $color-bg-1 solid  $border-width;
-                border-radius:  $border-width * 2;
+                border: $color-bg-1 solid  $device-config-border-width;
+                border-radius:  $device-config-border-width * 2;
                 padding: 1em;
                 h3 {
                     margin: 0;
