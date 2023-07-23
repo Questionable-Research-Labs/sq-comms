@@ -12,10 +12,10 @@ void newAlert(const char* alteredChipID, uint32_t packetID, alertNode firstHopNo
     // Check if alert doesn't exist
     int alertIndex = -1;
     for (int i = 0; i < currentAlertsIndex; i++) {
-	if (currentAlerts[i].packetID == packetID) {
-	    alertIndex = i;
-	    break;
-	}
+        if (currentAlerts[i].packetID == packetID) {
+            alertIndex = i;
+            break;
+        }
     }
     if (alertIndex == -1) {
         if (currentAlertsIndex + 1 >= MAX_SUPPORTED_CONNECTED_DEVICES) {

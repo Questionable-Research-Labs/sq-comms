@@ -24,6 +24,13 @@ export const devices: Writable<Map<string,Device>> = writable(new Map(Object.ent
         location: [-35.68315810486083, 174.32884720522713],
         messageLog: [],
         class: "hub",
+    },
+    "DCE255A4AE30": {
+        chipID: "DCE255A4AE30",
+        name: "Weather Station",
+        location: [-35.682994814441635, 174.32892167274005],
+        messageLog: [],
+        class: "station",
     }
 })));
 
