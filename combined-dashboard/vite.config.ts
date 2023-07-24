@@ -12,8 +12,6 @@ export default defineConfig({
 
     sveltekit()
   ],
-  ssr:{noExternal:["svelte-image-gallery"]},
-
   css: {
     preprocessorOptions: {
       scss: {

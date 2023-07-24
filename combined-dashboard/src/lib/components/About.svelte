@@ -8,36 +8,72 @@
     import SharedTable from "$lib/assets/photos/SharedTable.jpg?w=600;1920&format=webp";
     import TaineL from "$lib/assets/photos/TaineL.jpg?w=600;1920&format=webp";
     import WhiteBoard from "$lib/assets/photos/WhiteBoard.jpg?w=600;1920&format=webp";
+    import WeatherStationBox from "$lib/assets/photos/WeatherStationBox.jpg?w=600;1920&format=webp";
+    import JudeDemoPersonalDevice from "$lib/assets/photos/JudeDemoPersonalDevice.jpg?w=600;1920&format=webp";
+    import SignalQuoShirtLogo from "$lib/assets/photos/SignalQuoShirtLogo.jpg?w=600;1920&format=webp";
 
-    import Image from "$lib/components/Image.svelte";
-    import Gallery from 'svelte-image-gallery/Gallery.svelte';
+    import {
+        GalleryThumbnail,
+        GalleryImage,
+        LightboxGallery
+    } from 'svelte-lightbox';
     import qrlLogo from "$lib/assets/qrl.svg";
 
-    let images = [
-        TechOnGear,
-        DesignSketch,
-        SensorTesting,
-        AlertRunning,
-        JasperLight,
-        PersonalDeviceSketch,
-        SharedTable,
-        TaineL,
-        WhiteBoard,
-    ];
-
-    function openImage({detail}: {detail: {class: string, src: string, loading: string, alt: string}}) {
-        console.log(images,detail)
-        // Regex image ID from class
-        let imageID = (detail.class.match(/image-(\d+)/) || [])[1];
-        if (imageID) {
-            // Open high-res version
-            open(images[parseInt(imageID)][1]);
-        } else {
-            console.log("Couldn't find", detail, imageID);
-            // Open low-res as a backup
-            open(detail.src);
-        }
+    interface Image {
+        title: string;
+        src: string[];
     }
+    let images: Image[] = [
+        {
+            title: "Chaos of developing sensor modules",
+            src: TechOnGear
+        },
+        {
+            title: "Sean's design sketches",
+            src: DesignSketch
+        },
+        {
+            title: "Taine testing the dust sensor",
+            src: SensorTesting
+        },
+        {
+            title: "Main hub alert running",
+            src: AlertRunning
+        },
+        {
+            title: "Jasper working on the main hub indication lights",
+            src: JasperLight
+        },
+        {
+            title: "Jude designing the personal device case",
+            src: PersonalDeviceSketch
+        },
+        {
+            title: "Working together on the conference room table",
+            src: SharedTable
+        },
+        {
+            title: "Taine dealing with the cringe",
+            src: TaineL
+        },
+        {
+            title: "Whiteboarding mesh network ideas",
+            src: WhiteBoard
+        },
+        {
+            title: "Weather station / Relay box",
+            src: WeatherStationBox
+        },
+        {
+            title: "Jude demoing the personal device",
+            src: JudeDemoPersonalDevice
+        },
+        {
+            title: "Signal Quo's logo being applied to a shirt",
+            src: SignalQuoShirtLogo
+        }
+    ]
+    console.log("asd",SignalQuoShirtLogo);
 </script>
 <div class="body-text">
 <h1>About Signal Quo</h1>
@@ -140,12 +176,27 @@
     website.
 </p>
 </div>
-
-<Gallery on:click={openImage} hover={true} loading maxColumnWidth={600}>
+<LightboxGallery  enableImageExpand customization={{lightboxFooterProps: {style: "display: none;"}}} arrowsConfig={{color: "#fff",character: 'hide', enableKeyboardControl: true}} >
+    <!-- Layout-->
+    <svelte:fragment slot="thumbnail">
+        <div class="galleryLayout">
+            {#each images as image, i}
+                <GalleryThumbnail id={i} >
+                    <img src={image.src[0]} alt={image.title} title={image.title} class="image-{i}"/>
+                </GalleryThumbnail>
+            {/each}
+        </div>
+    </svelte:fragment>
     {#each images as image, i}
-        <img src={image[0]}  class="image-{i}"/>
+        <GalleryImage id={i} title="ssss">
+            <img src={image.src[1]} alt={image.title} title={image.title} class="image-{i}"/>
+        </GalleryImage>
     {/each}
-</Gallery>
+</LightboxGallery>
+
+<!-- 
+<Gallery on:click={openImage} hover={true} loading maxColumnWidth={600}>
+</Gallery> -->
 <a href="https://questionable.org.nz/" target="_blank" class="qrl-Logo">
     <img src={qrlLogo} alt="Questionable Research Labs Logo" width="256" height="256"/>
 </a>
@@ -180,16 +231,29 @@
         z-index: -1;
     }
 
-    .image-row {
-        display: flex;
-        flex-direction: row;
-        align-items: bottom;
+    .galleryLayout {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
         gap: 1em;
-        @media screen and (max-width: $mobile-transition) {
-            flex-wrap: wrap;
+        :global(.svelte-lightbox-thumbnail) {
+            border-radius: 0.5em;
+            overflow: hidden;
+            cursor: pointer;
+            transition: transform 0.5s ease;
+            :global(img) {
+                width: 100%;
+                height: 100%;
+                object-fit: cover;
+                cursor: pointer;
+            }
+            
+        }
+        :global(.svelte-lightbox-thumbnail:hover) {
+            transform: scale(1.02);
         }
     }
-    :global(img) {
+
+    :global(.previous-button), :global(.next-button) {
         cursor: pointer;
     }
 

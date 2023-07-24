@@ -24,7 +24,7 @@
     "sass": "^1.63.6",
     "svelte": "^4.0.5",
     "svelte-check": "^3.4.3",
-    "svelte-image-gallery": "^1.7.0",
+    "svelte-lightbox": "^1.1.1",
     "svelte-simple-modal": "^1.6.1",
     "tslib": "^2.4.1",
     "tsparticles-slim": "^2.11.0",
