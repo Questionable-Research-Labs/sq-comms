@@ -10,6 +10,7 @@
 
     import "../../mapbox.scss";
 
+    export let chipID: string;
 
     const { NavigationControl, ScaleControl } = controls;
 
@@ -47,8 +48,7 @@
                 <Marker
                     lat={geolocationPoint.location[0]}
                     lng={geolocationPoint.location[1]}
-                    label="some marker label"
-                    popupClassName="class-name"
+                    color={geolocationPoint.chipID===chipID ? "rgb(19, 148, 79)": "rgb(0, 0, 0)"}
                 >
                     <svelte:fragment slot="popup">
                         <div class="popup">
@@ -59,7 +59,7 @@
                                 {geolocationPoint.location[1].toPrecision(5)}
                             </p>
                             <p>
-                                Last Ping: {getLastPing(geolocationPoint)?.datetime?.format("HH:mm:ss")}
+                                Last Ping: {getLastPing(geolocationPoint)?.datetime?.format("HH:mm:ss") || "N/A"}
                             </p>
                             <p>
                                 ChipID: {geolocationPoint.chipID}
@@ -79,6 +79,11 @@
     .map-container {
         aspect-ratio: 4/3;
         // sometimes mapbox objects don't render as expected; troubleshoot by changing the height/width to px
+        border: white solid 2px;
+        border-radius: 8px;
+        & > :global(*) {
+            border-radius: 8px;
+        }
     }
     .popup {
         background: $color-bg-0;

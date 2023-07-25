@@ -6,7 +6,13 @@ declare global {
 		// interface Locals {}
 		// interface PageData {}
 		// interface Platform {}
+		declare module "*.jpg?w=600;1920&format=webp" {
+			const image: string[]
+			export default image
+		}
 	}
 }
+
+
 
 export {};

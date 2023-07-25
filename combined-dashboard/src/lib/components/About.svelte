@@ -251,6 +251,28 @@
         :global(.svelte-lightbox-thumbnail:hover) {
             transform: scale(1.02);
         }
+
+
+    }
+
+    :global(.svelte-lightbox-main) {
+        width: 100vw !important;
+        padding: 0 5em !important;
+        :global(.svelte-lightbox-body) {
+            aspect-ratio: 4/3;
+            margin: 0 auto;
+            :global(svg) {
+                filter: drop-shadow(0px 0px 2.2px rgba(0, 0, 0, 0.067)) drop-shadow(0px 0px 5.3px rgba(0, 0, 0, 0.097)) drop-shadow(0px 0px 10px rgba(0, 0, 0, 0.12)) drop-shadow(0px 0px 17.9px rgba(0, 0, 0, 0.143)) drop-shadow(0px 0px 33.4px rgba(0, 0, 0, 0.173)) drop-shadow(0px 0px 80px rgba(0, 0, 0, 0.2));
+            }
+            :global(img) {
+                width: 100%;
+            }
+        }
+    }
+    @media screen and (max-width: 600px) {
+        :global(.svelte-lightbox-main) {
+            padding: 0 !important;
+        }
     }
 
     :global(.previous-button), :global(.next-button) {

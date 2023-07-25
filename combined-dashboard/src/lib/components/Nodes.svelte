@@ -2,7 +2,7 @@
     import dayjs from "dayjs";
     import relativeTime from "dayjs/plugin/relativeTime";
 
-    import { getLastPing, getIsConnected } from "$lib/helper";
+    import { getLastPing, getIsConnected, getLastMessage } from "$lib/helper";
     import HubIcon from "$lib/icons/HubIcon.svelte";
     import PersonalIcon from "$lib/icons/PersonalIcon.svelte";
     import StationIcon from "$lib/icons/StationIcon.svelte";
@@ -28,7 +28,7 @@
         if ($alertTable.has(device.chipID)) {
             open(GeolocationMap, { alertingNode: device.chipID });
         } else if (device.location) {
-            open(DeviceMap);
+            open(DeviceMap, { chipID: device.chipID });
         }
     }
 </script>
@@ -39,10 +39,11 @@
         {@const lastPing = getLastPing(device)}
         {@const isConnected = getIsConnected(device)}
         {@const lastPingTime = lastPing?.datetime}
+        {@const lastMessageTime = getLastMessage(device)?.datetime}
         {@const bootTime = lastPingTime?.subtract(
             dayjs.duration(lastPing?.payload.uptime || 0, "milliseconds")
         )}
-        {@const lastPingDuration = dayjs.duration(dayjs().diff(lastPingTime))}
+        {@const lastMessageDuration = dayjs.duration(dayjs().diff(lastMessageTime))}
         {#key getIsConnected(device, timerKey)}
             <div class="device-config-wrapper">
                 <div class="device-config-background">
@@ -73,8 +74,8 @@
                             title={lastPingTime?.toISOString() || "N/A"}
                         >
                             {#key timerKey}
-                                {#if lastPingDuration}
-                                    {Math.round(lastPingDuration.asSeconds())}s
+                                {#if lastMessageDuration}
+                                    {Math.round(lastMessageDuration.asSeconds())}s
                                 {:else}
                                     N/A
                                 {/if}
@@ -84,19 +85,21 @@
                     <div class="device-config-item">
                         <span class="property">Uptime:</span>
                         <span class="value">
-                            {#if bootTime && isConnected}
-                                <!-- If connected, be positive and show uptime ticking up between pings -->
-                                {dayjs
-                                    .duration(dayjs().diff(bootTime))
-                                    .format("HH:mm:ss")}
-                            {:else if bootTime && !isConnected && lastPingTime}
-                                <!-- If not connected, show definite uptime -->
-                                {dayjs
-                                    .duration(lastPingTime.diff(bootTime))
-                                    .format("HH:mm:ss")}+
-                            {:else}
-                                N/A
-                            {/if}
+                            {#key timerKey}
+                                {#if bootTime && isConnected}
+                                    <!-- If connected, be positive and show uptime ticking up between pings -->
+                                    {dayjs
+                                        .duration(dayjs().diff(bootTime))
+                                        .format("HH:mm:ss")}
+                                {:else if bootTime && !isConnected && lastPingTime}
+                                    <!-- If not connected, show definite uptime -->
+                                    {dayjs
+                                        .duration(lastPingTime.diff(bootTime))
+                                        .format("HH:mm:ss")}+
+                                {:else}
+                                    N/A
+                                {/if}
+                            {/key}
                         </span>
                     </div>
                     {#if device.location}

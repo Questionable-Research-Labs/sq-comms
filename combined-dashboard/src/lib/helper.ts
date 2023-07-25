@@ -13,6 +13,10 @@ export function getLastPing(device: Device) {
     return ping;
 }
 
+export function getLastMessage(device: Device) {
+    return device.messageLog[0] || null;
+}
+
 export function getIsConnected(device: Device, key: any = null) {
     const ping = getLastPing(device);
     if (!ping) {

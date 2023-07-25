@@ -82,7 +82,6 @@
                 <Marker
                     lat={geolocationPoint.lat}
                     lng={geolocationPoint.lon}
-                    color="rgb(255,0,0)"
                     label="some marker label"
                     popupClassName="class-name"
                 >
