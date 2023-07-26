@@ -4,6 +4,7 @@ import { devices } from './store';
 import dayjs, {type Dayjs} from 'dayjs';
 import { get } from 'svelte/store';
 import { processAlertMessages } from './alert';
+import { processSensorMessages } from './sensorData';
 
 
 // Zod schema
@@ -76,6 +77,7 @@ export async function newMessage(message: Message) {
                 location: null,
                 messageLog: [validMessage],
                 class: "station",
+                sensorLog: new Map(),
             });
         } else {
             device.messageLog.unshift(validMessage);
@@ -85,4 +87,7 @@ export async function newMessage(message: Message) {
 
     // Process alert messages
     processAlertMessages(validMessage);
+
+    // Process sensor messages
+    processSensorMessages(validMessage);
 }

@@ -1,6 +1,14 @@
 import { writable, type Writable } from "svelte/store";
 import type { ValidMessage } from "./messages";
 import type { Dayjs } from "dayjs";
+import dayjs from "dayjs";
+
+export type SensorLog = Map<string, Sensor[]>;
+
+export type Sensor = {
+    x: string,
+    y: number,
+}
 
 export type Device = {
     chipID: string,
@@ -8,6 +16,7 @@ export type Device = {
     class: "personal" | "station" | "hub",
     location: [number, number] | null,
     messageLog: ValidMessage[],
+    sensorLog: SensorLog,
 }
 
 export const devices: Writable<Map<string,Device>> = writable(new Map(Object.entries({
@@ -16,6 +25,7 @@ export const devices: Writable<Map<string,Device>> = writable(new Map(Object.ent
         name: "Personal Device",
         location: null,
         messageLog: [],
+        sensorLog: new Map(),
         class: "personal",
     },
     "5C0A6FA4AE30": {
@@ -23,6 +33,7 @@ export const devices: Writable<Map<string,Device>> = writable(new Map(Object.ent
         name: "Hub Device",
         location: [-35.68315810486083, 174.32884720522713],
         messageLog: [],
+        sensorLog: new Map(),
         class: "hub",
     },
     "E8CD55A4AE30": {
@@ -30,6 +41,7 @@ export const devices: Writable<Map<string,Device>> = writable(new Map(Object.ent
         name: "Weather Station",
         location: [-35.682994814441635, 174.32892167274005],
         messageLog: [],
+        sensorLog: new Map(),
         class: "station",
     }
 })));
