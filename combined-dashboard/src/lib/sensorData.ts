@@ -1,6 +1,8 @@
 import type { ValidMessage } from "./messages";
 import { devices } from "./store";
 
+const MAX_GRAPH_POINTS = 30;
+
 export interface SensorMeta {
     suggestedMax: number,
     suggestedMin: number,
@@ -71,7 +73,7 @@ export function processSensorMessages(message: ValidMessage) {
                         x: message.datetime.toISOString(),
                         y: reading.value,
                     });
-                    if (sensor.length > 50) {
+                    if (sensor.length > MAX_GRAPH_POINTS) {
                         sensor.shift();
                     }
                 }

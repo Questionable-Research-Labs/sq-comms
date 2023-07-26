@@ -24,7 +24,6 @@
 
 <svelte:body bind:clientWidth={windowWidth}></svelte:body>
 
-<!-- {#key $dataset}   -->
 <Line 
     id={deviceid + "-" + sensorName}
     bind:chart={chartRef}
@@ -93,7 +92,7 @@
             },
             x: {
                 ticks: {
-                    display: true,
+                    display: false,
                 },
                 grid: {
                     display: true,
