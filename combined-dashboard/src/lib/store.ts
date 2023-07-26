@@ -1,12 +1,13 @@
 import { writable, type Writable } from "svelte/store";
 import type { ValidMessage } from "./messages";
 import type { Dayjs } from "dayjs";
+import dayjs from "dayjs";
 
 export type SensorLog = Map<string, Sensor[]>;
 
 export type Sensor = {
-    sensorName: string,
-    values: [number, Dayjs],
+    x: string,
+    y: number,
 }
 
 export type Device = {
