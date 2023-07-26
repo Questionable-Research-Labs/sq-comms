@@ -18,11 +18,11 @@ export function getLastMessage(device: Device) {
 }
 
 export function getIsConnected(device: Device, key: any = null) {
-    const ping = getLastPing(device);
-    if (!ping) {
+    const message = getLastMessage(device);
+    if (!message) {
         return false;
     }
-    return dayjs().diff(ping.datetime) < dayjs.duration(30, "second").asMilliseconds();
+    return dayjs().diff(message.datetime) < dayjs.duration(30, "second").asMilliseconds();
 }
 
 export function createGeoJSONCircle(center: [number,number], radiusInKm: number, points: number = 64): GeoJSONSourceRaw {
