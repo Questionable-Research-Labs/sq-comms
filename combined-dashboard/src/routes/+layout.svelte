@@ -7,6 +7,7 @@
   import { mqttConnect, mqttConnected } from "$lib/mqtt";
   import Audio from "$lib/components/Audio.svelte";
   import Modal from "svelte-simple-modal";
+    import MainPageLayout from "$lib/layouts/MainPageLayout.svelte";
 
   onMount(() => {
     mqttConnect();
@@ -36,7 +37,9 @@
     <Audio />
 
     <main>
-      <slot />
+      <MainPageLayout>
+        <slot />
+      </MainPageLayout>
     </main>
     <div class="connection-indicator">
       {#if $mqttConnected}

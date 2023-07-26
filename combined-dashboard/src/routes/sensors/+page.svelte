@@ -1,7 +1,7 @@
 <script lang="ts">
     import { getMetadata } from "$lib/sensorData";
     import { devices } from "$lib/store";
-    import SensorGraph from "./SensorGraph.svelte";
+    import SensorGraph from "$lib/components/SensorGraph.svelte";
     
 </script>
 
@@ -18,6 +18,9 @@
                         <SensorGraph {meta} dataset={dataset} sensorName={sensor} deviceid={device.chipID}/>
                     </div>
                 {/each}
+                {#if device.sensorLog.size == 0}
+                    <p class="no-data">No data available yet...</p>
+                {/if}
             </div>
         </div>
     {/each}
@@ -46,6 +49,12 @@
             h3 {
                 text-align: center;
             }
+        }
+
+        .no-data {
+            color: $color-text-hover;
+            font-size: 1.5rem;
+            margin: 0;
         }
     }
     
